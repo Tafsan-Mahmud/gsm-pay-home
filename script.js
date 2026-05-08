@@ -86,34 +86,57 @@
     animateNavIn();
   }
 
-  const typingTextElement = document.getElementById("typing-text");
-  const phrases = ["Fast.", " Secure.", " Easy.", " Convenient."];
-  let currentPhraseIndex = 0;
-  let charIndex = 0;
-  let isTyping = true;
+  // truck tarin brand slider
+  const track = document.getElementById('trustTrack');
+  if (!track) return;
 
-  function type() {
-    const currentPhrase = phrases[currentPhraseIndex];
+  const original = Array.from(track.children);
+  if (!original.length) return;
 
-    if (isTyping) {
-      if (charIndex < currentPhrase.length) {
-        typingTextElement.textContent += currentPhrase.charAt(charIndex);
-        charIndex++;
-        setTimeout(type, 100);
-      } else {
-        isTyping = false;
-        setTimeout(type, 800); // Pause after typing a phrase
-      }
-    } else {
-      // Logic to move to the next phrase and clear the text
-      currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-      charIndex = 0;
-      isTyping = true;
-      typingTextElement.textContent = "";
-      setTimeout(type, 50); // Small delay before typing the next phrase
+  const SPEED = 80; // px per second — tweak this to control speed
+  const COPIES = 5; // copies per half — always fills any screen
+
+  // Build one half = COPIES × original items
+  function buildHalf(hidden) {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < COPIES; i++) {
+      original.forEach(function (item) {
+        const clone = item.cloneNode(true);
+        if (hidden) clone.setAttribute('aria-hidden', 'true');
+        frag.appendChild(clone);
+      });
     }
+    return frag;
   }
-  type();
+
+  // Replace track with: firstHalf + secondHalf (identical)
+  // -50% always lands on pixel-perfect identical content
+  track.innerHTML = '';
+  track.appendChild(buildHalf(false));
+  track.appendChild(buildHalf(true));
+
+  // Measure AFTER layout is fully painted — double rAF guarantees it
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      // Width of first half = half the total track
+      const halfWidth = track.scrollWidth / 2;
+      const duration = halfWidth / SPEED;
+
+      track.style.animationDuration = duration.toFixed(2) + 's';
+
+      // Pause on individual card hover
+      track.addEventListener('mouseover', function (e) {
+        if (e.target.closest('.trust-logo-item')) {
+          track.style.animationPlayState = 'paused';
+        }
+      });
+      track.addEventListener('mouseout', function (e) {
+        if (e.target.closest('.trust-logo-item')) {
+          track.style.animationPlayState = 'running';
+        }
+      });
+    });
+  });
 
 
 })();

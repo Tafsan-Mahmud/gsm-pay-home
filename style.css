@@ -963,7 +963,7 @@ body {
 /* ══════════════════════════════════════════════════════════════
    § 6.  TRUST BAR
    ══════════════════════════════════════════════════════════════ */
-.trust-section {
+/* .trust-section {
   padding: 60px 0 60px;
   background: var(--bg-surface);
   border-top: 1px solid var(--border-light);
@@ -1032,7 +1032,7 @@ body {
 
 .trust-logo-item:hover i {
   color: var(--brand-primary);
-}
+} */
 
 
 /* ══════════════════════════════════════════════════════════════
@@ -1113,14 +1113,6 @@ body {
 
 /* Mobile */
 @media (max-width: 575px) {
-
-  .trust-logos {
-    gap: 28px;
-  }
-
-  .trust-logo-item {
-    font-size: 0.92rem;
-  }
 
   .hero-mockup-img {
     width: 80%;
@@ -1213,3 +1205,157 @@ body {
   /* Optional: keeps it from breaking across lines */
   display: inline-block;
 }
+
+
+
+
+
+
+/* ///////////////// ----TRAIN ANIMATION */
+
+/* ── Trust Section ───────────────────────────────────────────── */
+.trust-section {
+  padding: 80px 0 90px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.trust-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-placeholder);
+  text-align: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.trust-heading::before,
+.trust-heading::after {
+  content: '';
+  flex: 1;
+  max-width: 100px;
+  height: 1px;
+  background: var(--border-base);
+}
+
+/* ── Track wrapper — fade edges ──────────────────────────────── */
+.trust-track-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+/* ── Scrolling track ─────────────────────────────────────────── */
+
+.trust-track {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+  will-change: transform;
+}
+.trust-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Each partner item ───────────────────────────────────────── */
+.trust-logo-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 36px;
+  min-width: 160px;
+  background: var(--bg-body);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  flex-shrink: 0;
+
+  filter: grayscale(1) opacity(0.45);
+  transition:
+    filter      0.4s var(--ease-out),
+    background  0.4s var(--ease-out),
+    border-color 0.4s var(--ease-out),
+    box-shadow  0.4s var(--ease-out),
+    transform   0.3s var(--ease-spring);
+}
+
+.trust-logo-item:hover {
+  filter: grayscale(0) opacity(1);
+  background: var(--bg-surface);
+  border-color: var(--border-brand);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* ── Logo image inside item ──────────────────────────────────── */
+.trust-logo-item img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  display: block;
+  /* grayscale handled by parent filter */
+}
+
+/* ── Fallback icon (when no img) ─────────────────────────────── */
+.trust-logo-item .brand-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--black-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.trust-logo-item i {
+  font-size: 1.5rem;
+  color: var(--black-500);
+  transition: color 0.4s var(--ease-out);
+}
+.trust-logo-item:hover .brand-icon-wrap {
+  background: var(--green-50);
+  box-shadow: 0 4px 16px rgba(22,163,74,0.15);
+}
+.trust-logo-item:hover i { color: var(--brand-primary); }
+
+/* ── Brand name ──────────────────────────────────────────────── */
+.trust-logo-item span {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.4s var(--ease-out);
+}
+.trust-logo-item:hover span { color: var(--text-primary); }
