@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GSM Pay — Crypto Payment Gateway</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- ─── NAVBAR ──────────────────────────────────────────────────────── -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand d-flex align-items-center gap-1" href="#">
+        <div class="brand-logo-wrap">
+          <img width="100%" src="/asset/logo.png" alt="logo">
+        </div>
+        <div class="d-flex flex-column">
+          <span class="brand-name">GSM PAY</span>
+        </div>
+      </a>
+
+      <!-- Toggler -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="toggler-icon">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+
+      <!-- Nav Links -->
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mx-auto gap-lg-1">
+          <li class="nav-item">
+            <a class="nav-link nav-pill" href="#">
+              Pricing
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-pill" href="#">
+              </i>Integrations
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-pill" href="#">
+              </i>Developers
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link nav-pill" href="#">
+              </i>Contact
+            </a>
+          </li>
+        </ul>
+
+        <!-- CTA -->
+        <div class="nav-cta d-flex align-items-center gap-3 mt-3 mt-lg-0">
+          <a href="#" class="btn-primary">
+            Login
+          </a>
+          <a href="#" class="btn-outline">
+            REGISTER
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  <!-- ─── END NAVBAR ─────────────────────────────────────────────────── -->
+
+
+  <!-- ═══ HERO SECTION ════════════════════════════════════════════════ -->
+  <section class="hero-section">
+    <div class="container">
+
+      <div class="row align-items-center mb-">
+        <!-- ── LEFT: Text ──────────────────────────────────────────── -->
+        <div class="col-lg-6 hero-content">
+
+          <h1 class="hero-heading">
+            <span class="hero-text-gradient">We're here to</span><br>
+            Increase your<br>
+            Productivity
+          </h1>
+
+          <!-- Wavy green underline -->
+          <div class="hero-curve">
+            <svg viewBox="0 0 340 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 60 C80 -40, 260 160, 330 60" stroke="#16a34a" stroke-width="8" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <p class="hero-sub-text">
+            GSM Pay is the modern payment layer for digital businesses - fast
+            secure, borderless settlements in — USDT, USDC, and Binance Pay.
+            Built for serious merchants.
+          </p>
+
+          <div class="hero-actions d-flex align-items-center flex-wrap">
+            <a href="#" class="hero-btn-primary">
+              Get Started
+              <i class="bi bi-arrow-right btn-arrow"></i>
+            </a>
+          </div>
+
+        </div>
+        <!-- ── END LEFT ─────────────────────────────────────────────── -->
+
+        <!-- ── RIGHT: Visual ──────────────────────────────────────── -->
+        <div class="col-lg-6">
+          <div class="hero-visual">
+            <img src="/asset/mockup-3.png" alt="GSM Pay Dashboard Mockup" class="hero-mockup-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <!-- ── Floating Card 1: Enter Amount ──────────────────── -->
+            <div class="float-card card-send float-anim-1">
+              <span class="fc-label">Enter amount</span>
+              <div class="send-input-row">
+                <span class="fc-amount">$450..</span>
+                <button class="send-btn">Send</button>
+              </div>
+            </div>
+
+            <!-- ── Badge: Blue Check ───────────────────────────────── -->
+            <!-- <div class="float-badge badge-check float-anim-2">
+              <img width="100%" src="/asset/binance.png" alt="binance">
+            </div> -->
+
+            <!-- ── Floating Card 2: Total Income ──────────────────── -->
+            <div class="float-card card-income float-anim-3">
+              <span class="fc-label">Total Income</span>
+              <div class="income-row">
+                <span class="fc-amount">$245.00</span>
+                <i class="bi bi-bar-chart-fill income-chart-icon"></i>
+              </div>
+            </div>
+
+            <!-- ── Badge: Yellow (top right) ──────────────────────── -->
+            <!-- <div class="float-badge badge-yellow float-anim-1">
+              <img width="100%" src="/asset/usdc.png" alt="">
+            </div> -->
+
+            <!-- ── Dark Credit Card ───────────────────────────────── -->
+            <div class="float-credit-card float-anim-2">
+              <span class="cc-brand">Crypto Card</span>
+              <div class="cc-circles">
+                <div class="cc-circle"></div>
+                <div class="cc-circle"></div>
+              </div>
+              <div class="cc-number">•••• •••• •••• 1234</div>
+              <div class="cc-footer">
+                <span class="cc-name">GSM Pay</span>
+                <span class="cc-exp">09/25</span>
+              </div>
+            </div>
+
+            <!-- ── Badge: Salmon (right side) ────────────────────── -->
+            <!-- <div class="float-badge badge-salmon float-anim-3">
+              <img width="100%" src="/asset/usdt.png" alt="usdt">
+            </div> -->
+
+          </div>
+        </div>
+        <!-- ── END RIGHT ────────────────────────────────────────────── -->
+      </div>
+    </div>
+  </section>
+  <!-- ═══ END HERO ═══════════════════════════════════════════════════ -->
+
+<section class="trust-section">
+  <div class="container">
+
+    <p class="trust-heading">Trusted by our partners</p>
+
+    <div class="trust-logos">
+      <span class="trust-logo-item">
+        <i class="bi bi-phone-fill"></i>FRP King
+      </span>
+      <span class="trust-logo-item">
+        <i class="bi bi-file-earmark-text-fill"></i>Top Unlock Site
+      </span>
+      <span class="trust-logo-item">
+        <i class="bi bi-heart-fill"></i>Heart Unlock
+      </span>
+      <span class="trust-logo-item">
+        <i class="bi bi-globe2"></i>GSMPure
+      </span>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
