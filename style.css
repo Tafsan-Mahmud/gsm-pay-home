@@ -1272,9 +1272,10 @@ body {
   align-items: center;
   gap: 14px;
   width: max-content;
-  animation: marquee 35s linear infinite;
+  animation: marquee linear infinite;  /* no duration here — JS sets it */
   will-change: transform;
 }
+
 .trust-track:hover {
   animation-play-state: paused;
 }
