@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-400: #4ade80;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-700: #15803d;
+            --black-200: #e2e5ea;
+            --black-300: #c9cdd5;
+            --black-400: #9aa0ad;
+            --black-500: #6b7280;
+            --black-700: #374151;
+            --black-950: #0d1117;
+            --bg-body: #f7f9f7;
+            --bg-surface: #ffffff;
+            --border-base: rgba(0, 0, 0, 0.11);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-body);
+            color: var(--black-950);
+        }
+
+        /* ── Section ─────────────────────────────────────────────── */
+        .powered-section {
+            padding: 100px 24px 80px;
+            background: var(--bg-body);
+            overflow: hidden;
+        }
+
+        .powered-header {
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto;
+            padding-bottom: 52px;
+        }
+
+        .powered-eyebrow {
+            display: block;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--green-600);
+            margin-bottom: 14px;
+        }
+
+        .powered-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            color: var(--black-950);
+            letter-spacing: -.025em;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        .powered-sub {
+            font-size: 1rem;
+            color: var(--black-500);
+            line-height: 1.7;
+        }
+
+        /* ── Stage ───────────────────────────────────────────────── */
+        .powered-stage {
+            position: relative;
+            max-width: 1060px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .powered-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        /* ── IC Chip ─────────────────────────────────────────────── */
+        .ic-wrap {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* top / bottom rows span exact body width */
+        .ic-pin-row {
+            width: 150px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .ic-mid {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .ic-pin-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px 0;
+        }
+
+        /* IC body: 150 × ~100px */
+        .ic-body {
+            width: 150px;
+            min-height: 96px;
+            background: linear-gradient(160deg, #222 0%, #111 100%);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 7px;
+            padding: 16px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+            box-shadow: 0 4px 22px rgba(0, 0, 0, .3),
+                inset 0 1px 0 rgba(255, 255, 255, .05);
+        }
+
+        .ic-notch {
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 7px;
+            background: var(--bg-body);
+            border-radius: 0 0 10px 10px;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-top: none;
+        }
+
+        .ic-name {
+            font-family: 'Syne', sans-serif;
+            font-size: .78rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, .85);
+            letter-spacing: .14em;
+        }
+
+        .ic-model {
+            font-family: 'Outfit', sans-serif;
+            font-size: .52rem;
+            color: rgba(255, 255, 255, .28);
+            letter-spacing: .1em;
+        }
+
+        .ic-leds {
+            display: flex;
+            gap: 5px;
+        }
+
+        .ic-led {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green-500);
+            box-shadow: 0 0 7px rgba(34, 197, 94, .8);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .ic-led:nth-child(2) {
+            animation-delay: .65s;
+        }
+
+        .ic-led:nth-child(3) {
+            animation-delay: 1.3s;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* ── Pin element ─────────────────────────────────────────── */
+        .ic-pin {
+            border-radius: 2px;
+            position: relative;
+            transition: box-shadow .2s;
+        }
+
+        /* top / bottom pins */
+        .ic-pin-row .ic-pin {
+            width: 14px;
+            height: 11px;
+        }
+
+        /* side pins */
+        .ic-pin-col .ic-pin {
+            width: 11px;
+            height: 16px;
+        }
+
+        /* neutral hole */
+        .ic-pin.neutral {
+            background: var(--black-200);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+        }
+
+        .ic-pin.neutral::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--black-300);
+        }
+
+        /* active connected pin */
+        .ic-pin.active {
+            background: #1c1c1c;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .5);
+        }
+
+        .ic-pin.active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green-600);
+            transition: background .2s, box-shadow .2s;
+        }
+
+        .ic-pin.active.lit::after {
+            background: var(--green-400);
+            box-shadow: 0 0 10px rgba(74, 222, 128, .95),
+                0 0 22px rgba(22, 163, 74, .5);
+        }
+
+        /* ── Cards ───────────────────────────────────────────────── */
+        .powered-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            margin-top: 120px;
+        }
+
+        .power-card {
+            background: var(--bg-surface);
+            border: 1.5px solid var(--border-base);
+            border-radius: 16px;
+            position: relative;
+            overflow: visible;
+            transition: border-color .3s, box-shadow .3s;
+        }
+
+        .power-card:hover {
+            border-color: rgba(22, 163, 74, .3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+        }
+
+        .card-ports {
+            position: absolute;
+            top: -6px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-evenly;
+            z-index: 3;
+        }
+
+        .card-port {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--black-300);
+            border: 2px solid var(--bg-body);
+            transition: background .2s, box-shadow .2s;
+        }
+
+        .card-port.lit {
+            background: var(--green-500);
+            box-shadow: 0 0 10px rgba(74, 222, 128, .9);
+        }
+
+        .card-inner {
+            padding: 26px 22px 22px;
+        }
+
+        .card-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            background: var(--green-50);
+            border: 1px solid var(--green-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .card-icon-box svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green-700);
+        }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: .95rem;
+            font-weight: 800;
+            color: var(--black-950);
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-title-arrow {
+            font-size: .68rem;
+            color: var(--black-400);
+            transition: color .2s;
+        }
+
+        .power-card:hover .card-title-arrow {
+            color: var(--green-600);
+        }
+
+        .card-desc {
+            font-size: .83rem;
+            color: var(--black-500);
+            line-height: 1.65;
+        }
+
+        @media(max-width:767px) {
+            .powered-cards {
+                grid-template-columns: 1fr;
+                margin-top: 36px;
+            }
+
+            .powered-svg,
+            .card-ports {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="powered-section">
+        <div class="powered-header">
+            <span class="powered-eyebrow">Core Infrastructure</span>
+            <h2 class="powered-title">Built on a foundation of<br>enterprise-grade technology</h2>
+            <p class="powered-sub">Every GSM Pay transaction runs through three battle-tested systems working in
+                concert.</p>
+        </div>
+
+        <div class="powered-stage" id="poweredStage">
+            <svg class="powered-svg" id="poweredSvg"></svg>
+
+            <!-- IC: 16 ports — 6 top, 6 bottom, 2 left, 2 right -->
+            <div class="ic-wrap" id="icWrap">
+
+                <!-- 6 top neutral pins -->
+                <div class="ic-pin-row">
+
+                    <div class="ic-pin neutral"></div>
+                    <div class="ic-pin neutral"></div>
+                    <div class="ic-pin neutral"></div>
+                    <div class="ic-pin neutral"></div>
+                    <div class="ic-pin neutral"></div>
+                    <div class="ic-pin neutral"></div>
+                </div>
+
+                <div class="ic-mid">
+                    <!-- 2 left neutral pins -->
+                    <div class="ic-pin-col">
+                        <div class="ic-pin neutral"></div>
+                        <div class="ic-pin neutral"></div>
+                    </div>
+
+                    <!-- IC body ~150×100 -->
+                    <div class="ic-body">
+                        <div class="ic-notch"></div>
+                        <span class="ic-name">GSM PAY</span>
+                        <span class="ic-model">CORE-2025 · REV B</span>
+                        <div class="ic-leds">
+                            <div class="ic-led"></div>
+                            <div class="ic-led"></div>
+                            <div class="ic-led"></div>
+                        </div>
+                    </div>
+
+                    <!-- 2 right neutral pins -->
+                    <div class="ic-pin-col">
+                        <div class="ic-pin neutral"></div>
+                        <div class="ic-pin neutral"></div>
+                    </div>
+                </div>
+
+                <!-- 6 bottom active pins — all connect to cards -->
+                <div class="ic-pin-row">
+                    <div class="ic-pin active" id="pin-0"></div>
+                    <div class="ic-pin active" id="pin-1"></div>
+                    <div class="ic-pin active" id="pin-2"></div>
+                    <div class="ic-pin active" id="pin-3"></div>
+                    <div class="ic-pin active" id="pin-4"></div>
+                    <div class="ic-pin active" id="pin-5"></div>
+                </div>
+            </div>
+
+            <!-- 3 cards -->
+            <div class="powered-cards" id="poweredCards">
+
+                <div class="power-card" id="card-0">
+                    <div class="card-ports">
+                        <div class="card-port" id="cport-0"></div>
+                        <div class="card-port" id="cport-1"></div>
+                    </div>
+                    <div class="card-inner">
+                        <div class="card-icon-box">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <rect x="2" y="5" width="20" height="14" rx="2" />
+                                <path d="M2 10h20M6 15h4" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Payment Engine <span class="card-title-arrow">↗</span></h3>
+                        <p class="card-desc">Lightning-fast transaction processing with real-time settlement and
+                            multi-currency support across 150+ countries.</p>
+                    </div>
+                </div>
+
+                <div class="power-card" id="card-1">
+                    <div class="card-ports">
+                        <div class="card-port" id="cport-2"></div>
+                        <div class="card-port" id="cport-3"></div>
+                    </div>
+                    <div class="card-inner">
+                        <div class="card-icon-box">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Fraud Guard <span class="card-title-arrow">↗</span></h3>
+                        <p class="card-desc">AI-powered fraud detection that analyses every transaction in under 50ms
+                            using 200+ behavioural signals.</p>
+                    </div>
+                </div>
+
+                <div class="power-card" id="card-2">
+                    <div class="card-ports">
+                        <div class="card-port" id="cport-4"></div>
+                        <div class="card-port" id="cport-5"></div>
+                    </div>
+                    <div class="card-inner">
+                        <div class="card-icon-box">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="10" />
+                                <path
+                                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Global Network <span class="card-title-arrow">↗</span></h3>
+                        <p class="card-desc">Distributed infrastructure across 40+ regions ensuring 99.99% uptime and
+                            sub-100ms latency worldwide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /*
+             * mid: fraction (0–1) at which the horizontal jog sits
+             * between the IC pin and card port.
+             * Each pair uses different values so their jogs sit at
+             * different Y levels → zero path overlap.
+             *
+             * pin-0/1 → card-0 (left)   : jogs at 30% and 62%
+             * pin-2/3 → card-1 (center) : jogs at 35% and 65%
+             * pin-4/5 → card-2 (right)  : jogs at 30% and 62%
+             */
+            var CONNECTIONS = [
+                { pin: 'pin-1', port: 'cport-0', mid: 0.30 },  // left: cport-0 → IC pin 1
+                { pin: 'pin-0', port: 'cport-1', mid: 0.62 },  // left: cport-1 → IC pin 0
+                { pin: 'pin-2', port: 'cport-2', mid: 0.62 },  // center: was 0.35, now mirrors second path
+                { pin: 'pin-3', port: 'cport-3', mid: 0.65 },
+                { pin: 'pin-4', port: 'cport-4', mid: 0.30 },
+                { pin: 'pin-5', port: 'cport-5', mid: 0.62 },
+            ];
+
+            var svg = document.getElementById('poweredSvg');
+            var stage = document.getElementById('poweredStage');
+            var pathData = [];
+
+            /* element rect relative to stage */
+            function rel(el) {
+                var e = el.getBoundingClientRect();
+                var s = stage.getBoundingClientRect();
+                return {
+                    bx: e.left - s.left + e.width / 2,  /* bottom-center x */
+                    by: e.bottom - s.top,                  /* bottom y        */
+                    tx: e.left - s.left + e.width / 2,  /* top-center x    */
+                    ty: e.top - s.top,                   /* top y           */
+                };
+            }
+
+            /*
+             * Build an L-shaped PCB path with rounded corners.
+             *   from  = IC pin  (source, top of screen)
+             *   to    = card port (destination, bottom of screen)
+             *   mid   = fraction 0-1 for where the horizontal jog sits
+             *
+             * Path drawn: IC pin → card port
+             * Animation dashoffset HIGH→LOW = pulse travels card→IC ✓
+             */
+            function buildD(from, to, mid) {
+                var f = (mid !== undefined) ? mid : 0.5;
+                var midY = from.by + (to.ty - from.by) * f;
+                var dx = to.tx - from.bx;
+                var adx = Math.abs(dx);
+
+                /* straight line when nearly vertical */
+                if (adx < 3) {
+                    return 'M' + from.bx + ',' + from.by + ' L' + to.tx + ',' + to.ty;
+                }
+
+                var r = Math.min(8, adx * 0.28, Math.abs(midY - from.by) * 0.45);
+                var sx = dx > 0 ? 1 : -1;   /* sign: +1 right, -1 left */
+
+                return [
+                    'M' + from.bx + ',' + from.by,
+                    'L' + from.bx + ',' + (midY - r),
+                    'Q' + from.bx + ',' + midY + ' ' + (from.bx + sx * r) + ',' + midY,
+                    'L' + (to.tx - sx * r) + ',' + midY,
+                    'Q' + to.tx + ',' + midY + ' ' + to.tx + ',' + (midY + r),
+                    'L' + to.tx + ',' + to.ty,
+                ].join(' ');
+            }
+
+            function makePath(d, stroke, w, opacity) {
+                var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', d);
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', stroke);
+                p.setAttribute('stroke-width', String(w || 1.5));
+                p.setAttribute('stroke-linecap', 'round');
+                p.setAttribute('stroke-linejoin', 'round');
+                if (opacity !== undefined) p.setAttribute('opacity', String(opacity));
+                return p;
+            }
+
+            function buildPaths() {
+                svg.innerHTML = '';
+                pathData.length = 0;
+
+                CONNECTIONS.forEach(function (conn) {
+                    var pinEl = document.getElementById(conn.pin);
+                    var portEl = document.getElementById(conn.port);
+                    if (!pinEl || !portEl) return;
+
+                    var from = rel(pinEl);
+                    var to = rel(portEl);
+                    var d = buildD(from, to, conn.mid);
+
+                    /* static base line */
+                    svg.appendChild(makePath(d, '#d1d5db', 1.5));
+
+                    /* animated pulse overlay — starts invisible */
+                    var pulse = makePath(d, '#16a34a', 2.5, 0);
+                    pulse.style.filter = 'drop-shadow(0 0 6px rgba(34,197,94,.7))';
+                    svg.appendChild(pulse);
+
+                    var len = pulse.getTotalLength();
+
+                    /*
+                     * small elegant pulse size
+                     */
+                    var DASH = Math.min(52, len * 0.32);
+
+                    /*
+                     * IMPORTANT:
+                     * normal single-gap pattern
+                     * fixes incomplete travel
+                     */
+                    pulse.setAttribute(
+                        'stroke-dasharray',
+                        DASH + ' ' + len
+                    );
+
+                    /*
+                     * fully hidden before start
+                     */
+                    pulse.setAttribute(
+                        'stroke-dashoffset',
+                        String(DASH)
+                    );
+                    pathData.push({
+                        pulse: pulse,
+                        pinEl: pinEl,
+                        portEl: portEl,
+                        len: len,
+                        DASH: DASH,
+                        busy: false,
+                    });
+                });
+            }
+
+            /* ease-in-out */
+            function ease(t) {
+                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            }
+
+            /*
+             * Animate one pulse: travels from card port → IC pin.
+             *
+             * dashoffset starts at  len + DASH  (past END → invisible)
+             * dashoffset ends at   -DASH         (before START → invisible)
+             *
+             * As offset decreases the dash travels END→START = card→IC ✓
+             *
+             * Setting dashoffset BEFORE opacity=1 prevents the blink glitch.
+             * onComplete() is called when the animation finishes so the
+             * caller can schedule the next one — no overlapping animations.
+             */
+            function animatePulse(pd, onComplete) {
+
+                var pulse = pd.pulse;
+                var pinEl = pd.pinEl;
+                var portEl = pd.portEl;
+                var len = pd.len;
+                var DASH = pd.DASH;
+
+                /*
+  * SVG path direction:
+  * IC → CARD
+  *
+  * Positive offset starts hidden INSIDE IC
+  * then travels toward card naturally
+  */
+                var startOff = DASH;
+
+                /*
+                 * move fully across the path
+                 * until pulse exits card side
+                 */
+                var endOff = -(len + DASH);
+
+                /*
+                 * slower elegant speed
+                 */
+                var dur = 2600 + len * 1.6;
+
+                /*
+                 * IMPORTANT:
+                 * hide before resetting
+                 * prevents random blink bug
+                 */
+                pulse.setAttribute('opacity', '0');
+
+                pulse.setAttribute(
+                    'stroke-dashoffset',
+                    startOff
+                );
+
+                /*
+                 * force browser repaint
+                 * fixes jump/blink issue
+                 */
+                pulse.getBoundingClientRect();
+
+                requestAnimationFrame(function () {
+
+                    pinEl.classList.add('lit');
+                    portEl.classList.add('lit');
+
+                    pulse.setAttribute('opacity', '1');
+
+                    requestAnimationFrame(function (t0) {
+
+                        function tick(ts) {
+
+                            var p = Math.min((ts - t0) / dur, 1);
+
+                            /*
+                             * ultra smooth easing
+                             */
+                            var eased =
+                                0.5 - Math.cos(p * Math.PI) / 2;
+
+                            var off =
+                                startOff + (endOff - startOff) * eased;
+
+                            pulse.setAttribute(
+                                'stroke-dashoffset',
+                                off
+                            );
+
+                            if (p < 1) {
+
+                                requestAnimationFrame(tick);
+
+                            } else {
+
+                                /*
+                                 * let pulse finish visually
+                                 */
+                                setTimeout(function () {
+
+                                    pulse.setAttribute('opacity', '0');
+
+                                    pinEl.classList.remove('lit');
+                                    portEl.classList.remove('lit');
+
+                                    pd.busy = false;
+
+                                    if (onComplete) {
+                                        onComplete();
+                                    }
+
+                                }, 120);
+                            }
+                        }
+
+                        requestAnimationFrame(tick);
+                    });
+                });
+            }
+
+            /*
+             * Each path loops independently:
+             *   wait random delay → animate → wait random delay → animate …
+             * Because the next fire only happens after onComplete, there is
+             * zero chance of two animations running on the same path.
+             */
+            function startLoop() {
+                pathData.forEach(function (pd, i) {
+                    /* stagger initial starts so all six don't fire at once */
+                    setTimeout(function () {
+                        (function loop() {
+                            var delay = 700 + Math.random() * 2300;
+                            setTimeout(function () {
+                                pd.busy = true;
+                                animatePulse(pd, loop);
+                            }, delay);
+                        }());
+                    }, i * 300 + Math.random() * 200);
+                });
+            }
+
+            function init() {
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        buildPaths();
+                        startLoop();
+                    });
+                });
+            }
+
+            var rt;
+            window.addEventListener('resize', function () {
+                clearTimeout(rt);
+                rt = setTimeout(function () { buildPaths(); }, 130);
+            });
+
+            document.readyState === 'loading'
+                ? document.addEventListener('DOMContentLoaded', init)
+                : init();
+        }());
+    </script>
+</body>
+
+</html>

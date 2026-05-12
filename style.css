@@ -541,7 +541,7 @@ body {
 }
 
 /* Mobile menu panel */
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
   #navMenu {
     background: var(--bg-surface);
     border: 1px solid var(--border-light);
@@ -587,7 +587,7 @@ body {
     padding-top: 16px;
     margin-top: 8px !important;
   }
-}
+} */
 
 
 /* ══════════════════════════════════════════════════════════════
@@ -631,6 +631,15 @@ body {
   width: 100%;
   height: auto;
   display: block;
+}
+#curvePath {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawCurve 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+
+@keyframes drawCurve {
+  to { stroke-dashoffset: 0; }
 }
 
 .hero-sub-text {
@@ -960,87 +969,484 @@ body {
   color: var(--text-muted);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   § 6.  TRUST BAR
-   ══════════════════════════════════════════════════════════════ */
-/* .trust-section {
-  padding: 60px 0 60px;
+/* ///////////////// ----TRAIN ANIMATION */
+
+/* ── Trust Section ───────────────────────────────────────────── */
+.trust-section {
+  padding: 80px 0 90px;
   background: var(--bg-surface);
   border-top: 1px solid var(--border-light);
+  overflow: hidden;
 }
 
 .trust-heading {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Syne', sans-serif;
   font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--text-placeholder);
   text-align: center;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 44px;
+  margin-bottom: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .trust-heading::before,
 .trust-heading::after {
   content: '';
-  width: 75px;
-  height: 1.5px;
-  background: var(--text-placeholder);
-  display: block;
+  flex: 1;
+  max-width: 100px;
+  height: 1px;
+  background: var(--border-base);
 }
 
-.trust-logos {
+/* ── Track wrapper — fade edges ──────────────────────────────── */
+.trust-track-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%);
+  mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%);
+}
+
+/* ── Scrolling track ─────────────────────────────────────────── */
+.trust-track {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: clamp(32px, 6vw, 80px);
-  flex-wrap: wrap;
+  width: max-content;
+  animation: marquee linear infinite;
+  will-change: transform;
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── Each partner item ───────────────────────────────────────── */
 .trust-logo-item {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: 'Syne', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--black-400);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  transition:
-    color      0.3s var(--ease-out),
-    filter     0.3s var(--ease-out),
-    transform  var(--t-fast) var(--ease-spring);
+  justify-content: center;
+  padding: 0 44px;
   cursor: default;
-  filter: grayscale(1) opacity(0.5);
-}
-
-.trust-logo-item i {
-  font-size: 1.3rem;
-  transition: color 0.3s var(--ease-out);
+  flex-shrink: 0;
+  filter: grayscale(1) opacity(.50);
+  transition: filter 0.35s var(--ease-out);
 }
 
 .trust-logo-item:hover {
-  color: var(--text-secondary);
   filter: grayscale(0) opacity(1);
-  transform: translateY(-1px);
 }
 
-.trust-logo-item:hover i {
-  color: var(--brand-primary);
-} */
+/* ── Logo image ──────────────────────────────────────────────── */
+.trust-logo-item img {
+  height: 25px;
+  object-fit: contain;
+  display: block;
+}
 
+/* ── Fallback icon ───────────────────────────────────────────── */
+.trust-logo-item .brand-icon-wrap {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Encryption */
+
+.security-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--black-950);
+}
+
+/* Fullscreen video */
+.security-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  filter: grayscale(1);
+}
+
+/* Dark overlay */
+.security-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%,
+      rgba(13, 17, 23, 0.55) 0%,
+      rgba(13, 17, 23, 0.92) 100%);
+}
+
+/* ── Centered cyber container ────────────────────────────────── */
+.cyber-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Orbiting rings ──────────────────────────────────────────── */
+.cyber-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(22, 163, 74, 0.20);
+}
+
+.ring-1 {
+  width: 160px;
+  height: 160px;
+  border-color: rgba(22, 163, 74, 0.35);
+  animation: spin 6s linear infinite;
+}
+
+.ring-2 {
+  width: 240px;
+  height: 240px;
+  border-color: rgba(22, 163, 74, 0.20);
+  border-style: dashed;
+  animation: spin 12s linear infinite reverse;
+}
+
+.ring-3 {
+  width: 340px;
+  height: 340px;
+  border-color: rgba(22, 163, 74, 0.10);
+  animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Dots on rings ───────────────────────────────────────────── */
+.ring-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.8);
+}
+
+.dot-1 {
+  width: 160px;
+  height: 160px;
+  animation: spin 6s linear infinite;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.dot-1::before {
+  content: '';
+  position: absolute;
+  top: -3.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-400);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+}
+
+.dot-2 {
+  width: 240px;
+  height: 240px;
+  animation: spin 12s linear infinite reverse;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.dot-2::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+}
+
+.dot-3 {
+  width: 340px;
+  height: 340px;
+  animation: spin 20s linear infinite;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.dot-3::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-600);
+  box-shadow: 0 0 14px rgba(22, 163, 74, 0.9);
+}
+
+/* ── Core lock ───────────────────────────────────────────────── */
+.cyber-core {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  background: rgba(22, 163, 74, 0.10);
+  border: 1.5px solid rgba(22, 163, 74, 0.40);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.cyber-icon {
+  font-size: 2.2rem;
+  color: var(--green-400);
+  filter: drop-shadow(0 0 12px rgba(22, 163, 74, 0.7));
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(22, 163, 74, 0.6));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 24px rgba(22, 163, 74, 1.0));
+  }
+}
+
+/* Pulse rings from core */
+.cyber-pulse {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(22, 163, 74, 0.5);
+  animation: pulseOut 2.5s ease-out infinite;
+}
+
+.cyber-pulse.delay-1 {
+  animation-delay: 1.2s;
+}
+
+@keyframes pulseOut {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* ── Scanning line ───────────────────────────────────────────── */
+.cyber-scan {
+  position: absolute;
+  width: 340px;
+  height: 1px;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(22, 163, 74, 0.6) 30%,
+      rgba(22, 163, 74, 0.6) 70%,
+      transparent);
+  animation: scanLine 3s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.4);
+}
+
+@keyframes scanLine {
+  0% {
+    transform: translateY(-170px);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(170px);
+    opacity: 0;
+  }
+}
+
+/* ── Floating labels ─────────────────────────────────────────── */
+.cyber-label {
+  position: absolute;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(34, 197, 94, 0.7);
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  animation: labelFloat 4s ease-in-out infinite;
+}
+
+.label-tl {
+  top: calc(50% - 130px);
+  left: calc(50% - 230px);
+  animation-delay: 0s;
+}
+
+.label-tr {
+  top: calc(50% - 130px);
+  right: calc(50% - 230px);
+  animation-delay: 1s;
+}
+
+.label-bl {
+  bottom: calc(50% - 130px);
+  left: calc(50% - 230px);
+  animation-delay: 2s;
+}
+
+.label-br {
+  bottom: calc(50% - 130px);
+  right: calc(50% - 230px);
+  animation-delay: 1.5s;
+}
+
+@keyframes labelFloat {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+/* ── Bottom title ────────────────────────────────────────────── */
+.cyber-text {
+  position: absolute;
+  bottom: calc(50% - 260px);
+  text-align: center;
+}
+
+.cyber-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.cyber-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
 
 /* ══════════════════════════════════════════════════════════════
-   § 7.  RESPONSIVE
+    7.  RESPONSIVE
    ══════════════════════════════════════════════════════════════ */
 
 /* Tablet */
 @media (max-width: 991px) {
+  #navMenu {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-top: 12px;
+    box-shadow: var(--shadow-xl);
+    animation: slideDown 0.28s var(--ease-out);
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-pill {
+    border-radius: var(--radius-sm);
+    padding: 10px 12px !important;
+  }
+
+  .nav-pill::after {
+    display: none;
+  }
+
+  .nav-pill:hover {
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary) !important;
+  }
+
+  .nav-pill.active {
+    background: var(--green-50);
+  }
+
+  .nav-cta {
+    border-top: 1px solid var(--border-light);
+    padding-top: 16px;
+    margin-top: 8px !important;
+  }
+
   .hero-section {
     padding-top: 90px;
     padding-bottom: 40px;
@@ -1108,6 +1514,10 @@ body {
 
   .hero-section {
     padding-top: 110px;
+  }
+
+  .trust-section {
+    padding: 50px 0 60px;
   }
 }
 
@@ -1182,6 +1592,45 @@ body {
   .badge-salmon {
     display: none;
   }
+
+  .trust-heading {
+    font-size: .75rem;
+    padding-bottom: 20px;
+  }
+
+  .ring-3 {
+    width: 280px;
+    height: 280px;
+  }
+
+  .cyber-scan {
+    width: 280px;
+  }
+
+  .label-tl {
+    left: calc(50% - 170px);
+  }
+
+  .label-tr {
+    right: calc(50% - 170px);
+  }
+
+  .label-bl {
+    left: calc(50% - 170px);
+  }
+
+  .label-br {
+    right: calc(50% - 170px);
+  }
+
+  .cyber-label {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
+
+  .cyber-text {
+    bottom: calc(50% - 210px);
+  }
 }
 
 @media (max-width: 450px) {
@@ -1205,158 +1654,3 @@ body {
   /* Optional: keeps it from breaking across lines */
   display: inline-block;
 }
-
-
-
-
-
-
-/* ///////////////// ----TRAIN ANIMATION */
-
-/* ── Trust Section ───────────────────────────────────────────── */
-.trust-section {
-  padding: 80px 0 90px;
-  background: var(--bg-surface);
-  border-top: 1px solid var(--border-light);
-  overflow: hidden;
-}
-
-.trust-heading {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-placeholder);
-  text-align: center;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-bottom: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-.trust-heading::before,
-.trust-heading::after {
-  content: '';
-  flex: 1;
-  max-width: 100px;
-  height: 1px;
-  background: var(--border-base);
-}
-
-/* ── Track wrapper — fade edges ──────────────────────────────── */
-.trust-track-wrap {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 12%,
-    black 88%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 12%,
-    black 88%,
-    transparent 100%
-  );
-}
-
-/* ── Scrolling track ─────────────────────────────────────────── */
-
-.trust-track {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: max-content;
-  animation: marquee linear infinite;  /* no duration here — JS sets it */
-  will-change: transform;
-}
-
-.trust-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* ── Each partner item ───────────────────────────────────────── */
-.trust-logo-item {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 28px 36px;
-  min-width: 160px;
-  background: var(--bg-body);
-  border: 1.5px solid var(--border-light);
-  border-radius: var(--radius-xl);
-  cursor: pointer;
-  flex-shrink: 0;
-
-  filter: grayscale(1) opacity(0.45);
-  transition:
-    filter      0.4s var(--ease-out),
-    background  0.4s var(--ease-out),
-    border-color 0.4s var(--ease-out),
-    box-shadow  0.4s var(--ease-out),
-    transform   0.3s var(--ease-spring);
-}
-
-.trust-logo-item:hover {
-  filter: grayscale(0) opacity(1);
-  background: var(--bg-surface);
-  border-color: var(--border-brand);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
-
-/* ── Logo image inside item ──────────────────────────────────── */
-.trust-logo-item img {
-  width: 52px;
-  height: 52px;
-  object-fit: contain;
-  border-radius: var(--radius-md);
-  display: block;
-  /* grayscale handled by parent filter */
-}
-
-/* ── Fallback icon (when no img) ─────────────────────────────── */
-.trust-logo-item .brand-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  background: var(--black-100);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
-}
-.trust-logo-item i {
-  font-size: 1.5rem;
-  color: var(--black-500);
-  transition: color 0.4s var(--ease-out);
-}
-.trust-logo-item:hover .brand-icon-wrap {
-  background: var(--green-50);
-  box-shadow: 0 4px 16px rgba(22,163,74,0.15);
-}
-.trust-logo-item:hover i { color: var(--brand-primary); }
-
-/* ── Brand name ──────────────────────────────────────────────── */
-.trust-logo-item span {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  transition: color 0.4s var(--ease-out);
-}
-.trust-logo-item:hover span { color: var(--text-primary); }

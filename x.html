@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green-50: #f0fdf4; --green-100: #dcfce7; --green-200: #bbf7d0;
+  --green-400: #4ade80; --green-500: #22c55e; --green-600: #16a34a;
+  --green-700: #15803d; --green-800: #166534;
+  --black-50: #f8f9fa; --black-100: #f1f3f4; --black-200: #e2e5ea;
+  --black-300: #c9cdd5; --black-400: #9aa0ad; --black-500: #6b7280;
+  --black-700: #374151; --black-900: #111827; --black-950: #0d1117;
+  --bg-body: #f7f9f7; --bg-surface: #ffffff;
+  --border-light: rgba(0,0,0,0.07); --border-base: rgba(0,0,0,0.11);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg-body); color: var(--black-950); }
+
+/* ── Section ───────────────────────────────────────────────── */
+.powered-section {
+  padding: 100px 24px 80px;
+  background: var(--bg-body);
+  overflow: hidden;
+}
+.powered-header {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 0;
+  padding-bottom: 52px;
+}
+.powered-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-600);
+  display: block;
+  margin-bottom: 14px;
+}
+.powered-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  color: var(--black-950);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.powered-sub {
+  font-size: 1rem;
+  color: var(--black-500);
+  line-height: 1.7;
+}
+
+/* ── Stage ─────────────────────────────────────────────────── */
+.powered-stage {
+  position: relative;
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.powered-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* ── "Powered By" badge above IC ───────────────────────────── */
+.ic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--black-950);
+  color: rgba(255,255,255,0.9);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 8px 18px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+.ic-badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 8px rgba(34,197,94,0.8);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,197,94,0.8)}
+  50%{opacity:0.4;box-shadow:0 0 3px rgba(34,197,94,0.3)}
+}
+
+/* ── IC Chip ────────────────────────────────────────────────── */
+.ic-wrap {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ic-pin-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.ic-mid {
+  display: flex;
+  align-items: stretch;
+}
+.ic-pin-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+  justify-content: center;
+}
+
+/* Pin element */
+.ic-pin {
+  border-radius: 2px;
+  position: relative;
+  transition: box-shadow 0.25s ease;
+}
+.ic-pin-row .ic-pin {
+  width: 22px; height: 10px;
+}
+.ic-pin-col .ic-pin {
+  width: 10px; height: 22px;
+}
+
+/* Neutral hole */
+.ic-pin.neutral {
+  background: var(--black-200);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+}
+.ic-pin.neutral::after {
+  content: '';
+  position: absolute;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--black-300);
+}
+
+/* Active pin */
+.ic-pin.active {
+  background: #1a1a1a;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+}
+.ic-pin.active::after {
+  content: '';
+  position: absolute;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green-600);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+.ic-pin.active.lit::after {
+  background: var(--green-400);
+  box-shadow: 0 0 10px rgba(74,222,128,0.9), 0 0 20px rgba(22,163,74,0.5);
+}
+
+/* IC Body */
+.ic-body {
+  width: 210px;
+  background: linear-gradient(160deg, #1c1c1c 0%, #0f0f0f 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px;
+  padding: 22px 20px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ic-notch {
+  position: absolute;
+  top: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 16px; height: 8px;
+  background: var(--bg-body);
+  border-radius: 0 0 12px 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-top: none;
+}
+.ic-name {
+  display: block;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.14em;
+  margin-bottom: 4px;
+}
+.ic-model {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+.ic-led-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.ic-led {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 8px rgba(34,197,94,0.8), 0 0 16px rgba(22,163,74,0.4);
+  animation: blink 1.8s ease-in-out infinite;
+}
+.ic-led:nth-child(2) { animation-delay: 0.6s; }
+.ic-led:nth-child(3) { animation-delay: 1.2s; }
+.ic-chip-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 12px;
+}
+.ic-chip-line {
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255,255,255,0.06);
+}
+.ic-chip-line:nth-child(1) { width: 70%; margin: 0 auto; }
+.ic-chip-line:nth-child(2) { width: 50%; margin: 0 auto; }
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.powered-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  margin-top: 130px;
+}
+.power-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-base);
+  border-radius: 16px;
+  position: relative;
+  overflow: visible;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.power-card:hover {
+  border-color: rgba(22,163,74,0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+.card-ports {
+  position: absolute;
+  top: -6px; left: 0; right: 0;
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 3;
+}
+.card-port {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--black-300);
+  border: 2px solid var(--bg-body);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+.card-port.lit {
+  background: var(--green-500);
+  box-shadow: 0 0 10px rgba(74,222,128,0.8);
+}
+.card-inner { padding: 26px 22px 22px; }
+.card-icon-box {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.card-icon-box svg {
+  width: 22px; height: 22px;
+  color: var(--green-700);
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--black-950);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-title-arrow {
+  font-size: 0.7rem;
+  color: var(--black-400);
+  transition: color 0.2s;
+}
+.power-card:hover .card-title-arrow { color: var(--green-600); }
+.card-desc {
+  font-size: 0.84rem;
+  color: var(--black-500);
+  line-height: 1.65;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .powered-cards { grid-template-columns: 1fr; margin-top: 40px; }
+  .powered-svg { display: none; }
+  .card-ports { display: none; }
+  .ic-body { width: 180px; }
+  .powered-stage { gap: 24px; }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  .powered-cards { gap: 12px; }
+  .ic-body { width: 190px; }
+}
+</style>
+</head>
+<body>
+
+<section class="powered-section">
+
+  <div class="powered-header">
+    <span class="powered-eyebrow">Core Infrastructure</span>
+    <h2 class="powered-title">Built on a foundation of<br>enterprise-grade technology</h2>
+    <p class="powered-sub">Every GSM Pay transaction runs through three battle-tested systems working in concert.</p>
+  </div>
+
+  <div class="powered-stage" id="poweredStage">
+
+    <svg class="powered-svg" id="poweredSvg"></svg>
+
+    <!-- Badge + IC -->
+    <div class="ic-badge">
+      <div class="ic-badge-dot"></div>
+      Powered By
+    </div>
+
+    <div class="ic-wrap" id="icWrap">
+
+      <!-- Top pins (neutral) -->
+      <div class="ic-pin-row" id="icTopPins">
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin neutral"></div>
+      </div>
+
+      <div class="ic-mid">
+        <!-- Left pins -->
+        <div class="ic-pin-col">
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+        </div>
+
+        <!-- Body -->
+        <div class="ic-body">
+          <div class="ic-notch"></div>
+          <span class="ic-name">GSM PAY</span>
+          <span class="ic-model">CORE-2025 · REV B</span>
+          <div class="ic-led-row">
+            <div class="ic-led"></div>
+            <div class="ic-led"></div>
+            <div class="ic-led"></div>
+          </div>
+          <div class="ic-chip-lines">
+            <div class="ic-chip-line"></div>
+            <div class="ic-chip-line"></div>
+          </div>
+        </div>
+
+        <!-- Right pins -->
+        <div class="ic-pin-col">
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+        </div>
+      </div>
+
+      <!-- Bottom pins: active active hole active active hole active active -->
+      <div class="ic-pin-row" id="icBottomPins">
+        <div class="ic-pin active" id="pin-0"></div>
+        <div class="ic-pin active" id="pin-1"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin active" id="pin-2"></div>
+        <div class="ic-pin active" id="pin-3"></div>
+        <div class="ic-pin neutral"></div>
+        <div class="ic-pin active" id="pin-4"></div>
+        <div class="ic-pin active" id="pin-5"></div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="powered-cards" id="poweredCards">
+
+      <!-- Card 0: Payment Engine -->
+      <div class="power-card" id="card-0">
+        <div class="card-ports">
+          <div class="card-port" id="cport-0"></div>
+          <div class="card-port" id="cport-1"></div>
+        </div>
+        <div class="card-inner">
+          <div class="card-icon-box">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+          </div>
+          <h3 class="card-title">Payment Engine <span class="card-title-arrow">↗</span></h3>
+          <p class="card-desc">Lightning-fast transaction processing with real-time settlement and multi-currency support across 150+ countries.</p>
+        </div>
+      </div>
+
+      <!-- Card 1: Fraud Guard -->
+      <div class="power-card" id="card-1">
+        <div class="card-ports">
+          <div class="card-port" id="cport-2"></div>
+          <div class="card-port" id="cport-3"></div>
+        </div>
+        <div class="card-inner">
+          <div class="card-icon-box">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3 class="card-title">Fraud Guard <span class="card-title-arrow">↗</span></h3>
+          <p class="card-desc">AI-powered fraud detection that analyses every transaction in under 50ms using 200+ behavioural signals.</p>
+        </div>
+      </div>
+
+      <!-- Card 2: Global Network -->
+      <div class="power-card" id="card-2">
+        <div class="card-ports">
+          <div class="card-port" id="cport-4"></div>
+          <div class="card-port" id="cport-5"></div>
+        </div>
+        <div class="card-inner">
+          <div class="card-icon-box">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3 class="card-title">Global Network <span class="card-title-arrow">↗</span></h3>
+          <p class="card-desc">Distributed infrastructure across 40+ regions ensuring 99.99% uptime and sub-100ms latency worldwide.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  const CONNECTIONS = [
+    { pin: 'pin-0', port: 'cport-0' },
+    { pin: 'pin-1', port: 'cport-1' },
+    { pin: 'pin-2', port: 'cport-2' },
+    { pin: 'pin-3', port: 'cport-3' },
+    { pin: 'pin-4', port: 'cport-4' },
+    { pin: 'pin-5', port: 'cport-5' },
+  ];
+
+  const svg   = document.getElementById('poweredSvg');
+  const stage = document.getElementById('poweredStage');
+  const pathData = [];
+
+  function rect(el) {
+    const er = el.getBoundingClientRect();
+    const sr = stage.getBoundingClientRect();
+    return {
+      x:  er.left - sr.left,
+      y:  er.top  - sr.top,
+      w:  er.width,
+      h:  er.height,
+      cx: er.left - sr.left + er.width  / 2,
+      cy: er.top  - sr.top  + er.height / 2,
+      bx: er.left - sr.left + er.width  / 2,
+      by: er.top  - sr.top  + er.height,   // bottom center
+      tx: er.left - sr.left + er.width  / 2,
+      ty: er.top  - sr.top,                // top center
+    };
+  }
+
+  function buildD(from, to) {
+    const midY = from.by + (to.ty - from.by) * 0.5;
+    const dx = Math.abs(to.tx - from.bx);
+    if (dx < 3) {
+      return `M${from.bx},${from.by} L${to.tx},${to.ty}`;
+    }
+    const r = Math.min(10, dx * 0.3, Math.abs(midY - from.by) * 0.5);
+    const goLeft = to.tx < from.bx;
+    const sign   = goLeft ? -1 : 1;
+    return [
+      `M${from.bx},${from.by}`,
+      `L${from.bx},${midY - r}`,
+      `Q${from.bx},${midY} ${from.bx + sign * r},${midY}`,
+      `L${to.tx - sign * r},${midY}`,
+      `Q${to.tx},${midY} ${to.tx},${midY + r}`,
+      `L${to.tx},${to.ty}`,
+    ].join(' ');
+  }
+
+  function buildPaths() {
+    svg.innerHTML = '';
+    pathData.length = 0;
+
+    CONNECTIONS.forEach(function (conn) {
+      const pinEl  = document.getElementById(conn.pin);
+      const portEl = document.getElementById(conn.port);
+      if (!pinEl || !portEl) return;
+
+      const from = rect(pinEl);
+      const to   = rect(portEl);
+      const d    = buildD(from, to);
+
+      // Base neutral line
+      const base = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      base.setAttribute('d', d);
+      base.setAttribute('fill', 'none');
+      base.setAttribute('stroke', '#d1d5db');
+      base.setAttribute('stroke-width', '1.5');
+      base.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(base);
+
+      // Animated pulse line
+      const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      pulse.setAttribute('d', d);
+      pulse.setAttribute('fill', 'none');
+      pulse.setAttribute('stroke', '#16a34a');
+      pulse.setAttribute('stroke-width', '2.5');
+      pulse.setAttribute('stroke-linecap', 'round');
+      pulse.setAttribute('opacity', '0');
+      svg.appendChild(pulse);
+
+      const len  = pulse.getTotalLength();
+      const dash = Math.min(50, len * 0.3);
+      pulse.setAttribute('stroke-dasharray', `${dash} ${len + dash}`);
+      pulse.setAttribute('stroke-dashoffset', `${len + dash}`);
+
+      pathData.push({ conn, base, pulse, len, dash, pinEl, portEl });
+    });
+  }
+
+  function easedLerp(t) {
+    return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+  }
+
+  function animatePulse(pd) {
+    const { pulse, len, dash, pinEl, portEl } = pd;
+    pinEl.classList.add('lit');
+    portEl.classList.add('lit');
+    pulse.setAttribute('opacity', '1');
+
+    const start  = len + dash;
+    const end    = -dash;
+    const dur    = 700 + len * 1.2;
+    let   t0     = null;
+
+    function step(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / dur, 1);
+      pulse.setAttribute('stroke-dashoffset', (start + (end - start) * easedLerp(p)).toString());
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else {
+        pulse.setAttribute('opacity', '0');
+        pulse.setAttribute('stroke-dashoffset', start.toString());
+        pinEl.classList.remove('lit');
+        portEl.classList.remove('lit');
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function startLoop() {
+    pathData.forEach(function (pd, i) {
+      (function schedule() {
+        const delay = 600 + Math.random() * 2800;
+        setTimeout(function () {
+          animatePulse(pd);
+          schedule();
+        }, delay);
+      }());
+    });
+  }
+
+  function init() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        buildPaths();
+        startLoop();
+      });
+    });
+  }
+
+  let rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(buildPaths, 120);
+  });
+
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', init)
+    : init();
+}());
+</script>
+</body>
+</html>

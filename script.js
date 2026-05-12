@@ -93,7 +93,7 @@
   const original = Array.from(track.children);
   if (!original.length) return;
 
-  const SPEED = 80; // px per second — tweak this to control speed
+  const SPEED = 45; // px per second — tweak this to control speed
   const COPIES = 5; // copies per half — always fills any screen
 
   // Build one half = COPIES × original items
@@ -137,6 +137,10 @@
       });
     });
   });
+
+  const len = document.getElementById('curvePath').getTotalLength();
+  document.getElementById('curvePath').style.strokeDasharray = len;
+  document.getElementById('curvePath').style.strokeDashoffset = len;
 
 
 })();
