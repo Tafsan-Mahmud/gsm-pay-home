@@ -1,626 +1,870 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --green-50: #f0fdf4; --green-100: #dcfce7; --green-200: #bbf7d0;
-  --green-400: #4ade80; --green-500: #22c55e; --green-600: #16a34a;
-  --green-700: #15803d; --green-800: #166534;
-  --black-50: #f8f9fa; --black-100: #f1f3f4; --black-200: #e2e5ea;
-  --black-300: #c9cdd5; --black-400: #9aa0ad; --black-500: #6b7280;
-  --black-700: #374151; --black-900: #111827; --black-950: #0d1117;
-  --bg-body: #f7f9f7; --bg-surface: #ffffff;
-  --border-light: rgba(0,0,0,0.07); --border-base: rgba(0,0,0,0.11);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Outfit', sans-serif; background: var(--bg-body); color: var(--black-950); }
-
-/* ── Section ───────────────────────────────────────────────── */
-.powered-section {
-  padding: 100px 24px 80px;
-  background: var(--bg-body);
-  overflow: hidden;
-}
-.powered-header {
-  text-align: center;
-  max-width: 620px;
-  margin: 0 auto 0;
-  padding-bottom: 52px;
-}
-.powered-eyebrow {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--green-600);
-  display: block;
-  margin-bottom: 14px;
-}
-.powered-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 800;
-  color: var(--black-950);
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  margin-bottom: 14px;
-}
-.powered-sub {
-  font-size: 1rem;
-  color: var(--black-500);
-  line-height: 1.7;
-}
-
-/* ── Stage ─────────────────────────────────────────────────── */
-.powered-stage {
-  position: relative;
-  max-width: 1060px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.powered-svg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-}
-
-/* ── "Powered By" badge above IC ───────────────────────────── */
-.ic-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--black-950);
-  color: rgba(255,255,255,0.9);
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 8px 18px;
-  border-radius: 50px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 2;
-}
-.ic-badge-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--green-500);
-  box-shadow: 0 0 8px rgba(34,197,94,0.8);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,197,94,0.8)}
-  50%{opacity:0.4;box-shadow:0 0 3px rgba(34,197,94,0.3)}
-}
-
-/* ── IC Chip ────────────────────────────────────────────────── */
-.ic-wrap {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-.ic-pin-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.ic-mid {
-  display: flex;
-  align-items: stretch;
-}
-.ic-pin-col {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 14px 0;
-  justify-content: center;
-}
-
-/* Pin element */
-.ic-pin {
-  border-radius: 2px;
-  position: relative;
-  transition: box-shadow 0.25s ease;
-}
-.ic-pin-row .ic-pin {
-  width: 22px; height: 10px;
-}
-.ic-pin-col .ic-pin {
-  width: 10px; height: 22px;
-}
-
-/* Neutral hole */
-.ic-pin.neutral {
-  background: var(--black-200);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
-}
-.ic-pin.neutral::after {
-  content: '';
-  position: absolute;
-  top:50%; left:50%;
-  transform: translate(-50%,-50%);
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--black-300);
-}
-
-/* Active pin */
-.ic-pin.active {
-  background: #1a1a1a;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
-}
-.ic-pin.active::after {
-  content: '';
-  position: absolute;
-  top:50%; left:50%;
-  transform: translate(-50%,-50%);
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green-600);
-  transition: box-shadow 0.25s ease, background 0.25s ease;
-}
-.ic-pin.active.lit::after {
-  background: var(--green-400);
-  box-shadow: 0 0 10px rgba(74,222,128,0.9), 0 0 20px rgba(22,163,74,0.5);
-}
-
-/* IC Body */
-.ic-body {
-  width: 210px;
-  background: linear-gradient(160deg, #1c1c1c 0%, #0f0f0f 100%);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 6px;
-  padding: 22px 20px 20px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
-}
-.ic-notch {
-  position: absolute;
-  top: -1px; left: 50%;
-  transform: translateX(-50%);
-  width: 16px; height: 8px;
-  background: var(--bg-body);
-  border-radius: 0 0 12px 12px;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-top: none;
-}
-.ic-name {
-  display: block;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: rgba(255,255,255,0.85);
-  letter-spacing: 0.14em;
-  margin-bottom: 4px;
-}
-.ic-model {
-  display: block;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.58rem;
-  color: rgba(255,255,255,0.28);
-  letter-spacing: 0.1em;
-  margin-bottom: 14px;
-}
-.ic-led-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.ic-led {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--green-500);
-  box-shadow: 0 0 8px rgba(34,197,94,0.8), 0 0 16px rgba(22,163,74,0.4);
-  animation: blink 1.8s ease-in-out infinite;
-}
-.ic-led:nth-child(2) { animation-delay: 0.6s; }
-.ic-led:nth-child(3) { animation-delay: 1.2s; }
-.ic-chip-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-top: 12px;
-}
-.ic-chip-line {
-  height: 2px;
-  border-radius: 1px;
-  background: rgba(255,255,255,0.06);
-}
-.ic-chip-line:nth-child(1) { width: 70%; margin: 0 auto; }
-.ic-chip-line:nth-child(2) { width: 50%; margin: 0 auto; }
-
-/* ── Cards ──────────────────────────────────────────────────── */
-.powered-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-  margin-top: 130px;
-}
-.power-card {
-  background: var(--bg-surface);
-  border: 1.5px solid var(--border-base);
-  border-radius: 16px;
-  position: relative;
-  overflow: visible;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.power-card:hover {
-  border-color: rgba(22,163,74,0.3);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-}
-.card-ports {
-  position: absolute;
-  top: -6px; left: 0; right: 0;
-  display: flex;
-  justify-content: space-evenly;
-  z-index: 3;
-}
-.card-port {
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  background: var(--black-300);
-  border: 2px solid var(--bg-body);
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-}
-.card-port.lit {
-  background: var(--green-500);
-  box-shadow: 0 0 10px rgba(74,222,128,0.8);
-}
-.card-inner { padding: 26px 22px 22px; }
-.card-icon-box {
-  width: 46px; height: 46px;
-  border-radius: 12px;
-  background: var(--green-50);
-  border: 1px solid var(--green-100);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
-}
-.card-icon-box svg {
-  width: 22px; height: 22px;
-  color: var(--green-700);
-}
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.98rem;
-  font-weight: 800;
-  color: var(--black-950);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.card-title-arrow {
-  font-size: 0.7rem;
-  color: var(--black-400);
-  transition: color 0.2s;
-}
-.power-card:hover .card-title-arrow { color: var(--green-600); }
-.card-desc {
-  font-size: 0.84rem;
-  color: var(--black-500);
-  line-height: 1.65;
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 767px) {
-  .powered-cards { grid-template-columns: 1fr; margin-top: 40px; }
-  .powered-svg { display: none; }
-  .card-ports { display: none; }
-  .ic-body { width: 180px; }
-  .powered-stage { gap: 24px; }
-}
-@media (max-width: 991px) and (min-width: 768px) {
-  .powered-cards { gap: 12px; }
-  .ic-body { width: 190px; }
-}
-</style>
-</head>
-<body>
-
-<section class="powered-section">
-
-  <div class="powered-header">
-    <span class="powered-eyebrow">Core Infrastructure</span>
-    <h2 class="powered-title">Built on a foundation of<br>enterprise-grade technology</h2>
-    <p class="powered-sub">Every GSM Pay transaction runs through three battle-tested systems working in concert.</p>
-  </div>
-
-  <div class="powered-stage" id="poweredStage">
-
-    <svg class="powered-svg" id="poweredSvg"></svg>
-
-    <!-- Badge + IC -->
-    <div class="ic-badge">
-      <div class="ic-badge-dot"></div>
-      Powered By
-    </div>
-
-    <div class="ic-wrap" id="icWrap">
-
-      <!-- Top pins (neutral) -->
-      <div class="ic-pin-row" id="icTopPins">
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin neutral"></div>
-      </div>
-
-      <div class="ic-mid">
-        <!-- Left pins -->
-        <div class="ic-pin-col">
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-        </div>
-
-        <!-- Body -->
-        <div class="ic-body">
-          <div class="ic-notch"></div>
-          <span class="ic-name">GSM PAY</span>
-          <span class="ic-model">CORE-2025 · REV B</span>
-          <div class="ic-led-row">
-            <div class="ic-led"></div>
-            <div class="ic-led"></div>
-            <div class="ic-led"></div>
-          </div>
-          <div class="ic-chip-lines">
-            <div class="ic-chip-line"></div>
-            <div class="ic-chip-line"></div>
-          </div>
-        </div>
-
-        <!-- Right pins -->
-        <div class="ic-pin-col">
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-          <div class="ic-pin neutral"></div>
-        </div>
-      </div>
-
-      <!-- Bottom pins: active active hole active active hole active active -->
-      <div class="ic-pin-row" id="icBottomPins">
-        <div class="ic-pin active" id="pin-0"></div>
-        <div class="ic-pin active" id="pin-1"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin active" id="pin-2"></div>
-        <div class="ic-pin active" id="pin-3"></div>
-        <div class="ic-pin neutral"></div>
-        <div class="ic-pin active" id="pin-4"></div>
-        <div class="ic-pin active" id="pin-5"></div>
-      </div>
-    </div>
-
-    <!-- Cards -->
-    <div class="powered-cards" id="poweredCards">
-
-      <!-- Card 0: Payment Engine -->
-      <div class="power-card" id="card-0">
-        <div class="card-ports">
-          <div class="card-port" id="cport-0"></div>
-          <div class="card-port" id="cport-1"></div>
-        </div>
-        <div class="card-inner">
-          <div class="card-icon-box">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-          </div>
-          <h3 class="card-title">Payment Engine <span class="card-title-arrow">↗</span></h3>
-          <p class="card-desc">Lightning-fast transaction processing with real-time settlement and multi-currency support across 150+ countries.</p>
-        </div>
-      </div>
-
-      <!-- Card 1: Fraud Guard -->
-      <div class="power-card" id="card-1">
-        <div class="card-ports">
-          <div class="card-port" id="cport-2"></div>
-          <div class="card-port" id="cport-3"></div>
-        </div>
-        <div class="card-inner">
-          <div class="card-icon-box">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-          </div>
-          <h3 class="card-title">Fraud Guard <span class="card-title-arrow">↗</span></h3>
-          <p class="card-desc">AI-powered fraud detection that analyses every transaction in under 50ms using 200+ behavioural signals.</p>
-        </div>
-      </div>
-
-      <!-- Card 2: Global Network -->
-      <div class="power-card" id="card-2">
-        <div class="card-ports">
-          <div class="card-port" id="cport-4"></div>
-          <div class="card-port" id="cport-5"></div>
-        </div>
-        <div class="card-inner">
-          <div class="card-icon-box">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          <h3 class="card-title">Global Network <span class="card-title-arrow">↗</span></h3>
-          <p class="card-desc">Distributed infrastructure across 40+ regions ensuring 99.99% uptime and sub-100ms latency worldwide.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<script>
-(function () {
-  'use strict';
-
-  const CONNECTIONS = [
-    { pin: 'pin-0', port: 'cport-0' },
-    { pin: 'pin-1', port: 'cport-1' },
-    { pin: 'pin-2', port: 'cport-2' },
-    { pin: 'pin-3', port: 'cport-3' },
-    { pin: 'pin-4', port: 'cport-4' },
-    { pin: 'pin-5', port: 'cport-5' },
-  ];
-
-  const svg   = document.getElementById('poweredSvg');
-  const stage = document.getElementById('poweredStage');
-  const pathData = [];
-
-  function rect(el) {
-    const er = el.getBoundingClientRect();
-    const sr = stage.getBoundingClientRect();
-    return {
-      x:  er.left - sr.left,
-      y:  er.top  - sr.top,
-      w:  er.width,
-      h:  er.height,
-      cx: er.left - sr.left + er.width  / 2,
-      cy: er.top  - sr.top  + er.height / 2,
-      bx: er.left - sr.left + er.width  / 2,
-      by: er.top  - sr.top  + er.height,   // bottom center
-      tx: er.left - sr.left + er.width  / 2,
-      ty: er.top  - sr.top,                // top center
-    };
-  }
-
-  function buildD(from, to) {
-    const midY = from.by + (to.ty - from.by) * 0.5;
-    const dx = Math.abs(to.tx - from.bx);
-    if (dx < 3) {
-      return `M${from.bx},${from.by} L${to.tx},${to.ty}`;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Fonts: Plus Jakarta Sans (display) + DM Sans (body) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --green-50: #f0fdf4;
+      --green-100: #dcfce7;
+      --green-200: #bbf7d0;
+      --green-400: #4ade80;
+      --green-500: #22c55e;
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --black-200: #e2e5ea;
+      --black-300: #c9cdd5;
+      --black-400: #9aa0ad;
+      --black-500: #6b7280;
+      --black-950: #0d1117;
+      --bg-body: #f6f8f6;
+      --bg-surface: #ffffff;
+      --border-base: rgba(0, 0, 0, 0.08);
     }
-    const r = Math.min(10, dx * 0.3, Math.abs(midY - from.by) * 0.5);
-    const goLeft = to.tx < from.bx;
-    const sign   = goLeft ? -1 : 1;
-    return [
-      `M${from.bx},${from.by}`,
-      `L${from.bx},${midY - r}`,
-      `Q${from.bx},${midY} ${from.bx + sign * r},${midY}`,
-      `L${to.tx - sign * r},${midY}`,
-      `Q${to.tx},${midY} ${to.tx},${midY + r}`,
-      `L${to.tx},${to.ty}`,
-    ].join(' ');
-  }
 
-  function buildPaths() {
-    svg.innerHTML = '';
-    pathData.length = 0;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    CONNECTIONS.forEach(function (conn) {
-      const pinEl  = document.getElementById(conn.pin);
-      const portEl = document.getElementById(conn.port);
-      if (!pinEl || !portEl) return;
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-body);
+      color: var(--black-950);
+      -webkit-font-smoothing: antialiased;
+    }
 
-      const from = rect(pinEl);
-      const to   = rect(portEl);
-      const d    = buildD(from, to);
+    /* ══ SECTION ═══════════════════════════════════════════════════ */
+    .powered-section {
+      position: relative;
+      padding: 110px 0 100px;
+      background: var(--bg-body);
+      overflow: hidden;
+    }
 
-      // Base neutral line
-      const base = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      base.setAttribute('d', d);
-      base.setAttribute('fill', 'none');
-      base.setAttribute('stroke', '#d1d5db');
-      base.setAttribute('stroke-width', '1.5');
-      base.setAttribute('stroke-linecap', 'round');
-      svg.appendChild(base);
+    /* ── blurry background shapes ─────────────────────────────────── */
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-      // Animated pulse line
-      const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      pulse.setAttribute('d', d);
-      pulse.setAttribute('fill', 'none');
-      pulse.setAttribute('stroke', '#16a34a');
-      pulse.setAttribute('stroke-width', '2.5');
-      pulse.setAttribute('stroke-linecap', 'round');
-      pulse.setAttribute('opacity', '0');
-      svg.appendChild(pulse);
+    .bg-shape-1 {
+      width: 640px;
+      height: 640px;
+      background: radial-gradient(circle, rgba(22, 163, 74, .10) 0%, transparent 68%);
+      filter: blur(90px);
+      top: -220px;
+      left: -180px;
+    }
 
-      const len  = pulse.getTotalLength();
-      const dash = Math.min(50, len * 0.3);
-      pulse.setAttribute('stroke-dasharray', `${dash} ${len + dash}`);
-      pulse.setAttribute('stroke-dashoffset', `${len + dash}`);
+    .bg-shape-2 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(34, 197, 94, .08) 0%, transparent 68%);
+      filter: blur(80px);
+      bottom: -160px;
+      right: -160px;
+    }
 
-      pathData.push({ conn, base, pulse, len, dash, pinEl, portEl });
-    });
-  }
+    .bg-shape-3 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(74, 222, 128, .07) 0%, transparent 68%);
+      filter: blur(70px);
+      top: 42%;
+      left: 54%;
+      transform: translate(-50%, -50%);
+    }
 
-  function easedLerp(t) {
-    return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
-  }
+    .bg-shape-4 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(22, 163, 74, .06) 0%, transparent 68%);
+      filter: blur(60px);
+      top: 8%;
+      right: 8%;
+    }
 
-  function animatePulse(pd) {
-    const { pulse, len, dash, pinEl, portEl } = pd;
-    pinEl.classList.add('lit');
-    portEl.classList.add('lit');
-    pulse.setAttribute('opacity', '1');
+    /* ══ HEADER ════════════════════════════════════════════════════ */
+    .powered-header {
+      text-align: center;
+      padding-bottom: 60px;
+      position: relative;
+      z-index: 2;
+    }
 
-    const start  = len + dash;
-    const end    = -dash;
-    const dur    = 700 + len * 1.2;
-    let   t0     = null;
+    .pwr-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--green-700);
+      background: var(--green-50);
+      border: 1px solid var(--green-200);
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 26px;
+    }
 
-    function step(ts) {
-      if (!t0) t0 = ts;
-      const p = Math.min((ts - t0) / dur, 1);
-      pulse.setAttribute('stroke-dashoffset', (start + (end - start) * easedLerp(p)).toString());
-      if (p < 1) {
-        requestAnimationFrame(step);
-      } else {
-        pulse.setAttribute('opacity', '0');
-        pulse.setAttribute('stroke-dashoffset', start.toString());
-        pinEl.classList.remove('lit');
-        portEl.classList.remove('lit');
+    .pwr-eyebrow-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green-500);
+      box-shadow: 0 0 5px rgba(34, 197, 94, .8);
+      animation: blink 2.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .powered-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2.1rem, 4.2vw, 3.3rem);
+      font-weight: 800;
+      color: var(--black-950);
+      letter-spacing: -.035em;
+      line-height: 1.06;
+      margin-bottom: 18px;
+    }
+
+    .powered-title em {
+      font-style: normal;
+      background: linear-gradient(120deg, var(--green-600) 0%, var(--green-400) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .powered-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 400;
+      color: var(--black-500);
+      line-height: 1.65;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* ══ STAGE ══════════════════════════════════════════════════════ */
+    .powered-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+      /* Bootstrap container handles the width */
+    }
+
+    .powered-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+
+    /* ══ IC CHIP — UNTOUCHED ════════════════════════════════════════ */
+    .ic-wrap {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ic-pin-row {
+      width: 150px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    .ic-mid {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .ic-pin-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      padding: 10px 0;
+    }
+
+    .ic-body {
+      width: 150px;
+      min-height: 96px;
+      background: linear-gradient(160deg, #222 0%, #111 100%);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 7px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      box-shadow: 0 4px 22px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255, 255, 255, .05);
+    }
+
+    .ic-notch {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 7px;
+      background: var(--bg-body);
+      border-radius: 0 0 10px 10px;
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-top: none;
+    }
+
+    .ic-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .78rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, .85);
+      letter-spacing: .14em;
+    }
+
+    .ic-model {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .52rem;
+      color: rgba(255, 255, 255, .28);
+      letter-spacing: .1em;
+    }
+
+    .ic-leds {
+      display: flex;
+      gap: 5px;
+    }
+
+    .ic-led {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-500);
+      box-shadow: 0 0 7px rgba(34, 197, 94, .8);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .ic-led:nth-child(2) {
+      animation-delay: .65s;
+    }
+
+    .ic-led:nth-child(3) {
+      animation-delay: 1.3s;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
       }
     }
-    requestAnimationFrame(step);
-  }
 
-  function startLoop() {
-    pathData.forEach(function (pd, i) {
-      (function schedule() {
-        const delay = 600 + Math.random() * 2800;
-        setTimeout(function () {
-          animatePulse(pd);
-          schedule();
-        }, delay);
-      }());
-    });
-  }
+    .ic-pin {
+      border-radius: 2px;
+      position: relative;
+      transition: box-shadow .2s;
+    }
 
-  function init() {
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        buildPaths();
-        startLoop();
+    .ic-pin-row .ic-pin {
+      width: 14px;
+      height: 11px;
+    }
+
+    .ic-pin-col .ic-pin {
+      width: 11px;
+      height: 16px;
+    }
+
+    .ic-pin.neutral {
+      background: var(--black-200);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+    }
+
+    .ic-pin.neutral::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--black-300);
+    }
+
+    .ic-pin.active {
+      background: #1c1c1c;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, .5);
+    }
+
+    .ic-pin.active::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green-600);
+      transition: background .2s, box-shadow .2s;
+    }
+
+    .ic-pin.active.lit::after {
+      background: var(--green-400);
+      box-shadow: 0 0 10px rgba(74, 222, 128, .95), 0 0 22px rgba(22, 163, 74, .5);
+    }
+
+    /* ══ CARDS WRAPPER ═════════════════════════════════════════════ */
+    .powered-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      margin-top: 120px;
+    }
+
+    /* ══ CARD — NEW DESIGN ════════════════════════════════════════= */
+    .power-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-base);
+      border-radius: 20px;
+      position: relative;
+      overflow: visible;
+      /* MUST stay visible for port dots */
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+
+    .power-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(22, 163, 74, .22);
+      box-shadow:
+        0 24px 64px rgba(0, 0, 0, .08),
+        0 0 0 1px rgba(22, 163, 74, .10);
+    }
+
+    /* slim gradient line slides in from left at top */
+    .power-card::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      border-radius: 0 0 3px 3px;
+      background: linear-gradient(90deg, transparent, var(--green-500), var(--green-600), var(--green-500), transparent);
+      opacity: 0;
+      transition: opacity .28s ease;
+    }
+
+    .power-card:hover::after {
+      opacity: 1;
+    }
+
+    /* port dots — UNTOUCHED */
+    .card-ports {
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-evenly;
+      z-index: 3;
+    }
+
+    .card-port {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--black-300);
+      border: 2px solid var(--bg-body);
+      transition: background .2s, box-shadow .2s;
+    }
+
+    .card-port.lit {
+      background: var(--green-500);
+      box-shadow: 0 0 10px rgba(74, 222, 128, .9);
+    }
+
+    /* inner layout */
+    .card-inner {
+      padding: 30px 26px 26px;
+    }
+
+    /* icon + number row */
+    .card-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .card-icon-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .25s, border-color .25s;
+    }
+
+    .power-card:hover .card-icon-box {
+      background: var(--green-100);
+      border-color: var(--green-200);
+    }
+
+    .card-icon-box svg {
+      width: 22px;
+      height: 22px;
+      color: var(--green-700);
+    }
+
+    .card-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .65rem;
+      font-weight: 800;
+      color: rgba(0, 0, 0, .13);
+      letter-spacing: .08em;
+      line-height: 1;
+      padding-top: 4px;
+    }
+
+    /* text */
+    .card-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--black-950);
+      letter-spacing: -.02em;
+      line-height: 1.25;
+      margin-bottom: 9px;
+    }
+
+    .card-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .84rem;
+      font-weight: 400;
+      color: var(--black-500);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    /* stat row */
+    .card-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 0, 0, .055);
+    }
+
+    .stat-val {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--green-600);
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem;
+      font-weight: 500;
+      color: var(--black-400);
+    }
+
+    /* ══ RESPONSIVE ════════════════════════════════════════════════ */
+    @media(max-width:991px) {
+      .powered-stage {
+        padding-bottom: 20px;
+        min-height: 1200px;
+      }
+
+      .powered-cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 70px;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .powered-svg {
+        display: block;
+        overflow: visible;
+      }
+
+      .card-ports {
+        display: flex;
+      }
+    }
+
+    @media(max-width:575px) {
+      .powered-section {
+        padding: 80px 0 70px;
+      }
+
+      .powered-title {
+        font-size: 1.9rem;
+      }
+
+      .bg-shape-1,
+      .bg-shape-4 {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="powered-section">
+
+    <!-- blurry background shapes (CSS only) -->
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+    <div class="bg-shape bg-shape-4"></div>
+
+    <div class="container">
+      <div class="powered-header">
+        <span class="pwr-eyebrow">
+          <span class="pwr-eyebrow-dot"></span>
+          Core Infrastructure
+        </span>
+        <h2 class="powered-title">
+          Built to process<br>
+          <em>every payment, perfectly.</em>
+        </h2>
+        <p class="powered-sub">
+          Three purpose-built systems — speed, security, and global reach — running seamlessly behind every GSM Pay
+          transaction.
+        </p>
+      </div>
+    </div>
+
+    <!-- stage uses Bootstrap container for width + alignment -->
+    <div class="powered-stage container" id="poweredStage">
+      <svg class="powered-svg" id="poweredSvg"></svg>
+
+      <!-- IC chip — UNTOUCHED ─────────────────────────────────── -->
+      <div class="ic-wrap" id="icWrap">
+        <div class="ic-pin-row">
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+          <div class="ic-pin neutral"></div>
+        </div>
+        <div class="ic-mid">
+          <div class="ic-pin-col">
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+          </div>
+          <div class="ic-body">
+            <div class="ic-notch"></div>
+            <span class="ic-name">GSM PAY</span>
+            <span class="ic-model">CORE-2025 · REV B</span>
+            <div class="ic-leds">
+              <div class="ic-led"></div>
+              <div class="ic-led"></div>
+              <div class="ic-led"></div>
+            </div>
+          </div>
+          <div class="ic-pin-col">
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+          </div>
+        </div>
+        <div class="ic-pin-row">
+          <div class="ic-pin active" id="pin-0"></div>
+          <div class="ic-pin active" id="pin-1"></div>
+          <div class="ic-pin active" id="pin-2"></div>
+          <div class="ic-pin active" id="pin-3"></div>
+          <div class="ic-pin active" id="pin-4"></div>
+          <div class="ic-pin active" id="pin-5"></div>
+        </div>
+      </div>
+      <!-- end IC ──────────────────────────────────────────────── -->
+
+      <!-- 3 cards -->
+      <div class="powered-cards" id="poweredCards">
+
+        <div class="power-card" id="card-0">
+          <div class="card-ports">
+            <div class="card-port" id="cport-0"></div>
+            <div class="card-port" id="cport-1"></div>
+          </div>
+          <div class="card-inner">
+            <div class="card-top-row">
+              <div class="card-icon-box">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <path d="M2 10h20M6 15h4" />
+                </svg>
+              </div>
+              <span class="card-num">01</span>
+            </div>
+            <h3 class="card-title">Payment Engine</h3>
+            <p class="card-desc">Real-time settlement and multi-currency processing, built for global scale from day
+              one.</p>
+            <div class="card-stat">
+              <span class="stat-val">150+</span>
+              <span class="stat-lbl">countries supported</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="power-card" id="card-1">
+          <div class="card-ports">
+            <div class="card-port" id="cport-2"></div>
+            <div class="card-port" id="cport-3"></div>
+          </div>
+          <div class="card-inner">
+            <div class="card-top-row">
+              <div class="card-icon-box">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <span class="card-num">02</span>
+            </div>
+            <h3 class="card-title">Fraud Guard</h3>
+            <p class="card-desc">AI-driven risk scoring across 200+ behavioural signals — every decision before the user
+              blinks.</p>
+            <div class="card-stat">
+              <span class="stat-val">&lt;50ms</span>
+              <span class="stat-lbl">detection latency</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="power-card" id="card-2">
+          <div class="card-ports">
+            <div class="card-port" id="cport-4"></div>
+            <div class="card-port" id="cport-5"></div>
+          </div>
+          <div class="card-inner">
+            <div class="card-top-row">
+              <div class="card-icon-box">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="10" />
+                  <path
+                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <span class="card-num">03</span>
+            </div>
+            <h3 class="card-title">Global Network</h3>
+            <p class="card-desc">Redundant infrastructure across 40+ regions engineered for the uptime your business
+              demands.</p>
+            <div class="card-stat">
+              <span class="stat-val">99.99%</span>
+              <span class="stat-lbl">guaranteed uptime</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── JS: UNTOUCHED from working version ─────────────────────── -->
+  <script>
+    (function () {
+      'use strict';
+
+      var CONNECTIONS = [
+        { pin: 'pin-1', port: 'cport-0', mid: 0.30 },
+        { pin: 'pin-0', port: 'cport-1', mid: 0.62 },
+        { pin: 'pin-2', port: 'cport-2', mid: 0.65 },
+        { pin: 'pin-3', port: 'cport-3', mid: 0.65 },
+        { pin: 'pin-4', port: 'cport-4', mid: 0.30 },
+        { pin: 'pin-5', port: 'cport-5', mid: 0.62 },
+      ];
+
+      var svg = document.getElementById('poweredSvg');
+      var stage = document.getElementById('poweredStage');
+      var pathData = [];
+
+      function rel(el) {
+        var e = el.getBoundingClientRect();
+        var s = stage.getBoundingClientRect();
+        return {
+          bx: e.left - s.left + e.width / 2,
+          by: e.bottom - s.top,
+          tx: e.left - s.left + e.width / 2,
+          ty: e.top - s.top,
+        };
+      }
+
+      function buildD(from, to, mid) {
+        var f = (mid !== undefined) ? mid : 0.5;
+        var midY = from.by + (to.ty - from.by) * f;
+        var dx = to.tx - from.bx;
+        var adx = Math.abs(dx);
+        if (adx < 3) return 'M' + from.bx + ',' + from.by + ' L' + to.tx + ',' + to.ty;
+        var r = Math.min(8, adx * 0.28, Math.abs(midY - from.by) * 0.45);
+        var sx = dx > 0 ? 1 : -1;
+        return [
+          'M' + from.bx + ',' + from.by,
+          'L' + from.bx + ',' + (midY - r),
+          'Q' + from.bx + ',' + midY + ' ' + (from.bx + sx * r) + ',' + midY,
+          'L' + (to.tx - sx * r) + ',' + midY,
+          'Q' + to.tx + ',' + midY + ' ' + to.tx + ',' + (midY + r),
+          'L' + to.tx + ',' + to.ty,
+        ].join(' ');
+      }
+
+      function makePath(d, stroke, w, opacity) {
+        var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', d);
+        p.setAttribute('fill', 'none');
+        p.setAttribute('stroke', stroke);
+        p.setAttribute('stroke-width', String(w || 1.5));
+        p.setAttribute('stroke-linecap', 'round');
+        p.setAttribute('stroke-linejoin', 'round');
+        if (opacity !== undefined) p.setAttribute('opacity', String(opacity));
+        return p;
+      }
+
+      function buildPaths() {
+        svg.innerHTML = '';
+        pathData.length = 0;
+        svg.setAttribute('width', stage.offsetWidth);
+        svg.setAttribute('height', stage.offsetHeight);
+        svg.setAttribute('viewBox', '0 0 ' + stage.offsetWidth + ' ' + stage.offsetHeight);
+
+        CONNECTIONS.forEach(function (conn) {
+          var pinEl = document.getElementById(conn.pin);
+          var portEl = document.getElementById(conn.port);
+          if (!pinEl || !portEl) return;
+          var from = rel(pinEl);
+          var to = rel(portEl);
+          var d = buildD(from, to, conn.mid);
+          svg.appendChild(makePath(d, '#d1d5db', 1.5));
+          var pulse = makePath(d, '#16a34a', 2.5, 0);
+          pulse.style.filter = 'drop-shadow(0 0 6px rgba(34,197,94,.7))';
+          svg.appendChild(pulse);
+          var len = pulse.getTotalLength();
+          var DASH = Math.min(52, len * 0.32);
+          pulse.setAttribute('stroke-dasharray', DASH + ' ' + (len + DASH + 1));
+          pulse.setAttribute('stroke-dashoffset', String(DASH));
+          pathData.push({ pulse: pulse, pinEl: pinEl, portEl: portEl, len: len, DASH: DASH, busy: false });
+        });
+      }
+
+      function animatePulse(pd, onComplete) {
+        var pulse = pd.pulse, len = pd.len, DASH = pd.DASH;
+        var startOff = -(len + DASH), endOff = DASH;
+        var dur = 1800 + len * 1.6;
+        var token = pd.token = (pd.token || 0) + 1;
+        pulse.setAttribute('opacity', '0');
+        pulse.setAttribute('stroke-dashoffset', String(startOff));
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            if (pd.token !== token) return;
+            pd.pinEl.classList.add('lit');
+            pd.portEl.classList.add('lit');
+            pulse.setAttribute('opacity', '1');
+            var t0 = performance.now();
+            function tick() {
+              if (pd.token !== token) return;
+              var p = Math.min((performance.now() - t0) / dur, 1);
+              var eased = 0.5 - Math.cos(p * Math.PI) / 2;
+              pulse.setAttribute('stroke-dashoffset', String(startOff + (endOff - startOff) * eased));
+              if (p < 1) {
+                requestAnimationFrame(tick);
+              } else {
+                setTimeout(function () {
+                  if (pd.token !== token) return;
+                  pulse.setAttribute('opacity', '0');
+                  pd.pinEl.classList.remove('lit');
+                  pd.portEl.classList.remove('lit');
+                  pd.busy = false;
+                  if (onComplete) onComplete();
+                }, 120);
+              }
+            }
+            requestAnimationFrame(tick);
+          });
+        });
+      }
+
+      function startLoop() {
+        pathData.forEach(function (pd, i) {
+          setTimeout(function () {
+            (function loop() {
+              var delay = 700 + Math.random() * 1200;
+              setTimeout(function () {
+                pd.busy = true;
+                animatePulse(pd, loop);
+              }, delay);
+            }());
+          }, i * 300 + Math.random() * 200);
+        });
+      }
+
+      function init() {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            buildPaths();
+            startLoop();
+          });
+        });
+      }
+
+      var rt;
+      window.addEventListener('resize', function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () {
+          pathData.forEach(function (pd) { pd.token = (pd.token || 0) + 1; });
+          requestAnimationFrame(function () { buildPaths(); startLoop(); });
+        }, 130);
       });
-    });
-  }
 
-  let rt;
-  window.addEventListener('resize', function () {
-    clearTimeout(rt);
-    rt = setTimeout(buildPaths, 120);
-  });
-
-  document.readyState === 'loading'
-    ? document.addEventListener('DOMContentLoaded', init)
-    : init();
-}());
-</script>
+      document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', init)
+        : init();
+    }());
+  </script>
 </body>
+
 </html>
