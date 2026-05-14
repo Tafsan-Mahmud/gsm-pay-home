@@ -35,9 +35,7 @@
       });
       ticking = true;
     }
-  }, {
-    passive: true
-  });
+  }, { passive: true });
 
   onScroll();
 
@@ -99,7 +97,7 @@
     const original = Array.from(track.children);
 
     if (original.length) {
-      const SPEED = 45;
+      const SPEED  = 45;
       const COPIES = 5;
 
       function buildHalf(hidden) {
@@ -121,7 +119,7 @@
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           const halfWidth = track.scrollWidth / 2;
-          const duration = halfWidth / SPEED;
+          const duration  = halfWidth / SPEED;
           track.style.animationDuration = duration.toFixed(2) + 's';
 
           // mouse — desktop
@@ -139,9 +137,7 @@
           // FIX 2: touch — mobile/tablet
           track.addEventListener('touchstart', function () {
             track.style.animationPlayState = 'paused';
-          }, {
-            passive: true
-          });
+          }, { passive: true });
 
           track.addEventListener('touchend', function () {
             track.style.animationPlayState = 'running';
@@ -153,40 +149,17 @@
 
 
   /* ── Powered By IC section ───────────────────────────────────── */
-  var CONNECTIONS = [{
-      pin: 'pin-1',
-      port: 'cport-0',
-      mid: 0.30
-    },
-    {
-      pin: 'pin-0',
-      port: 'cport-1',
-      mid: 0.62
-    },
-    {
-      pin: 'pin-2',
-      port: 'cport-2',
-      mid: 0.70
-    },
-    {
-      pin: 'pin-3',
-      port: 'cport-3',
-      mid: 0.70
-    },
-    {
-      pin: 'pin-4',
-      port: 'cport-4',
-      mid: 0.30
-    },
-    {
-      pin: 'pin-5',
-      port: 'cport-5',
-      mid: 0.62
-    },
+  var CONNECTIONS = [
+    { pin: 'pin-1', port: 'cport-0', mid: 0.30 },
+    { pin: 'pin-0', port: 'cport-1', mid: 0.62 },
+    { pin: 'pin-2', port: 'cport-2', mid: 0.70 },
+    { pin: 'pin-3', port: 'cport-3', mid: 0.70 },
+    { pin: 'pin-4', port: 'cport-4', mid: 0.30 },
+    { pin: 'pin-5', port: 'cport-5', mid: 0.62 },
   ];
 
-  var svg = document.getElementById('poweredSvg');
-  var stage = document.getElementById('poweredStage');
+  var svg      = document.getElementById('poweredSvg');
+  var stage    = document.getElementById('poweredStage');
   var pathData = [];
 
   // Guard: section may not be on every page
@@ -196,33 +169,33 @@
       var e = el.getBoundingClientRect();
       var s = stage.getBoundingClientRect();
       return {
-        bx: e.left - s.left + e.width / 2,
+        bx: e.left - s.left + e.width  / 2,
         by: e.bottom - s.top,
-        tx: e.left - s.left + e.width / 2,
-        ty: e.top - s.top,
+        tx: e.left - s.left + e.width  / 2,
+        ty: e.top  - s.top,
       };
     }
 
     function buildD(from, to, mid) {
-      var f = (mid !== undefined) ? mid : 0.5;
+      var f    = (mid !== undefined) ? mid : 0.5;
       var midY = from.by + (to.ty - from.by) * f;
-      var dx = to.tx - from.bx;
-      var adx = Math.abs(dx);
+      var dx   = to.tx - from.bx;
+      var adx  = Math.abs(dx);
 
       if (adx < 3) {
         return 'M' + from.bx + ',' + from.by + ' L' + to.tx + ',' + to.ty;
       }
 
-      var r = Math.min(8, adx * 0.28, Math.abs(midY - from.by) * 0.45);
+      var r  = Math.min(8, adx * 0.28, Math.abs(midY - from.by) * 0.45);
       var sx = dx > 0 ? 1 : -1;
 
       return [
         'M' + from.bx + ',' + from.by,
         'L' + from.bx + ',' + (midY - r),
         'Q' + from.bx + ',' + midY + ' ' + (from.bx + sx * r) + ',' + midY,
-        'L' + (to.tx - sx * r) + ',' + midY,
-        'Q' + to.tx + ',' + midY + ' ' + to.tx + ',' + (midY + r),
-        'L' + to.tx + ',' + to.ty,
+        'L' + (to.tx  - sx * r) + ',' + midY,
+        'Q' + to.tx   + ',' + midY + ' ' + to.tx + ',' + (midY + r),
+        'L' + to.tx   + ',' + to.ty,
       ].join(' ');
     }
 
@@ -239,21 +212,21 @@
     }
 
     function buildPaths() {
-      svg.innerHTML = '';
+      svg.innerHTML  = '';
       pathData.length = 0;
 
-      svg.setAttribute('width', stage.offsetWidth);
-      svg.setAttribute('height', stage.offsetHeight);
+      svg.setAttribute('width',   stage.offsetWidth);
+      svg.setAttribute('height',  stage.offsetHeight);
       svg.setAttribute('viewBox', '0 0 ' + stage.offsetWidth + ' ' + stage.offsetHeight);
 
       CONNECTIONS.forEach(function (conn) {
-        var pinEl = document.getElementById(conn.pin);
+        var pinEl  = document.getElementById(conn.pin);
         var portEl = document.getElementById(conn.port);
         if (!pinEl || !portEl) return;
 
         var from = rel(pinEl);
-        var to = rel(portEl);
-        var d = buildD(from, to, conn.mid);
+        var to   = rel(portEl);
+        var d    = buildD(from, to, conn.mid);
 
         svg.appendChild(makePath(d, '#d1d5db', 1.5));
 
@@ -261,32 +234,28 @@
         pulse.style.filter = 'drop-shadow(0 0 6px rgba(34,197,94,.7))';
         svg.appendChild(pulse);
 
-        var len = pulse.getTotalLength();
+        var len  = pulse.getTotalLength();
         var DASH = Math.min(52, len * 0.32);
 
-        pulse.setAttribute('stroke-dasharray', DASH + ' ' + (len + DASH + 1));
+        pulse.setAttribute('stroke-dasharray',  DASH + ' ' + (len + DASH + 1));
         pulse.setAttribute('stroke-dashoffset', String(DASH));
 
         pathData.push({
-          pulse: pulse,
-          pinEl: pinEl,
-          portEl: portEl,
-          len: len,
-          DASH: DASH,
-          busy: false,
+          pulse: pulse, pinEl: pinEl, portEl: portEl,
+          len: len, DASH: DASH, busy: false,
         });
       });
     }
 
     function animatePulse(pd, onComplete) {
       var pulse = pd.pulse;
-      var len = pd.len;
-      var DASH = pd.DASH;
+      var len   = pd.len;
+      var DASH  = pd.DASH;
 
       // FIX 3: removed duplicate `var startOff = DASH` line
       var startOff = -(len + DASH);
-      var endOff = DASH;
-      var dur = 1800 + len * 1.6;
+      var endOff   = DASH;
+      var dur      = 1800 + len * 1.6;
 
       var token = pd.token = (pd.token || 0) + 1;
 
@@ -306,7 +275,7 @@
           function tick() {
             if (pd.token !== token) return;
 
-            var p = Math.min((performance.now() - t0) / dur, 1);
+            var p     = Math.min((performance.now() - t0) / dur, 1);
             var eased = 0.5 - Math.cos(p * Math.PI) / 2;
 
             pulse.setAttribute('stroke-dashoffset',
@@ -375,27 +344,5 @@
     }
 
   } // end if (svg && stage)
-
-  /* ── Powered title entrance ──────────────────────────────────── */
-  const titleEl = document.getElementById('poweredTitle');
-  if (titleEl) {
-    // assign stagger delay to each word
-    titleEl.querySelectorAll('.tw').forEach(function (word, i) {
-      word.style.setProperty('--tw-delay', (0.05 + i * 0.09) + 's');
-    });
-
-    const io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          io.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.4
-    });
-
-    io.observe(titleEl);
-  }
 
 }());
