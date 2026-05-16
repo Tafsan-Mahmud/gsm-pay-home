@@ -381,7 +381,7 @@
   if (titleEl) {
     // assign stagger delay to each word
     titleEl.querySelectorAll('.tw').forEach(function (word, i) {
-      word.style.setProperty('--tw-delay', (0.05 + i * 0.09) + 's');
+      word.style.setProperty('--tw-delay', (.09 + i * .2) + 's');
     });
 
     const io = new IntersectionObserver(function (entries) {
@@ -397,5 +397,22 @@
 
     io.observe(titleEl);
   }
+
+  // Pricing section
+  var t = document.getElementById('pricingTitle');
+  if (!t) return;
+  t.querySelectorAll('.ptw').forEach(function (w, i) {
+    w.style.setProperty('--ptw-delay', (0.04 + i * 0.1) + 's');
+  });
+  new IntersectionObserver(function (e) {
+    e.forEach(function (en) {
+      if (en.isIntersecting) {
+        en.target.classList.add('revealed');
+        arguments[1].unobserve(en.target);
+      }
+    });
+  }, {
+    threshold: .35
+  }).observe(t);
 
 }());
