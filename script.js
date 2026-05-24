@@ -1,7 +1,4 @@
-/**
- * GSM Pay — Navbar JavaScript
- * Handles: scroll-triggered glass effect, active link, smooth toggler
- */
+
 
 (function () {
   "use strict";
@@ -41,10 +38,8 @@
 
   onScroll();
 
-
   /* ── Active Nav Link ─────────────────────────────────────────── */
   const navLinks = document.querySelectorAll(".nav-pill");
-
   navLinks.forEach(link => {
     link.addEventListener("click", function () {
       navLinks.forEach(l => l.classList.remove("active"));
@@ -52,13 +47,11 @@
     });
   });
 
-
   /* ── Close mobile menu on link click ────────────────────────── */
   const navMenu = document.getElementById("navMenu");
   const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu, {
     toggle: false
   });
-
   navLinks.forEach(link => {
     link.addEventListener("click", () => {
       if (window.innerWidth < 992 && navMenu.classList.contains("show")) {
@@ -67,37 +60,33 @@
     });
   });
 
+  // /* ── Staggered entrance animation for nav items (page load only) ── */
+  // function animateNavIn() {
+  //   const items = document.querySelectorAll(".nav-item, .nav-cta");
+  //   items.forEach((el, i) => {
+  //     el.style.opacity = "0";
+  //     el.style.transform = "translateY(-8px)";
+  //     el.style.transition = `opacity 0.4s ease ${i * 55}ms, transform 0.4s ease ${i * 55}ms`;
+  //     requestAnimationFrame(() => {
+  //       requestAnimationFrame(() => {
+  //         el.style.opacity = "1";
+  //         el.style.transform = "translateY(0)";
+  //       });
+  //     });
+  //   });
+  // }
 
-  /* ── Staggered entrance animation for nav items ─────────────── */
-  function animateNavIn() {
-    const items = document.querySelectorAll(".nav-item, .nav-cta");
-    items.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(-8px)";
-      el.style.transition = `opacity 0.45s ease ${i * 60}ms, transform 0.45s ease ${i * 60}ms`;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
-        });
-      });
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", animateNavIn);
-  } else {
-    animateNavIn();
-  }
-
+  // if (document.readyState === "loading") {
+  //   document.addEventListener("DOMContentLoaded", animateNavIn);
+  // } else {
+  //   animateNavIn();
+  // }
 
   /* ── Trust track brand slider ────────────────────────────────── */
-  // FIX 1: wrapped in if-block so a missing element
-  // does NOT return early and kill the rest of the script
-  const track = document.getElementById('trustTrack');
-  if (track) {
-    const original = Array.from(track.children);
-
+  // FIX: wrapped in if-block — missing element never kills script
+  const trustTrack = document.getElementById('trustTrack');
+  if (trustTrack) {
+    const original = Array.from(trustTrack.children);
     if (original.length) {
       const SPEED = 45;
       const COPIES = 5;
@@ -114,43 +103,36 @@
         return frag;
       }
 
-      track.innerHTML = '';
-      track.appendChild(buildHalf(false));
-      track.appendChild(buildHalf(true));
+      trustTrack.innerHTML = '';
+      trustTrack.appendChild(buildHalf(false));
+      trustTrack.appendChild(buildHalf(true));
 
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          const halfWidth = track.scrollWidth / 2;
+          const halfWidth = trustTrack.scrollWidth / 2;
           const duration = halfWidth / SPEED;
-          track.style.animationDuration = duration.toFixed(2) + 's';
+          trustTrack.style.animationDuration = duration.toFixed(2) + 's';
 
-          // mouse — desktop
-          track.addEventListener('mouseover', function (e) {
-            if (e.target.closest('.trust-logo-item')) {
-              track.style.animationPlayState = 'paused';
-            }
+          trustTrack.addEventListener('mouseover', function (e) {
+            if (e.target.closest('.trust-logo-item'))
+              trustTrack.style.animationPlayState = 'paused';
           });
-          track.addEventListener('mouseout', function (e) {
-            if (e.target.closest('.trust-logo-item')) {
-              track.style.animationPlayState = 'running';
-            }
+          trustTrack.addEventListener('mouseout', function (e) {
+            if (e.target.closest('.trust-logo-item'))
+              trustTrack.style.animationPlayState = 'running';
           });
-
-          // FIX 2: touch — mobile/tablet
-          track.addEventListener('touchstart', function () {
-            track.style.animationPlayState = 'paused';
+          trustTrack.addEventListener('touchstart', function () {
+            trustTrack.style.animationPlayState = 'paused';
           }, {
             passive: true
           });
-
-          track.addEventListener('touchend', function () {
-            track.style.animationPlayState = 'running';
+          trustTrack.addEventListener('touchend', function () {
+            trustTrack.style.animationPlayState = 'running';
           });
         });
       });
     }
   }
-
 
   /* ── Powered By IC section ───────────────────────────────────── */
   var CONNECTIONS = [{
@@ -189,7 +171,6 @@
   var stage = document.getElementById('poweredStage');
   var pathData = [];
 
-  // Guard: section may not be on every page
   if (svg && stage) {
 
     function rel(el) {
@@ -208,14 +189,9 @@
       var midY = from.by + (to.ty - from.by) * f;
       var dx = to.tx - from.bx;
       var adx = Math.abs(dx);
-
-      if (adx < 3) {
-        return 'M' + from.bx + ',' + from.by + ' L' + to.tx + ',' + to.ty;
-      }
-
+      if (adx < 3) return 'M' + from.bx + ',' + from.by + ' L' + to.tx + ',' + to.ty;
       var r = Math.min(8, adx * 0.28, Math.abs(midY - from.by) * 0.45);
       var sx = dx > 0 ? 1 : -1;
-
       return [
         'M' + from.bx + ',' + from.by,
         'L' + from.bx + ',' + (midY - r),
@@ -241,7 +217,6 @@
     function buildPaths() {
       svg.innerHTML = '';
       pathData.length = 0;
-
       svg.setAttribute('width', stage.offsetWidth);
       svg.setAttribute('height', stage.offsetHeight);
       svg.setAttribute('viewBox', '0 0 ' + stage.offsetWidth + ' ' + stage.offsetHeight);
@@ -250,30 +225,24 @@
         var pinEl = document.getElementById(conn.pin);
         var portEl = document.getElementById(conn.port);
         if (!pinEl || !portEl) return;
-
         var from = rel(pinEl);
         var to = rel(portEl);
         var d = buildD(from, to, conn.mid);
-
         svg.appendChild(makePath(d, '#d1d5db', 1.5));
-
         var pulse = makePath(d, '#16a34a', 2.5, 0);
         pulse.style.filter = 'drop-shadow(0 0 6px rgba(34,197,94,.7))';
         svg.appendChild(pulse);
-
         var len = pulse.getTotalLength();
         var DASH = Math.min(52, len * 0.32);
-
         pulse.setAttribute('stroke-dasharray', DASH + ' ' + (len + DASH + 1));
         pulse.setAttribute('stroke-dashoffset', String(DASH));
-
         pathData.push({
-          pulse: pulse,
-          pinEl: pinEl,
-          portEl: portEl,
-          len: len,
-          DASH: DASH,
-          busy: false,
+          pulse,
+          pinEl,
+          portEl,
+          len,
+          DASH,
+          busy: false
         });
       });
     }
@@ -282,12 +251,9 @@
       var pulse = pd.pulse;
       var len = pd.len;
       var DASH = pd.DASH;
-
-      // FIX 3: removed duplicate `var startOff = DASH` line
       var startOff = -(len + DASH);
       var endOff = DASH;
       var dur = 1800 + len * 1.6;
-
       var token = pd.token = (pd.token || 0) + 1;
 
       pulse.setAttribute('opacity', '0');
@@ -296,22 +262,16 @@
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           if (pd.token !== token) return;
-
           pd.pinEl.classList.add('lit');
           pd.portEl.classList.add('lit');
           pulse.setAttribute('opacity', '1');
-
           var t0 = performance.now();
 
           function tick() {
             if (pd.token !== token) return;
-
             var p = Math.min((performance.now() - t0) / dur, 1);
             var eased = 0.5 - Math.cos(p * Math.PI) / 2;
-
-            pulse.setAttribute('stroke-dashoffset',
-              String(startOff + (endOff - startOff) * eased));
-
+            pulse.setAttribute('stroke-dashoffset', String(startOff + (endOff - startOff) * eased));
             if (p < 1) {
               requestAnimationFrame(tick);
             } else {
@@ -325,7 +285,6 @@
               }, 120);
             }
           }
-
           requestAnimationFrame(tick);
         });
       });
@@ -379,11 +338,9 @@
   /* ── Powered title entrance ──────────────────────────────────── */
   const titleEl = document.getElementById('poweredTitle');
   if (titleEl) {
-    // assign stagger delay to each word
     titleEl.querySelectorAll('.tw').forEach(function (word, i) {
       word.style.setProperty('--tw-delay', (.09 + i * .2) + 's');
     });
-
     const io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -394,25 +351,134 @@
     }, {
       threshold: 0.4
     });
-
     io.observe(titleEl);
   }
 
-  // Pricing section
-  var t = document.getElementById('pricingTitle');
-  if (!t) return;
-  t.querySelectorAll('.ptw').forEach(function (w, i) {
-    w.style.setProperty('--ptw-delay', (0.04 + i * 0.1) + 's');
-  });
-  new IntersectionObserver(function (e) {
-    e.forEach(function (en) {
-      if (en.isIntersecting) {
-        en.target.classList.add('revealed');
-        arguments[1].unobserve(en.target);
-      }
+  /* ── Pricing title entrance ──────────────────────────────────── */
+  // FIX: wrapped in if-block — was using `if(!t) return` which
+  // exited the entire IIFE, killing the slider and anything below
+  const pricingTitle = document.getElementById('pricingTitle');
+  if (pricingTitle) {
+    pricingTitle.querySelectorAll('.ptw').forEach(function (w, i) {
+      w.style.setProperty('--ptw-delay', (0.04 + i * 0.1) + 's');
     });
-  }, {
-    threshold: .35
-  }).observe(t);
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      threshold: .35
+    }).observe(pricingTitle);
+  }
+
+  /* ── Dashboard carousel slider ───────────────────────────────── */
+  var embTrack = document.getElementById('embTrack');
+  var embNavEl = document.getElementById('embDotNav');
+  var embWrap = document.getElementById('embWrap');
+
+  if (embTrack && embNavEl) {
+
+    var embSlides = embTrack.querySelectorAll('.emb-slide');
+    var embReal = embSlides.length; /* real count — used for dots + text */
+    var embCur = 0;
+    var embTimer;
+    var embJumping = false;
+
+    /*
+     * INFINITE LOOP FIX:
+     * Clone the first slide and append it to the end of the track.
+     * When the track slides to this clone, it looks identical to slide 0.
+     * After the transition ends we silently reset to the real index 0
+     * (no animation = no visible jump). This gives seamless forward looping.
+     */
+    var firstClone = embSlides[0].cloneNode(true);
+    firstClone.setAttribute('aria-hidden', 'true');
+    embTrack.appendChild(firstClone);
+
+    /* text slides (may not exist on all pages — safe if absent) */
+    var embTextSlides = document.querySelectorAll('.emb-text-slide');
+
+    /* build dots for real slides only */
+    embSlides.forEach(function (_, i) {
+      var btn = document.createElement('button');
+      btn.className = 'emb-dot-btn' + (i === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+      btn.addEventListener('click', function () {
+        embGoTo(i);
+        embResetTimer();
+      });
+      embNavEl.appendChild(btn);
+    });
+
+    var embDots = embNavEl.querySelectorAll('.emb-dot-btn');
+
+    function embSyncText(ri) {
+      embTextSlides.forEach(function (s, i) {
+        s.classList.toggle('active', i === ri);
+      });
+    }
+
+    function embGoTo(n) {
+      if (embJumping) return;
+      embCur = n;
+
+      embTrack.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
+      embTrack.style.transform = 'translateX(-' + (embCur * 100) + '%)';
+
+      /* sync dots + text using real index */
+      var ri = embCur % embReal;
+      embDots.forEach(function (d, i) {
+        d.classList.toggle('active', i === ri);
+      });
+      embSyncText(ri);
+
+      /* reached clone → wait for transition then silently reset to real 0 */
+      if (embCur === embReal) {
+        embJumping = true;
+        setTimeout(function () {
+          embTrack.style.transition = 'none';
+          embCur = 0;
+          embTrack.style.transform = 'translateX(0%)';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              embJumping = false;
+            });
+          });
+        }, 570); /* 20ms after the 550ms transition finishes */
+      }
+    }
+
+    function embResetTimer() {
+      clearInterval(embTimer);
+      embTimer = setInterval(function () {
+        embGoTo(embCur + 1);
+      }, 4000);
+    }
+
+    if (embWrap) {
+      embWrap.addEventListener('mouseenter', function () {
+        clearInterval(embTimer);
+      });
+      embWrap.addEventListener('mouseleave', embResetTimer);
+
+      var embSx = 0;
+      embWrap.addEventListener('touchstart', function (e) {
+        embSx = e.touches[0].clientX;
+        clearInterval(embTimer);
+      }, {
+        passive: true
+      });
+      embWrap.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - embSx;
+        if (Math.abs(dx) > 40) embGoTo(dx < 0 ? embCur + 1 : embCur - 1);
+        embResetTimer();
+      });
+    }
+
+    embResetTimer();
+
+  } // end slider
 
 }());
