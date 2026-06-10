@@ -136,7 +136,7 @@ body {
   font-family: 'Outfit', sans-serif;
   background: var(--bg-body);
   color: var(--text-primary);
-  min-height: 130vh;
+  min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -1582,7 +1582,6 @@ body {
   background-image:
     linear-gradient(rgba(22, 163, 74, 0.046) 1px, transparent 1px),
     linear-gradient(90deg, rgba(22, 163, 74, 0.043) 1px, transparent 1px);
-  background-size: 40px 40px;
   background-size: 58px 58px;
   pointer-events: none;
   z-index: 0;
@@ -1933,7 +1932,7 @@ body {
 }
 
 /* soft green glow — very subtle */
-.cta-part::before {
+/* .cta-part::before {
   content: '';
   position: absolute;
   top: -160px;
@@ -1944,7 +1943,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(22, 163, 74, .07) 0%, transparent 70%);
   pointer-events: none;
-}
+} */
 
 .cta-inner {
   position: relative;
@@ -2820,6 +2819,544 @@ body {
 
 
 /* ══════════════════════════════════════════════════════════════
+   REGISTER — PROGRESSIVE FORM
+   ══════════════════════════════════════════════════════════════ */
+ .rg-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  position: relative;
+  overflow: hidden;
+
+  /* brand green gradient background */
+  background: linear-gradient(145deg,
+      var(--hero-bg-from) 0%,
+      var(--hero-bg-mid) 50%,
+      var(--hero-bg-to) 100%);
+}
+
+/* ── grid overlay ────────────────────────────────────────────── */
+.rg-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(22, 163, 74, 0.046) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 163, 74, 0.043) 1px, transparent 1px);
+  background-size: 68px 68px;
+  z-index: 0;
+}
+
+/* ── corner blobs ────────────────────────────────────────────── */
+.rg-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(22, 163, 74, .18) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(22, 163, 74, .14) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(134, 239, 172, .20) 0%, transparent 45%),
+    radial-gradient(ellipse at 0% 100%, rgba(74, 222, 128, .12) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── card (keep existing rg-wrap/logo/footer styles) ─────────── */
+.rg-card {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,.07);
+  padding: 35px 28px 26px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.04),
+    0 12px 40px rgba(0,0,0,.09),
+    0 40px 80px rgba(0,0,0,.06);
+}
+ 
+/* ── Progress wrapper ────────────────────────────────────────── */
+.rg-progress-wrap {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+}
+ 
+/* thin fill bar behind circles */
+.rg-progress-track {
+  position: relative;
+  height: 5px;
+  background: var(--black-100);
+  border-radius: 2px;
+  margin: 0 15px;
+  margin-bottom: -17px; /* pull circles over it */
+}
+ 
+.rg-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-600), var(--green-500));
+  border-radius: 2px;
+  width: 0%;
+  transition: width .45s var(--ease-in-out);
+}
+ 
+/* step circles row */
+.rg-steps-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  position: relative;
+}
+ 
+.rg-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+/* first circle flush left, last flush right */
+.rg-step-item:first-child {
+  align-items: flex-start;
+}
+
+.rg-step-item:last-child {
+  align-items: flex-end;
+}
+
+/* track starts and ends at center of first/last circle */
+/* circle is 30px wide so half = 15px */
+ 
+.rg-step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-body);
+  border: 2px solid var(--black-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: background .3s ease, border-color .3s ease;
+}
+ 
+.rg-step-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--black-400);
+  transition: opacity .2s ease;
+}
+ 
+.rg-step-check {
+  position: absolute;
+  font-size: .8rem;
+  color: #fff;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+ 
+.rg-step-lbl {
+  font-family: 'Outfit', sans-serif;
+  font-size: .68rem;
+  font-weight: 500;
+  color: var(--black-400);
+  letter-spacing: .02em;
+  transition: color .3s ease;
+}
+ 
+/* active step */
+.rg-step-item.active .rg-step-circle {
+  background: var(--bg-surface);
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+}
+ 
+.rg-step-item.active .rg-step-num {
+  color: var(--brand-primary);
+}
+ 
+.rg-step-item.active .rg-step-lbl {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+ 
+/* completed step */
+.rg-step-item.done .rg-step-circle {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+ 
+.rg-step-item.done .rg-step-num {
+  opacity: 0;
+}
+ 
+.rg-step-item.done .rg-step-check {
+  opacity: 1;
+}
+ 
+.rg-step-item.done .rg-step-lbl {
+  color: var(--brand-primary);
+}
+ 
+/* ── Step header ─────────────────────────────────────────────── */
+.rg-step-header {
+  margin-bottom: 20px;
+}
+ 
+.rg-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--black-900);
+  letter-spacing: -.02em;
+  text-align: center;
+  margin-bottom: 5px;
+}
+ 
+.rg-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  color: var(--black-400);
+  line-height: 1.55;
+  text-align: center;
+  margin-bottom: 0;
+}
+ 
+/* ── Form groups ─────────────────────────────────────────────── */
+.rg-group {
+  margin-bottom: 13px;
+}
+ 
+.rg-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--black-700);
+  display: block;
+  margin-bottom: 5px;
+}
+ 
+.rg-optional {
+  font-weight: 400;
+  color: var(--black-400);
+  font-size: .72rem;
+}
+ 
+.rg-input {
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: .86rem;
+  color: var(--black-800);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-base);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+ 
+.rg-input::placeholder { color: var(--text-placeholder); }
+ 
+.rg-input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.10);
+}
+ 
+/* error state */
+.rg-input.rg-err {
+  border-color: var(--color-red);
+  box-shadow: 0 0 0 3px rgba(220,38,38,.08);
+}
+ 
+/* ── Phone row ───────────────────────────────────────────────── */
+.rg-phone-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+ 
+.rg-code-wrap {
+  flex-shrink: 0;
+}
+ 
+.rg-code-select {
+  height: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--black-700);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-base);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+  min-width: 90px;
+}
+ 
+.rg-code-select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.10);
+}
+ 
+.rg-phone-input {
+  flex: 1;
+}
+ 
+/* ── Password eye ────────────────────────────────────────────── */
+.rg-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+ 
+.rg-input-wrap .rg-input {
+  padding-right: 38px;
+}
+ 
+.rg-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--black-400);
+  font-size: 1rem;
+  line-height: 1;
+  transition: color .2s ease;
+}
+ 
+.rg-eye:hover { color: var(--brand-primary); }
+
+
+
+
+.rg-card form {
+  position: relative;
+  z-index: 2;
+}
+
+.rg-group-pass {
+  position: relative;
+  z-index: 10;
+}
+
+/* light tooltip */
+.rg-pw-guide {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .22s ease, visibility .22s ease, transform .22s var(--ease-out);
+}
+
+/* arrow pointing down — light bg */
+.rg-pw-guide::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-base);
+  border-bottom: 1px solid var(--border-base);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.rg-pw-guide.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.rg-pw-guide-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--black-400);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.rg-pw-rule {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .76rem;
+  font-weight: 500;
+  color: var(--black-400);
+  padding: 2px 0;
+  transition: color .2s ease;
+}
+
+.rg-pw-rule i {
+  font-size: .78rem;
+  color: var(--black-300);
+  flex-shrink: 0;
+  transition: color .2s ease;
+}
+
+.rg-pw-rule.pass {
+  color: var(--green-700);
+}
+
+.rg-pw-rule.pass i {
+  color: var(--brand-primary);
+}
+ 
+/* match message */
+.rg-match-msg {
+  font-family: 'Outfit', sans-serif;
+  font-size: .75rem;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-bottom: 0;
+  min-height: 18px;
+  transition: color .2s ease;
+}
+ 
+.rg-match-msg.ok  { color: var(--brand-primary); }
+.rg-match-msg.err { color: var(--color-red); }
+ 
+/* ── Nav buttons ─────────────────────────────────────────────── */
+.rg-nav-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+ 
+.rg-btn-prev {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--black-600);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-base);
+  border-radius: var(--radius-sm);
+  padding: 11px;
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease, transform .18s ease;
+}
+ 
+.rg-btn-prev:hover {
+  color: var(--brand-primary);
+  border-color: var(--brand-primary-border);
+  transform: translateY(-1px);
+}
+ 
+.rg-btn-next,
+.rg-btn-submit {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .86rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--black-950);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 11px;
+  cursor: pointer;
+  transition: background .2s ease, transform .18s var(--ease-spring);
+}
+ 
+.rg-btn-next:hover,
+.rg-btn-submit:hover:not(:disabled) {
+  background: var(--brand-primary);
+  transform: translateY(-1px);
+}
+ 
+.rg-btn-submit:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+ 
+/* ── Login row & footer ──────────────────────────────────────── */
+.rg-login-row {
+  font-family: 'Outfit', sans-serif;
+  font-size: .82rem;
+  color: var(--black-400);
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+ 
+.rg-login-link {
+  font-weight: 700;
+  color: var(--black-800);
+  text-decoration: none;
+  transition: color .18s ease;
+}
+ 
+.rg-login-link:hover { color: var(--brand-primary); }
+ 
+.rg-footer-links {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 22px;
+}
+ 
+.rg-footer-links a {
+  font-family: 'Outfit', sans-serif;
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--black-400);
+  text-decoration: none;
+  transition: color .18s ease;
+}
+ 
+.rg-footer-links a:hover { color: var(--brand-primary); }
+ 
+/* ── Panel transition ────────────────────────────────────────── */
+.rg-panel {
+  animation: rgFadeIn .32s ease both;
+}
+ 
+@keyframes rgFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════════════════════════
     7.  RESPONSIVE
    ══════════════════════════════════════════════════════════════ */
 @media(max-width:1199px) {
@@ -3223,10 +3760,10 @@ body {
     margin-top: -36px;
   }
 
-  
+
 }
 
-@media (max-width: 450px) {
+@media (max-width: 480px) {
   .hero-mockup-img {
     width: 90%;
   }

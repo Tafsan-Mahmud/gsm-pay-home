@@ -1,5 +1,3 @@
-
-
 (function () {
   "use strict";
 
@@ -13,52 +11,53 @@
 
   /* ── Scroll Glass Effect ─────────────────────────────────────── */
   const nav = document.getElementById("mainNav");
-  const SCROLL_THRESHOLD = 30;
+  if (nav) {
+    const SCROLL_THRESHOLD = 30;
 
-  function onScroll() {
-    if (window.scrollY > SCROLL_THRESHOLD) {
-      nav.classList.add("scrolled");
-    } else {
-      nav.classList.remove("scrolled");
+    function onScroll() {
+      if (window.scrollY > SCROLL_THRESHOLD) {
+        nav.classList.add("scrolled");
+      } else {
+        nav.classList.remove("scrolled");
+      }
     }
+
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          onScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {
+      passive: true
+    });
+
+    onScroll();
   }
-
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        onScroll();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, {
-    passive: true
-  });
-
-  onScroll();
 
   /* ── Active Nav Link ─────────────────────────────────────────── */
   const navLinks = document.querySelectorAll(".nav-pill");
-  navLinks.forEach(link => {
-    link.addEventListener("click", function () {
-      navLinks.forEach(l => l.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
-
-  /* ── Close mobile menu on link click ────────────────────────── */
   const navMenu = document.getElementById("navMenu");
-  const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu, {
-    toggle: false
-  });
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      if (window.innerWidth < 992 && navMenu.classList.contains("show")) {
-        bsCollapse.hide();
-      }
+
+  if (navMenu) {
+    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu, {
+      toggle: false
     });
-  });
+    navLinks.forEach(link => {
+      link.addEventListener("click", function () {
+        navLinks.forEach(l => l.classList.remove("active"));
+        this.classList.add("active");
+      });
+      link.addEventListener("click", () => {
+        if (window.innerWidth < 992 && navMenu.classList.contains("show")) {
+          bsCollapse.hide();
+        }
+      });
+    });
+  }
 
   // /* ── Staggered entrance animation for nav items (page load only) ── */
   // function animateNavIn() {
@@ -480,5 +479,267 @@
     embResetTimer();
 
   } // end slider
+
+  /* ══════════════════════════════════════════════════════════════
+       REGISTER — progressive multi-step form
+       Add this block inside your IIFE in script.js
+       ══════════════════════════════════════════════════════════════ */
+
+  /* ── Eye toggles ─────────────────────────────────────────────── */
+  document.querySelectorAll('.rg-eye').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var inp = document.getElementById(btn.dataset.target);
+      if (!inp) return;
+      var isText = inp.type === 'text';
+      inp.type = isText ? 'password' : 'text';
+      btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+
+      /* restore cursor to end — switching type resets it to position 0 */
+      var len = inp.value.length;
+      inp.setSelectionRange(len, len);
+      inp.focus();
+    });
+  });
+
+  /* ── Multi-step logic ────────────────────────────────────────── */
+  var rgForm = document.getElementById('rgForm');
+  if (rgForm) {
+
+    var curStep = 1;
+
+    var panels = [null,
+      document.getElementById('rgPanel1'),
+      document.getElementById('rgPanel2'),
+      document.getElementById('rgPanel3')
+    ];
+    var headers = [null,
+      document.getElementById('rgHeader1'),
+      document.getElementById('rgHeader2'),
+      document.getElementById('rgHeader3')
+    ];
+    var stepItems = [null,
+      document.getElementById('rgStepItem1'),
+      document.getElementById('rgStepItem2'),
+      document.getElementById('rgStepItem3')
+    ];
+
+    var btnPrev = document.getElementById('rgPrev');
+    var btnNext = document.getElementById('rgNext');
+    var btnSubmit = document.getElementById('rgSubmit');
+    var fillEl = document.getElementById('rgProgressFill');
+
+    /* progress fill: 0% / 50% / 100% */
+    var fillMap = {
+      1: '0%',
+      2: '50%',
+      3: '100%'
+    };
+
+    function goToStep(n) {
+      /* hide old */
+      panels[curStep].style.display = 'none';
+      headers[curStep].style.display = 'none';
+
+      /* mark done or reset */
+      if (n > curStep) {
+        stepItems[curStep].classList.remove('active');
+        stepItems[curStep].classList.add('done');
+      } else {
+        stepItems[curStep].classList.remove('active', 'done');
+      }
+
+      curStep = n;
+
+      /* show new */
+      panels[curStep].style.display = 'block';
+      headers[curStep].style.display = 'block';
+
+      stepItems[curStep].classList.remove('done');
+      stepItems[curStep].classList.add('active');
+
+      /* un-done future steps when going back */
+      for (var i = curStep + 1; i <= 3; i++) {
+        stepItems[i].classList.remove('active', 'done');
+      }
+
+      /* progress bar */
+      fillEl.style.width = fillMap[curStep];
+
+      /* button visibility */
+      btnPrev.style.display = curStep > 1 ? 'inline-flex' : 'none';
+      btnNext.style.display = curStep < 3 ? 'inline-flex' : 'none';
+      btnSubmit.style.display = curStep === 3 ? 'inline-flex' : 'none';
+    }
+
+    /* ── Validation per step ────────────────────────────────────── */
+    function validateStep(n) {
+      var ok = true;
+
+      function check(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var empty = !el.value.trim();
+        el.classList.toggle('rg-err', empty);
+        if (empty) ok = false;
+        el.addEventListener('input', function () {
+          el.classList.remove('rg-err');
+        }, {
+          once: true
+        });
+      }
+
+      if (n === 1) {
+        check('rgName');
+        /* email format */
+        var emailEl = document.getElementById('rgEmail');
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim());
+        emailEl.classList.toggle('rg-err', !emailOk);
+        if (!emailOk) ok = false;
+        emailEl.addEventListener('input', function () {
+          emailEl.classList.remove('rg-err');
+        }, {
+          once: true
+        });
+        check('rgPhone');
+      }
+
+      if (n === 2) {
+        check('rgAddr1');
+        check('rgCity');
+        check('rgCountry');
+      }
+
+      return ok;
+    }
+
+    /* ── Next button ─────────────────────────────────────────────── */
+    btnNext.addEventListener('click', function () {
+      if (!validateStep(curStep)) return;
+      goToStep(curStep + 1);
+    });
+
+    /* ── Prev button ─────────────────────────────────────────────── */
+    btnPrev.addEventListener('click', function () {
+      goToStep(curStep - 1);
+    });
+
+    /* ── Password tooltip show/hide ──────────────────────────────── */
+    var pwGuide = document.getElementById('rgPwGuide');
+    var pwInput = document.getElementById('rgPass');
+    var pwBlurTimer;
+
+    pwInput.addEventListener('focus', function () {
+      clearTimeout(pwBlurTimer);
+      pwGuide.classList.add('visible');
+    });
+
+    pwInput.addEventListener('blur', function () {
+      /* small delay so eye-button click doesn't flash it away */
+      pwBlurTimer = setTimeout(function () {
+        pwGuide.classList.remove('visible');
+      }, 180);
+    });
+    /* ── Password rules ──────────────────────────────────────────── */
+    var pwRules = [{
+        id: 'pwLen',
+        test: function (v) {
+          return v.length >= 8;
+        }
+      },
+      {
+        id: 'pwUpper',
+        test: function (v) {
+          return /[A-Z]/.test(v);
+        }
+      },
+      {
+        id: 'pwLower',
+        test: function (v) {
+          return /[a-z]/.test(v);
+        }
+      },
+      {
+        id: 'pwNum',
+        test: function (v) {
+          return /[0-9]/.test(v);
+        }
+      },
+      {
+        id: 'pwSpecial',
+        test: function (v) {
+          return /[!@#$%^&*(),.?":{}|<>_\-]/.test(v);
+        }
+      },
+    ];
+
+    function allRulesPass(val) {
+      return pwRules.every(function (r) {
+        return r.test(val);
+      });
+    }
+
+    function checkMatch() {
+      var p = document.getElementById('rgPass').value;
+      var pc = document.getElementById('rgPassC').value;
+      var msg = document.getElementById('rgMatchMsg');
+      if (!pc) {
+        msg.textContent = '';
+        msg.className = 'rg-match-msg';
+        return false;
+      }
+      var match = p === pc;
+      msg.textContent = match ? '✓ Passwords match' : '✗ Passwords do not match';
+      msg.className = 'rg-match-msg ' + (match ? 'ok' : 'err');
+      return match;
+    }
+
+    document.getElementById('rgPass').addEventListener('input', function () {
+      var val = this.value;
+      pwRules.forEach(function (r) {
+        var el = document.getElementById(r.id);
+        var pass = r.test(val);
+        el.classList.toggle('pass', pass);
+        el.querySelector('i').className = pass ?
+          'bi bi-check-circle-fill' :
+          'bi bi-x-circle-fill';
+      });
+      updateSubmit();
+      checkMatch();
+    });
+
+    document.getElementById('rgPassC').addEventListener('input', function () {
+      checkMatch();
+      updateSubmit();
+    });
+
+    function updateSubmit() {
+      var p = document.getElementById('rgPass').value;
+      var pc = document.getElementById('rgPassC').value;
+      var ready = allRulesPass(p) && p === pc && p.length > 0;
+      btnSubmit.disabled = !ready;
+
+      /* fill or unfill the last step circle */
+      var step3 = document.getElementById('rgStepItem3');
+      if (ready) {
+        step3.classList.add('done');
+        step3.classList.remove('active');
+      } else {
+        step3.classList.remove('done');
+        step3.classList.add('active');
+      }
+
+      /* fill progress bar to 100% when ready, back to 50% when not */
+      document.getElementById('rgProgressFill').style.width = ready ? '100%' : '50%';
+    }
+
+    /* ── Submit ──────────────────────────────────────────────────── */
+    rgForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      /* handle form submission here */
+    });
+
+    /* ── Init ────────────────────────────────────────────────────── */
+    goToStep(1);
+  }
 
 }());

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSM Pay — Crypto Payment Gateway</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- ══ REGISTER SECTION ══════════════════════════════════════════ -->
+    <div class="rg-wrap">
+        <!-- card -->
+        <div class="rg-card">
+
+            <!-- ── Progress bar ──────────────────────────────────────── -->
+            <div class="rg-progress-wrap">
+                <div class="rg-progress-track">
+                    <div class="rg-progress-fill" id="rgProgressFill"></div>
+                </div>
+                <div class="rg-steps-row">
+                    <div class="rg-step-item active" id="rgStepItem1">
+                        <div class="rg-step-circle">
+                            <span class="rg-step-num">1</span>
+                            <i class="bi bi-check rg-step-check"></i>
+                        </div>
+                        <span class="rg-step-lbl">Account</span>
+                    </div>
+                    <div class="rg-step-item" id="rgStepItem2">
+                        <div class="rg-step-circle">
+                            <span class="rg-step-num">2</span>
+                            <i class="bi bi-check rg-step-check"></i>
+                        </div>
+                        <span class="rg-step-lbl">Address</span>
+                    </div>
+                    <div class="rg-step-item" id="rgStepItem3">
+                        <div class="rg-step-circle">
+                            <span class="rg-step-num">3</span>
+                            <i class="bi bi-check rg-step-check"></i>
+                        </div>
+                        <span class="rg-step-lbl">Security</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Step titles ───────────────────────────────────────── -->
+            <div class="rg-step-header" id="rgHeader1">
+                <h1 class="rg-title">Merchant Register</h1>
+                <p class="rg-sub">Enter your basic account details to get started.</p>
+            </div>
+            <div class="rg-step-header" id="rgHeader2" style="display:none">
+                <h1 class="rg-title">Your Address</h1>
+                <p class="rg-sub">Where is your business located?</p>
+            </div>
+            <div class="rg-step-header" id="rgHeader3" style="display:none">
+                <h1 class="rg-title">Set Password</h1>
+                <p class="rg-sub">Create a strong password to secure your account.</p>
+            </div>
+
+            <form id="rgForm" novalidate>
+
+                <!-- ── STEP 1 ─────────────────────────────────────────── -->
+                <div class="rg-panel" id="rgPanel1">
+
+                    <div class="rg-group">
+                        <label class="rg-label">Merchant Name</label>
+                        <input type="text" class="rg-input" id="rgName" placeholder="Enter Your Name" />
+                    </div>
+
+                    <div class="rg-group">
+                        <label class="rg-label">Email Address</label>
+                        <input type="email" class="rg-input" id="rgEmail" placeholder="Enter Your Email" />
+                    </div>
+
+                    <div class="rg-group">
+                        <label class="rg-label">Mobile Number</label>
+                        <div class="rg-phone-row">
+                            <div class="rg-code-wrap">
+                                <select class="rg-code-select" id="rgCode">
+                                    <option value="+880">🇧🇩 +880</option>
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+91">🇮🇳 +91</option>
+                                    <option value="+92">🇵🇰 +92</option>
+                                    <option value="+966">🇸🇦 +966</option>
+                                    <option value="+971">🇦🇪 +971</option>
+                                    <option value="+974">🇶🇦 +974</option>
+                                    <option value="+965">🇰🇼 +965</option>
+                                    <option value="+968">🇴🇲 +968</option>
+                                    <option value="+973">🇧🇭 +973</option>
+                                    <option value="+20">🇪🇬 +20</option>
+                                    <option value="+60">🇲🇾 +60</option>
+                                    <option value="+65">🇸🇬 +65</option>
+                                    <option value="+62">🇮🇩 +62</option>
+                                    <option value="+66">🇹🇭 +66</option>
+                                    <option value="+84">🇻🇳 +84</option>
+                                    <option value="+63">🇵🇭 +63</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+82">🇰🇷 +82</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                    <option value="+7">🇷🇺 +7</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+31">🇳🇱 +31</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                    <option value="+27">🇿🇦 +27</option>
+                                    <option value="+234">🇳🇬 +234</option>
+                                </select>
+                            </div>
+                            <input type="tel" class="rg-input rg-phone-input" id="rgPhone"
+                                placeholder="Mobile Number" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ── STEP 2 ─────────────────────────────────────────── -->
+                <div class="rg-panel" id="rgPanel2" style="display:none">
+
+                    <div class="rg-group">
+                        <label class="rg-label">Address Line 1</label>
+                        <input type="text" class="rg-input" id="rgAddr1" placeholder="Street, Building, Area" />
+                    </div>
+
+                    <div class="rg-group">
+                        <label class="rg-label">Address Line 2 <span class="rg-optional">(Optional)</span></label>
+                        <input type="text" class="rg-input" id="rgAddr2" placeholder="Apartment, Suite, Floor" />
+                    </div>
+
+                    <div class="rg-group">
+                        <label class="rg-label">City</label>
+                        <input type="text" class="rg-input" id="rgCity" placeholder="Your City" />
+                    </div>
+                </div>
+
+                <!-- ── STEP 3 ─────────────────────────────────────────── -->
+                <div class="rg-panel" id="rgPanel3" style="display:none">
+
+                    <div class="rg-group rg-group-pass">
+                        <label class="rg-label">Password</label>
+                        <div class="rg-input-wrap">
+                            <input type="password" class="rg-input" id="rgPass" placeholder="Enter Password" />
+                            <button type="button" class="rg-eye" data-target="rgPass">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+
+                        <!-- INSIDE rg-group-pass so absolute anchors correctly -->
+                        <div class="rg-pw-guide" id="rgPwGuide">
+                            <p class="rg-pw-guide-title">Password must include</p>
+                            <div class="rg-pw-rule" id="pwLen"><i class="bi bi-x-circle-fill"></i> At least 8 characters
+                            </div>
+                            <div class="rg-pw-rule" id="pwUpper"><i class="bi bi-x-circle-fill"></i> One uppercase
+                                letter (A–Z)</div>
+                            <div class="rg-pw-rule" id="pwLower"><i class="bi bi-x-circle-fill"></i> One lowercase
+                                letter (a–z)</div>
+                            <div class="rg-pw-rule" id="pwNum"><i class="bi bi-x-circle-fill"></i> One number (0–9)
+                            </div>
+                            <div class="rg-pw-rule" id="pwSpecial"><i class="bi bi-x-circle-fill"></i> One special
+                                character (!@#$...)</div>
+                        </div>
+                    </div>
+                    <div class="rg-group">
+                        <label class="rg-label">Confirm Password</label>
+                        <div class="rg-input-wrap">
+                            <input type="password" class="rg-input" id="rgPassC" placeholder="Confirm Password" />
+                            <button type="button" class="rg-eye" data-target="rgPassC">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <p class="rg-match-msg" id="rgMatchMsg"></p>
+                    </div>
+
+
+
+                </div>
+
+                <!-- ── Nav buttons ────────────────────────────────────── -->
+                <div class="rg-nav-btns mt-3">
+                    <button type="button" class="rg-btn-prev" id="rgPrev" style="display:none">
+                        <i class="bi bi-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn-primary w-100" id="rgNext">
+                        Next <i class="bi bi-arrow-right"></i>
+                    </button>
+                    <button type="submit" class="btn-primary w-100" id="rgSubmit" style="display:none" disabled>
+                        Create Account
+                    </button>
+                </div>
+
+            </form>
+
+            <p class="rg-login-row">
+                Have an account? <a href="login.html" class="rg-login-link">Login</a>
+            </p>
+        </div>
+
+        <div class="rg-footer-links">
+            <a href="#">Help</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
