@@ -742,4 +742,90 @@
     goToStep(1);
   }
 
+
+
+  /* ══════════════════════════════════════════════════════════════
+     LOGIN FORM — add inside your IIFE in script.js
+     ══════════════════════════════════════════════════════════════ */
+
+  var lnForm = document.getElementById('lnForm');
+  if (lnForm) {
+
+    /* ── Eye toggle ──────────────────────────────────────────── */
+    document.querySelectorAll('.ln-eye').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var inp = document.getElementById(btn.dataset.target);
+        if (!inp) return;
+        var isText = inp.type === 'text';
+        inp.type = isText ? 'password' : 'text';
+        btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+
+        /* restore cursor to end — switching type resets it to position 0 */
+        var len = inp.value.length;
+        inp.setSelectionRange(len, len);
+        inp.focus();
+      });
+    });
+
+
+
+    /* ── Submit ──────────────────────────────────────────────── */
+lnForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var ok = true;
+
+  function showErr(inputId, msgId, message) {
+    var inp = document.getElementById(inputId);
+    var msg = document.getElementById(msgId);
+    inp.classList.add('ln-err');
+    msg.textContent = message;
+    msg.classList.add('visible');
+    /* clear on next input */
+    inp.addEventListener('input', function () {
+      inp.classList.remove('ln-err');
+      msg.classList.remove('visible');
+    }, { once: true });
+  }
+
+  function clearErr(inputId, msgId) {
+    document.getElementById(inputId).classList.remove('ln-err');
+    document.getElementById(msgId).classList.remove('visible');
+  }
+
+  /* email */
+  var emailVal = document.getElementById('lnEmail').value.trim();
+  if (!emailVal) {
+    showErr('lnEmail', 'lnEmailErr', 'Email address is required.');
+    ok = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+    showErr('lnEmail', 'lnEmailErr', 'Please enter a valid email address.');
+    ok = false;
+  } else {
+    clearErr('lnEmail', 'lnEmailErr');
+  }
+
+  /* password */
+  var passVal = document.getElementById('lnPass').value;
+  if (!passVal.trim()) {
+    showErr('lnPass', 'lnPassErr', 'Password is required.');
+    ok = false;
+  } else {
+    clearErr('lnPass', 'lnPassErr');
+  }
+
+  if (!ok) return;
+
+  /* loading state */
+  var btn = document.getElementById('lnBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-arrow-repeat ln-spin"></i> Logging in…';
+
+  setTimeout(function () {
+    btn.disabled = false;
+    btn.innerHTML = 'Login';
+  }, 1500);
+});
+
+  }
+
 }());
