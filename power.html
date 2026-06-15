@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSM Pay — Crypto Payment Gateway</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="power.css" />
+</head>
+
+<body>
+
+      <!-- ======Powered strt =============================== -->
+  <section class="powered-section">
+    <div class="container">
+      <div class="powered-header">
+        <!-- <span class="pwr-eyebrow">
+                    <span class="pwr-eyebrow-dot"></span>
+                    Core Infrastructure
+                </span> -->
+
+        <h2 class="powered-title" id="poweredTitle">
+          <span class="tw">Built</span>
+          <span class="tw">to</span>
+          <span class="tw">process</span>
+          <br>
+          <span class="tw hero-text-gradient">every transaction, seamlessly.</span>
+        </h2>
+        <!-- <h2 class="powered-title">
+          Built to process<br>
+          <em>every transaction, seamlessly.</em>
+        </h2> -->
+        <p class="powered-sub">
+          Three purpose-built systems — speed, security, and global reach — powering every GSM Pay transaction
+          seamlessly.
+        </p>
+      </div>
+
+
+      <div class="powered-stage" id="poweredStage">
+        <svg class="powered-svg" id="poweredSvg"></svg>
+
+        <!-- IC: 16 ports — 6 top, 6 bottom, 2 left, 2 right -->
+        <div class="ic-wrap" id="icWrap">
+
+          <!-- 6 top neutral pins -->
+          <div class="ic-pin-row">
+
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+            <div class="ic-pin neutral"></div>
+          </div>
+
+          <div class="ic-mid">
+            <!-- 2 left neutral pins -->
+            <div class="ic-pin-col">
+              <div class="ic-pin neutral"></div>
+              <div class="ic-pin neutral"></div>
+            </div>
+
+            <!-- IC body ~150×100 -->
+            <div class="ic-body">
+              <div class="ic-notch"></div>
+              <span class="ic-name">GSM PAY</span>
+              <span class="ic-model">CORE-2025 · REV B</span>
+              <div class="ic-leds">
+                <div class="ic-led"></div>
+                <div class="ic-led"></div>
+                <div class="ic-led"></div>
+              </div>
+            </div>
+
+            <!-- 2 right neutral pins -->
+            <div class="ic-pin-col">
+              <div class="ic-pin neutral"></div>
+              <div class="ic-pin neutral"></div>
+            </div>
+          </div>
+
+          <!-- 6 bottom active pins — all connect to cards -->
+          <div class="ic-pin-row">
+            <div class="ic-pin active" id="pin-0"></div>
+            <div class="ic-pin active" id="pin-1"></div>
+            <div class="ic-pin active" id="pin-2"></div>
+            <div class="ic-pin active" id="pin-3"></div>
+            <div class="ic-pin active" id="pin-4"></div>
+            <div class="ic-pin active" id="pin-5"></div>
+          </div>
+        </div>
+
+        <!-- 3 cards -->
+        <div class="powered-cards" id="poweredCards">
+
+          <div class="power-card" id="card-0">
+            <div class="card-ports">
+              <div class="card-port" id="cport-0"></div>
+              <div class="card-port" id="cport-1"></div>
+            </div>
+            <div class="card-inner">
+              <div class="card-top-row">
+                <div class="card-icon-box">
+                  <i class="fa-solid fa-microchip"></i>
+                </div>
+              </div>
+              <h3 class="card-title">Payment Engine</h3>
+              <p class="card-desc">Real-time settlement and multi-currency processing, built for global
+                scale from day
+                one.</p>
+              <div class="card-stat">
+                <span class="stat-val">150+</span>
+                <span class="stat-lbl">countries supported</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="power-card" id="card-1">
+            <div class="card-ports">
+              <div class="card-port" id="cport-2"></div>
+              <div class="card-port" id="cport-3"></div>
+            </div>
+            <div class="card-inner">
+              <div class="card-top-row">
+                <div class="card-icon-box">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+              </div>
+              <h3 class="card-title">Fraud Guard</h3>
+              <p class="card-desc">AI-driven risk scoring across 200+ behavioural signals — every decision
+                before the user
+                blinks.</p>
+              <div class="card-stat">
+                <span class="stat-val">50ms</span>
+                <span class="stat-lbl">detection latency</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="power-card" id="card-2">
+            <div class="card-ports">
+              <div class="card-port" id="cport-4"></div>
+              <div class="card-port" id="cport-5"></div>
+            </div>
+            <div class="card-inner">
+              <div class="card-top-row">
+                <div class="card-icon-box">
+                  <i class="fa-solid fa-globe"></i>
+                </div>
+              </div>
+              <h3 class="card-title">Global Network</h3>
+              <p class="card-desc">Redundant infrastructure across 40+ regions engineered for the uptime
+                your business
+                demands.</p>
+              <div class="card-stat">
+                <span class="stat-val">99.99%</span>
+                <span class="stat-lbl">guaranteed uptime</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ======Powered End =============================== -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="power.js"></script>
+</body>
+</html>
