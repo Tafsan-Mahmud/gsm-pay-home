@@ -1,31 +1,43 @@
 (function () {
   "use strict";
 
-  // hero curve animation
-  const curvePath = document.getElementById('curvePath');
-  if (curvePath) {
-    const len = curvePath.getTotalLength();
-    curvePath.style.strokeDasharray = len;
-    curvePath.style.strokeDashoffset = len;
+  /* ══════════════════════════════════════════════════════════════
+     Each section below is wrapped in its own function and try/catch.
+     A missing element or a thrown error in ONE section can never
+     block or skip any other section on the page.
+     ══════════════════════════════════════════════════════════════ */
+
+  function safe(fn, label) {
+    try {
+      fn();
+    } catch (err) {
+      console.error('[script.js] ' + label + ' failed:', err);
+    }
   }
 
-  /* ── Scroll Glass Effect ─────────────────────────────────────── */
-  const nav = document.getElementById("mainNav");
-  if (nav) {
-    const SCROLL_THRESHOLD = 30;
+  /* ── Hero curve draw-in ───────────────────────────────────────── */
+  safe(function () {
+    var curvePath = document.getElementById('curvePath');
+    if (!curvePath) return;
+    var len = curvePath.getTotalLength();
+    curvePath.style.strokeDasharray = len;
+    curvePath.style.strokeDashoffset = len;
+  }, 'hero curve');
+
+  /* ── Scroll glass nav ─────────────────────────────────────────── */
+  safe(function () {
+    var nav = document.getElementById('mainNav');
+    if (!nav) return;
+    var SCROLL_THRESHOLD = 30;
 
     function onScroll() {
-      if (window.scrollY > SCROLL_THRESHOLD) {
-        nav.classList.add("scrolled");
-      } else {
-        nav.classList.remove("scrolled");
-      }
+      nav.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
     }
 
-    let ticking = false;
-    window.addEventListener("scroll", () => {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
       if (!ticking) {
-        requestAnimationFrame(() => {
+        requestAnimationFrame(function () {
           onScroll();
           ticking = false;
         });
@@ -36,141 +48,150 @@
     });
 
     onScroll();
-  }
+  }, 'scroll nav');
 
-  /* ── Active Nav Link ─────────────────────────────────────────── */
-  const navLinks = document.querySelectorAll(".nav-pill");
-  const navMenu = document.getElementById("navMenu");
-
-  if (navMenu) {
-    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu, {
+  /* ── Active nav link + mobile menu close ─────────────────────── */
+  safe(function () {
+    var navMenu = document.getElementById('navMenu');
+    if (!navMenu) return;
+    var navLinks = document.querySelectorAll('.nav-pill');
+    var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu, {
       toggle: false
     });
-    navLinks.forEach(link => {
-      link.addEventListener("click", function () {
-        navLinks.forEach(l => l.classList.remove("active"));
-        this.classList.add("active");
+
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        navLinks.forEach(function (l) {
+          l.classList.remove('active');
+        });
+        this.classList.add('active');
       });
-      link.addEventListener("click", () => {
-        if (window.innerWidth < 992 && navMenu.classList.contains("show")) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth < 992 && navMenu.classList.contains('show')) {
           bsCollapse.hide();
         }
       });
     });
-  }
+  }, 'nav links');
 
-  // /* ── Staggered entrance animation for nav items (page load only) ── */
-  // function animateNavIn() {
-  //   const items = document.querySelectorAll(".nav-item, .nav-cta");
-  //   items.forEach((el, i) => {
-  //     el.style.opacity = "0";
-  //     el.style.transform = "translateY(-8px)";
-  //     el.style.transition = `opacity 0.4s ease ${i * 55}ms, transform 0.4s ease ${i * 55}ms`;
-  //     requestAnimationFrame(() => {
-  //       requestAnimationFrame(() => {
-  //         el.style.opacity = "1";
-  //         el.style.transform = "translateY(0)";
-  //       });
-  //     });
-  //   });
-  // }
+  /* ── Trust track marquee ──────────────────────────────────────── */
+  safe(function () {
+    var trustTrack = document.getElementById('trustTrack');
+    if (!trustTrack) return;
+    var original = Array.from(trustTrack.children);
+    if (!original.length) return;
 
-  // if (document.readyState === "loading") {
-  //   document.addEventListener("DOMContentLoaded", animateNavIn);
-  // } else {
-  //   animateNavIn();
-  // }
+    var SPEED = 45;
+    var COPIES = 5;
 
-  /* ── Trust track brand slider ────────────────────────────────── */
-  // FIX: wrapped in if-block — missing element never kills script
-  const trustTrack = document.getElementById('trustTrack');
-  if (trustTrack) {
-    const original = Array.from(trustTrack.children);
-    if (original.length) {
-      const SPEED = 45;
-      const COPIES = 5;
-
-      function buildHalf(hidden) {
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < COPIES; i++) {
-          original.forEach(function (item) {
-            const clone = item.cloneNode(true);
-            if (hidden) clone.setAttribute('aria-hidden', 'true');
-            frag.appendChild(clone);
-          });
-        }
-        return frag;
+    function buildHalf(hidden) {
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < COPIES; i++) {
+        original.forEach(function (item) {
+          var clone = item.cloneNode(true);
+          if (hidden) clone.setAttribute('aria-hidden', 'true');
+          frag.appendChild(clone);
+        });
       }
+      return frag;
+    }
 
-      trustTrack.innerHTML = '';
-      trustTrack.appendChild(buildHalf(false));
-      trustTrack.appendChild(buildHalf(true));
+    trustTrack.innerHTML = '';
+    trustTrack.appendChild(buildHalf(false));
+    trustTrack.appendChild(buildHalf(true));
 
+    requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          const halfWidth = trustTrack.scrollWidth / 2;
-          const duration = halfWidth / SPEED;
-          trustTrack.style.animationDuration = duration.toFixed(2) + 's';
+        var halfWidth = trustTrack.scrollWidth / 2;
+        var duration = halfWidth / SPEED;
+        trustTrack.style.animationDuration = duration.toFixed(2) + 's';
 
-          trustTrack.addEventListener('mouseover', function (e) {
-            if (e.target.closest('.trust-logo-item'))
-              trustTrack.style.animationPlayState = 'paused';
-          });
-          trustTrack.addEventListener('mouseout', function (e) {
-            if (e.target.closest('.trust-logo-item'))
-              trustTrack.style.animationPlayState = 'running';
-          });
-          trustTrack.addEventListener('touchstart', function () {
-            trustTrack.style.animationPlayState = 'paused';
-          }, {
-            passive: true
-          });
-          trustTrack.addEventListener('touchend', function () {
-            trustTrack.style.animationPlayState = 'running';
-          });
+        trustTrack.addEventListener('mouseover', function (e) {
+          if (e.target.closest('.trust-logo-item')) trustTrack.style.animationPlayState = 'paused';
+        });
+        trustTrack.addEventListener('mouseout', function (e) {
+          if (e.target.closest('.trust-logo-item')) trustTrack.style.animationPlayState = 'running';
+        });
+        trustTrack.addEventListener('touchstart', function () {
+          trustTrack.style.animationPlayState = 'paused';
+        }, {
+          passive: true
+        });
+        trustTrack.addEventListener('touchend', function () {
+          trustTrack.style.animationPlayState = 'running';
         });
       });
-    }
-  }
+    });
+  }, 'trust track');
 
-  /* ── Powered By IC section ───────────────────────────────────── */
-  var CONNECTIONS = [{
-      pin: 'pin-1',
-      port: 'cport-0',
-      mid: 0.30
-    },
-    {
-      pin: 'pin-0',
-      port: 'cport-1',
-      mid: 0.62
-    },
-    {
-      pin: 'pin-2',
-      port: 'cport-2',
-      mid: 0.70
-    },
-    {
-      pin: 'pin-3',
-      port: 'cport-3',
-      mid: 0.70
-    },
-    {
-      pin: 'pin-4',
-      port: 'cport-4',
-      mid: 0.30
-    },
-    {
-      pin: 'pin-5',
-      port: 'cport-5',
-      mid: 0.62
-    },
-  ];
+  /* ── FAQ accordion ────────────────────────────────────────────── */
+  safe(function () {
+    var faqAccordion = document.getElementById('faqAccordion');
+    if (!faqAccordion) return;
+    var faqQuestions = faqAccordion.querySelectorAll('.faq-question');
 
-  var svg = document.getElementById('poweredSvg');
-  var stage = document.getElementById('poweredStage');
-  var pathData = [];
+    faqQuestions.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq-item');
+        var answer = document.getElementById(btn.dataset.target);
+        var isOpen = item.classList.contains('open');
 
-  if (svg && stage) {
+        faqAccordion.querySelectorAll('.faq-item.open').forEach(function (openItem) {
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').style.maxHeight = null;
+          }
+        });
+
+        if (isOpen) {
+          item.classList.remove('open');
+          answer.style.maxHeight = null;
+        } else {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+  }, 'faq accordion');
+
+  /* ── Powered By IC pulse animation ───────────────────────────── */
+  safe(function () {
+    var svg = document.getElementById('poweredSvg');
+    var stage = document.getElementById('poweredStage');
+    if (!svg || !stage) return;
+
+    var CONNECTIONS = [{
+        pin: 'pin-1',
+        port: 'cport-0',
+        mid: 0.30
+      },
+      {
+        pin: 'pin-0',
+        port: 'cport-1',
+        mid: 0.62
+      },
+      {
+        pin: 'pin-2',
+        port: 'cport-2',
+        mid: 0.70
+      },
+      {
+        pin: 'pin-3',
+        port: 'cport-3',
+        mid: 0.70
+      },
+      {
+        pin: 'pin-4',
+        port: 'cport-4',
+        mid: 0.30
+      },
+      {
+        pin: 'pin-5',
+        port: 'cport-5',
+        mid: 0.62
+      },
+    ];
+    var pathData = [];
 
     function rel(el) {
       var e = el.getBoundingClientRect();
@@ -236,11 +257,11 @@
         pulse.setAttribute('stroke-dasharray', DASH + ' ' + (len + DASH + 1));
         pulse.setAttribute('stroke-dashoffset', String(DASH));
         pathData.push({
-          pulse,
-          pinEl,
-          portEl,
-          len,
-          DASH,
+          pulse: pulse,
+          pinEl: pinEl,
+          portEl: portEl,
+          len: len,
+          DASH: DASH,
           busy: false
         });
       });
@@ -331,16 +352,16 @@
     } else {
       init();
     }
+  }, 'powered IC pulse');
 
-  } // end if (svg && stage)
-
-  /* ── Powered title entrance ──────────────────────────────────── */
-  const titleEl = document.getElementById('poweredTitle');
-  if (titleEl) {
+  /* ── Powered title word entrance ─────────────────────────────── */
+  safe(function () {
+    var titleEl = document.getElementById('poweredTitle');
+    if (!titleEl) return;
     titleEl.querySelectorAll('.tw').forEach(function (word, i) {
       word.style.setProperty('--tw-delay', (.09 + i * .2) + 's');
     });
-    const io = new IntersectionObserver(function (entries) {
+    var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
@@ -351,55 +372,59 @@
       threshold: 0.4
     });
     io.observe(titleEl);
-  }
+  }, 'powered title');
 
-  /* ── Pricing title entrance ──────────────────────────────────── */
-  // FIX: wrapped in if-block — was using `if(!t) return` which
-  // exited the entire IIFE, killing the slider and anything below
-  const pricingTitle = document.getElementById('pricingTitle');
-  if (pricingTitle) {
+  /* ── Pricing title word entrance ──────────────────────────────── */
+  safe(function () {
+    var pricingTitle = document.getElementById('pricingTitle');
+    if (!pricingTitle) return;
     pricingTitle.querySelectorAll('.ptw').forEach(function (w, i) {
       w.style.setProperty('--ptw-delay', (0.04 + i * 0.1) + 's');
     });
     new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('revealed');
       });
     }, {
       threshold: .35
     }).observe(pricingTitle);
-  }
+  }, 'pricing title');
 
-  /* ── Dashboard carousel slider ───────────────────────────────── */
-  var embTrack = document.getElementById('embTrack');
-  var embNavEl = document.getElementById('embDotNav');
-  var embWrap = document.getElementById('embWrap');
+  /* ── Built-for (powered tabs) title entrance ─────────────────── */
+  safe(function () {
+    var ptTitleEl = document.getElementById('ptTitle');
+    if (!ptTitleEl) return;
+    ptTitleEl.querySelectorAll('.ptw').forEach(function (w, i) {
+      w.style.setProperty('--ptw-delay', (0.04 + i * 0.1) + 's');
+    });
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) entry.target.classList.add('revealed');
+      });
+    }, {
+      threshold: .35
+    }).observe(ptTitleEl);
+  }, 'built-for title');
 
-  if (embTrack && embNavEl) {
+  /* ── Dashboard carousel slider ────────────────────────────────── */
+  safe(function () {
+    var embTrack = document.getElementById('embTrack');
+    var embNavEl = document.getElementById('embDotNav');
+    var embWrap = document.getElementById('embWrap');
+    if (!embTrack || !embNavEl) return;
 
     var embSlides = embTrack.querySelectorAll('.emb-slide');
-    var embReal = embSlides.length; /* real count — used for dots + text */
+    var embReal = embSlides.length;
     var embCur = 0;
     var embTimer;
     var embJumping = false;
 
-    /*
-     * INFINITE LOOP FIX:
-     * Clone the first slide and append it to the end of the track.
-     * When the track slides to this clone, it looks identical to slide 0.
-     * After the transition ends we silently reset to the real index 0
-     * (no animation = no visible jump). This gives seamless forward looping.
-     */
     var firstClone = embSlides[0].cloneNode(true);
     firstClone.setAttribute('aria-hidden', 'true');
     embTrack.appendChild(firstClone);
 
-    /* text slides (may not exist on all pages — safe if absent) */
     var embTextSlides = document.querySelectorAll('.emb-text-slide');
 
-    /* build dots for real slides only */
     embSlides.forEach(function (_, i) {
       var btn = document.createElement('button');
       btn.className = 'emb-dot-btn' + (i === 0 ? ' active' : '');
@@ -422,18 +447,15 @@
     function embGoTo(n) {
       if (embJumping) return;
       embCur = n;
-
       embTrack.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
       embTrack.style.transform = 'translateX(-' + (embCur * 100) + '%)';
 
-      /* sync dots + text using real index */
       var ri = embCur % embReal;
       embDots.forEach(function (d, i) {
         d.classList.toggle('active', i === ri);
       });
       embSyncText(ri);
 
-      /* reached clone → wait for transition then silently reset to real 0 */
       if (embCur === embReal) {
         embJumping = true;
         setTimeout(function () {
@@ -445,7 +467,7 @@
               embJumping = false;
             });
           });
-        }, 570); /* 20ms after the 550ms transition finishes */
+        }, 570);
       }
     }
 
@@ -477,58 +499,38 @@
     }
 
     embResetTimer();
+  }, 'dashboard carousel');
 
-  } // end slider
+  /* ── Register — progressive multi-step form ──────────────────── */
+  safe(function () {
+    var rgForm = document.getElementById('rgForm');
+    if (!rgForm) return;
 
-  /* ══════════════════════════════════════════════════════════════
-       REGISTER — progressive multi-step form
-       Add this block inside your IIFE in script.js
-       ══════════════════════════════════════════════════════════════ */
-
-  /* ── Eye toggles ─────────────────────────────────────────────── */
-  document.querySelectorAll('.rg-eye').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var inp = document.getElementById(btn.dataset.target);
-      if (!inp) return;
-      var isText = inp.type === 'text';
-      inp.type = isText ? 'password' : 'text';
-      btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
-
-      /* restore cursor to end — switching type resets it to position 0 */
-      var len = inp.value.length;
-      inp.setSelectionRange(len, len);
-      inp.focus();
+    /* eye toggles (register) */
+    document.querySelectorAll('.rg-eye').forEach(function (btn) {
+      btn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+      });
+      btn.addEventListener('click', function () {
+        var inp = document.getElementById(btn.dataset.target);
+        if (!inp) return;
+        var isText = inp.type === 'text';
+        inp.type = isText ? 'password' : 'text';
+        btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+        var len = inp.value.length;
+        inp.setSelectionRange(len, len);
+        inp.focus();
+      });
     });
-  });
-
-  /* ── Multi-step logic ────────────────────────────────────────── */
-  var rgForm = document.getElementById('rgForm');
-  if (rgForm) {
 
     var curStep = 1;
-
-    var panels = [null,
-      document.getElementById('rgPanel1'),
-      document.getElementById('rgPanel2'),
-      document.getElementById('rgPanel3')
-    ];
-    var headers = [null,
-      document.getElementById('rgHeader1'),
-      document.getElementById('rgHeader2'),
-      document.getElementById('rgHeader3')
-    ];
-    var stepItems = [null,
-      document.getElementById('rgStepItem1'),
-      document.getElementById('rgStepItem2'),
-      document.getElementById('rgStepItem3')
-    ];
-
+    var panels = [null, document.getElementById('rgPanel1'), document.getElementById('rgPanel2'), document.getElementById('rgPanel3')];
+    var headers = [null, document.getElementById('rgHeader1'), document.getElementById('rgHeader2'), document.getElementById('rgHeader3')];
+    var stepItems = [null, document.getElementById('rgStepItem1'), document.getElementById('rgStepItem2'), document.getElementById('rgStepItem3')];
     var btnPrev = document.getElementById('rgPrev');
     var btnNext = document.getElementById('rgNext');
     var btnSubmit = document.getElementById('rgSubmit');
     var fillEl = document.getElementById('rgProgressFill');
-
-    /* progress fill: 0% / 50% / 100% */
     var fillMap = {
       1: '0%',
       2: '50%',
@@ -536,11 +538,9 @@
     };
 
     function goToStep(n) {
-      /* hide old */
       panels[curStep].style.display = 'none';
       headers[curStep].style.display = 'none';
 
-      /* mark done or reset */
       if (n > curStep) {
         stepItems[curStep].classList.remove('active');
         stepItems[curStep].classList.add('done');
@@ -549,31 +549,23 @@
       }
 
       curStep = n;
-
-      /* show new */
       panels[curStep].style.display = 'block';
       headers[curStep].style.display = 'block';
-
       stepItems[curStep].classList.remove('done');
       stepItems[curStep].classList.add('active');
 
-      /* un-done future steps when going back */
       for (var i = curStep + 1; i <= 3; i++) {
         stepItems[i].classList.remove('active', 'done');
       }
 
-      /* progress bar */
       fillEl.style.width = fillMap[curStep];
-
-      /* button visibility */
       btnPrev.style.display = curStep > 1 ? 'inline-flex' : 'none';
       btnNext.style.display = curStep < 3 ? 'inline-flex' : 'none';
       btnSubmit.style.display = curStep === 3 ? 'inline-flex' : 'none';
 
-       if (curStep === 3) updateSubmit();
+      if (curStep === 3) updateSubmit();
     }
 
-    /* ── Validation per step ────────────────────────────────────── */
     function validateStep(n) {
       var ok = true;
 
@@ -592,7 +584,6 @@
 
       if (n === 1) {
         check('rgName');
-        /* email format */
         var emailEl = document.getElementById('rgEmail');
         var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim());
         emailEl.classList.toggle('rg-err', !emailOk);
@@ -604,44 +595,38 @@
         });
         check('rgPhone');
       }
-
       if (n === 2) {
         check('rgAddr1');
         check('rgCity');
         check('rgCountry');
       }
-
       return ok;
     }
 
-    /* ── Next button ─────────────────────────────────────────────── */
     btnNext.addEventListener('click', function () {
       if (!validateStep(curStep)) return;
       goToStep(curStep + 1);
     });
-
-    /* ── Prev button ─────────────────────────────────────────────── */
     btnPrev.addEventListener('click', function () {
       goToStep(curStep - 1);
     });
 
-    /* ── Password tooltip show/hide ──────────────────────────────── */
     var pwGuide = document.getElementById('rgPwGuide');
     var pwInput = document.getElementById('rgPass');
     var pwBlurTimer;
 
-    pwInput.addEventListener('focus', function () {
-      clearTimeout(pwBlurTimer);
-      pwGuide.classList.add('visible');
-    });
+    if (pwInput && pwGuide) {
+      pwInput.addEventListener('focus', function () {
+        clearTimeout(pwBlurTimer);
+        pwGuide.classList.add('visible');
+      });
+      pwInput.addEventListener('blur', function () {
+        pwBlurTimer = setTimeout(function () {
+          pwGuide.classList.remove('visible');
+        }, 180);
+      });
+    }
 
-    pwInput.addEventListener('blur', function () {
-      /* small delay so eye-button click doesn't flash it away */
-      pwBlurTimer = setTimeout(function () {
-        pwGuide.classList.remove('visible');
-      }, 180);
-    });
-    /* ── Password rules ──────────────────────────────────────────── */
     var pwRules = [{
         id: 'pwLen',
         test: function (v) {
@@ -695,24 +680,27 @@
       return match;
     }
 
-    document.getElementById('rgPass').addEventListener('input', function () {
-      var val = this.value;
-      pwRules.forEach(function (r) {
-        var el = document.getElementById(r.id);
-        var pass = r.test(val);
-        el.classList.toggle('pass', pass);
-        el.querySelector('i').className = pass ?
-          'bi bi-check-circle-fill' :
-          'bi bi-x-circle-fill';
+    if (pwInput) {
+      pwInput.addEventListener('input', function () {
+        var val = this.value;
+        pwRules.forEach(function (r) {
+          var el = document.getElementById(r.id);
+          var pass = r.test(val);
+          el.classList.toggle('pass', pass);
+          el.querySelector('i').className = pass ? 'bi bi-check-circle-fill' : 'bi bi-x-circle-fill';
+        });
+        updateSubmit();
+        checkMatch();
       });
-      updateSubmit();
-      checkMatch();
-    });
+    }
 
-    document.getElementById('rgPassC').addEventListener('input', function () {
-      checkMatch();
-      updateSubmit();
-    });
+    var pwInputC = document.getElementById('rgPassC');
+    if (pwInputC) {
+      pwInputC.addEventListener('input', function () {
+        checkMatch();
+        updateSubmit();
+      });
+    }
 
     function updateSubmit() {
       var p = document.getElementById('rgPass').value;
@@ -720,7 +708,6 @@
       var ready = allRulesPass(p) && p === pc && p.length > 0;
       btnSubmit.disabled = !ready;
 
-      /* fill or unfill the last step circle */
       var step3 = document.getElementById('rgStepItem3');
       if (ready) {
         step3.classList.add('done');
@@ -729,105 +716,235 @@
         step3.classList.remove('done');
         step3.classList.add('active');
       }
-
-      /* fill progress bar to 100% when ready, back to 50% when not */
       document.getElementById('rgProgressFill').style.width = ready ? '100%' : '50%';
     }
 
-    /* ── Submit ──────────────────────────────────────────────────── */
     rgForm.addEventListener('submit', function (e) {
       e.preventDefault();
       /* handle form submission here */
     });
 
-    /* ── Init ────────────────────────────────────────────────────── */
     goToStep(1);
-  }
+  }, 'register form');
 
+  /* ── Login form ───────────────────────────────────────────────── */
+  safe(function () {
+    var lnForm = document.getElementById('lnForm');
+    if (!lnForm) return;
 
-
-  /* ══════════════════════════════════════════════════════════════
-     LOGIN FORM — add inside your IIFE in script.js
-     ══════════════════════════════════════════════════════════════ */
-
-  var lnForm = document.getElementById('lnForm');
-  if (lnForm) {
-
-    /* ── Eye toggle ──────────────────────────────────────────── */
     document.querySelectorAll('.ln-eye').forEach(function (btn) {
+      btn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+      });
       btn.addEventListener('click', function () {
         var inp = document.getElementById(btn.dataset.target);
         if (!inp) return;
         var isText = inp.type === 'text';
         inp.type = isText ? 'password' : 'text';
         btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
-
-        /* restore cursor to end — switching type resets it to position 0 */
         var len = inp.value.length;
         inp.setSelectionRange(len, len);
         inp.focus();
       });
     });
 
+    lnForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ok = true;
 
+      function showErr(inputId, msgId, message) {
+        var inp = document.getElementById(inputId);
+        var msg = document.getElementById(msgId);
+        inp.classList.add('ln-err');
+        msg.textContent = message;
+        msg.classList.add('visible');
+        inp.addEventListener('input', function () {
+          inp.classList.remove('ln-err');
+          msg.classList.remove('visible');
+        }, {
+          once: true
+        });
+      }
 
-    /* ── Submit ──────────────────────────────────────────────── */
-lnForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var ok = true;
+      function clearErr(inputId, msgId) {
+        document.getElementById(inputId).classList.remove('ln-err');
+        document.getElementById(msgId).classList.remove('visible');
+      }
 
-  function showErr(inputId, msgId, message) {
-    var inp = document.getElementById(inputId);
-    var msg = document.getElementById(msgId);
-    inp.classList.add('ln-err');
-    msg.textContent = message;
-    msg.classList.add('visible');
-    /* clear on next input */
-    inp.addEventListener('input', function () {
-      inp.classList.remove('ln-err');
-      msg.classList.remove('visible');
-    }, { once: true });
-  }
+      var emailVal = document.getElementById('lnEmail').value.trim();
+      if (!emailVal) {
+        showErr('lnEmail', 'lnEmailErr', 'Email address is required.');
+        ok = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        showErr('lnEmail', 'lnEmailErr', 'Please enter a valid email address.');
+        ok = false;
+      } else {
+        clearErr('lnEmail', 'lnEmailErr');
+      }
 
-  function clearErr(inputId, msgId) {
-    document.getElementById(inputId).classList.remove('ln-err');
-    document.getElementById(msgId).classList.remove('visible');
-  }
+      var passVal = document.getElementById('lnPass').value;
+      if (!passVal.trim()) {
+        showErr('lnPass', 'lnPassErr', 'Password is required.');
+        ok = false;
+      } else {
+        clearErr('lnPass', 'lnPassErr');
+      }
 
-  /* email */
-  var emailVal = document.getElementById('lnEmail').value.trim();
-  if (!emailVal) {
-    showErr('lnEmail', 'lnEmailErr', 'Email address is required.');
-    ok = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-    showErr('lnEmail', 'lnEmailErr', 'Please enter a valid email address.');
-    ok = false;
-  } else {
-    clearErr('lnEmail', 'lnEmailErr');
-  }
+      if (!ok) return;
 
-  /* password */
-  var passVal = document.getElementById('lnPass').value;
-  if (!passVal.trim()) {
-    showErr('lnPass', 'lnPassErr', 'Password is required.');
-    ok = false;
-  } else {
-    clearErr('lnPass', 'lnPassErr');
-  }
+      var btn = document.getElementById('lnBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="bi bi-arrow-repeat ln-spin"></i> Logging in…';
 
-  if (!ok) return;
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.innerHTML = 'Login';
+      }, 1500);
+    });
+  }, 'login form');
 
-  /* loading state */
-  var btn = document.getElementById('lnBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="bi bi-arrow-repeat ln-spin"></i> Logging in…';
+  /* ── Built-for / Powered tabs (interactive panels) ────────────── */
+  safe(function () {
+    var ptTabRow = document.getElementById('ptTabRow');
+    var ptStage = document.getElementById('ptStage');
+    if (!ptTabRow || !ptStage) return;
 
-  setTimeout(function () {
-    btn.disabled = false;
-    btn.innerHTML = 'Login';
-  }, 1500);
-});
+    var tabs = Array.prototype.slice.call(ptTabRow.querySelectorAll('.pt-tab'));
+    var panels = Array.prototype.slice.call(ptStage.querySelectorAll('.pt-panel'));
+    var fills = tabs.map(function (t) {
+      return t.querySelector('.pt-tab-progress-fill');
+    });
 
-  }
+    var AUTO_MS = 5000;
+    var current = 0;
+    var timer = null;
+    var startTime = 0;
+    var elapsedMs = 0;
+    var isPaused = false;
+
+    function runCountUp(panel) {
+      var els = panel.querySelectorAll('[data-count], [data-decimal]');
+      els.forEach(function (el) {
+        var isDecimal = el.hasAttribute('data-decimal');
+        var target = parseFloat(el.dataset.count || el.dataset.decimal);
+        var suffix = el.dataset.suffix || '';
+        var dur = 1100;
+        var t0 = performance.now();
+
+        function tick() {
+          var p = Math.min((performance.now() - t0) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var val = target * eased;
+          el.textContent = (isDecimal ? val.toFixed(2) : Math.round(val)) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    function runRiskRing(panel) {
+      var ring = panel.querySelector('#ptRiskFill');
+      if (!ring) return;
+      var circumference = 314;
+      var score = 12;
+      var pct = score / 100;
+      var offset = circumference - (circumference * pct);
+      ring.style.transition = 'none';
+      ring.style.strokeDashoffset = circumference;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          ring.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)';
+          ring.style.strokeDashoffset = offset;
+        });
+      });
+    }
+
+    function replayAnim(panel) {
+      var animEls = panel.querySelectorAll('.pt-anim');
+      animEls.forEach(function (el) {
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = '';
+      });
+    }
+
+    function goTo(idx, userInitiated) {
+      if (idx === current && !userInitiated) return;
+      tabs[current].classList.remove('active');
+      panels[current].classList.remove('active');
+      current = idx;
+      tabs[current].classList.add('active');
+      panels[current].classList.add('active');
+      replayAnim(panels[current]);
+      runCountUp(panels[current]);
+      runRiskRing(panels[current]);
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearTimeout(timer);
+      elapsedMs = 0;
+      isPaused = false;
+
+      fills.forEach(function (f) {
+        f.style.transition = 'none';
+        f.style.width = '0%';
+      });
+
+      void fills[current].offsetWidth;
+      startTime = performance.now();
+
+      requestAnimationFrame(function () {
+        fills[current].style.transition = 'width ' + AUTO_MS + 'ms linear';
+        fills[current].style.width = '100%';
+      });
+
+      timer = setTimeout(function () {
+        var next = (current + 1) % tabs.length;
+        goTo(next, false);
+      }, AUTO_MS);
+    }
+
+    function pauseTimer() {
+      if (isPaused) return;
+      isPaused = true;
+      clearTimeout(timer);
+      elapsedMs += performance.now() - startTime;
+      var fill = fills[current];
+      var computedWidth = getComputedStyle(fill).width;
+      fill.style.transition = 'none';
+      fill.style.width = computedWidth;
+    }
+
+    function resumeTimer() {
+      if (!isPaused) return;
+      isPaused = false;
+      var remaining = Math.max(AUTO_MS - elapsedMs, 0);
+      var fill = fills[current];
+      startTime = performance.now();
+
+      requestAnimationFrame(function () {
+        fill.style.transition = 'width ' + remaining + 'ms linear';
+        fill.style.width = '100%';
+      });
+
+      timer = setTimeout(function () {
+        var next = (current + 1) % tabs.length;
+        goTo(next, false);
+      }, remaining);
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () {
+        goTo(i, true);
+      });
+    });
+
+    ptStage.addEventListener('mouseenter', pauseTimer);
+    ptStage.addEventListener('mouseleave', resumeTimer);
+
+    runCountUp(panels[0]);
+    resetTimer();
+  }, 'built-for tabs');
 
 }());
