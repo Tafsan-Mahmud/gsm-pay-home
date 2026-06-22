@@ -947,4 +947,212 @@
     resetTimer();
   }, 'built-for tabs');
 
+  // Developer Section
+
+  var devNav = document.getElementById('devNav');
+  if (!devNav) return; /* section not on this page */
+
+  /* ── Render Feather icons (data-feather="..." -> inline svg) ─── */
+  if (window.feather) {
+    feather.replace();
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     1. Build a reliable line-number gutter for every code block.
+     ────────────────────────────────────────────────────────────── */
+  document.querySelectorAll('.dev-code-body').forEach(function (body) {
+    var pres = body.querySelectorAll('pre');
+    pres.forEach(function (pre) {
+      if (pre.dataset.gutterBuilt) return;
+      var code = pre.querySelector('code');
+      if (!code) return;
+
+      var text = code.textContent.replace(/\n$/, '');
+      var lineCount = text.split('\n').length;
+
+      var row = document.createElement('div');
+      row.className = 'dev-code-row';
+
+      if (pre.classList.contains('dev-pane')) {
+        row.classList.add('dev-pane');
+        pre.classList.remove('dev-pane');
+      }
+      if (pre.classList.contains('active')) {
+        row.classList.add('active');
+        pre.classList.remove('active');
+      }
+      if (pre.dataset.lang) {
+        row.dataset.lang = pre.dataset.lang;
+      }
+
+      var gutter = document.createElement('div');
+      gutter.className = 'dev-gutter';
+      for (var i = 1; i <= lineCount; i++) {
+        var span = document.createElement('span');
+        span.textContent = i;
+        gutter.appendChild(span);
+      }
+
+      pre.parentNode.insertBefore(row, pre);
+      row.appendChild(gutter);
+      row.appendChild(pre);
+      pre.dataset.gutterBuilt = 'true';
+    });
+  });
+
+  /* ──────────────────────────────────────────────────────────────
+     2. Mobile / tablet off-canvas sidebar
+     ────────────────────────────────────────────────────────────── */
+  var sidebar = document.getElementById('devSidebar');
+  var toggleBtn = document.getElementById('devSidebarToggle');
+  var closeBtn = document.getElementById('devSidebarClose');
+  var backdrop = document.getElementById('devSidebarBackdrop');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    backdrop.classList.add('open');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+  /* ──────────────────────────────────────────────────────────────
+     3. Nav links — scrollspy + smooth scroll + auto-close on mobile
+     ────────────────────────────────────────────────────────────── */
+  var navLinks = Array.prototype.slice.call(devNav.querySelectorAll('.dev-nav-link'));
+  var blocks = navLinks.map(function (link) {
+    return document.getElementById(link.dataset.target);
+  }).filter(Boolean);
+
+  var spyObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var id = entry.target.id;
+      navLinks.forEach(function (link) {
+        link.classList.toggle('active', link.dataset.target === id);
+      });
+    });
+  }, {
+    rootMargin: '-15% 0px -70% 0px',
+    threshold: 0
+  });
+
+  blocks.forEach(function (block) {
+    spyObserver.observe(block);
+  });
+
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var target = document.getElementById(link.dataset.target);
+      if (!target) return;
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 24;
+      window.scrollTo({
+        top: top,
+        behavior: 'smooth'
+      });
+      if (window.innerWidth <= 991) closeSidebar();
+    });
+  });
+
+  /* ──────────────────────────────────────────────────────────────
+     4. Fade-in blocks on scroll
+     ────────────────────────────────────────────────────────────── */
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.08
+  });
+
+  blocks.forEach(function (block) {
+    revealObserver.observe(block);
+  });
+
+  /* ──────────────────────────────────────────────────────────────
+     5. Code language tabs (PHP / cURL)
+     ────────────────────────────────────────────────────────────── */
+  document.querySelectorAll('.dev-code').forEach(function (codeBlock) {
+    var tabs = codeBlock.querySelectorAll('.dev-code-tab');
+    var panes = codeBlock.querySelectorAll('.dev-pane');
+    if (!tabs.length) return;
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) {
+          t.classList.remove('active');
+        });
+        panes.forEach(function (p) {
+          p.classList.remove('active');
+        });
+        tab.classList.add('active');
+        var pane = codeBlock.querySelector('.dev-pane[data-lang="' + tab.dataset.lang + '"]');
+        if (pane) pane.classList.add('active');
+      });
+    });
+  });
+
+  /* ──────────────────────────────────────────────────────────────
+     6. Copy to clipboard
+     ────────────────────────────────────────────────────────────── */
+  document.querySelectorAll('.dev-copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var codeBlock = btn.closest('.dev-code');
+      var codeBody = codeBlock.querySelector('.dev-code-body');
+      var activePane = codeBody.querySelector('.dev-pane.active') || codeBody.querySelector('.dev-code-row');
+      var codeEl = activePane.querySelector('code');
+      var text = codeEl ? codeEl.textContent : '';
+
+      function done() {
+        var original = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.innerHTML = original;
+          btn.classList.remove('copied');
+        }, 1600);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text, done);
+        });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, cb) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+    } catch (e) {}
+    document.body.removeChild(ta);
+    cb();
+  }
+
 }());
