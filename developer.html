@@ -51,25 +51,29 @@
                         <button class="dev-sidebar-close" id="devSidebarClose" aria-label="Close navigation">
                             <i data-feather="x"></i>
                         </button>
-
-                        <!-- quick links to other site pages — replaces the removed navbar -->
-                        <div class="dev-quicklinks">
-                            <a href="index.html" class="dev-quicklink">
-                                <span class="dev-quicklink-icon"><i data-feather="home"></i></span>
-                                <span class="dev-quicklink-label">Home</span>
-                            </a>
-                            <a href="pricing.html" class="dev-quicklink">
-                                <span class="dev-quicklink-icon"><i data-feather="tag"></i></span>
-                                <span class="dev-quicklink-label">Pricing</span>
-                            </a>
-                            <a href="contact.html" class="dev-quicklink">
-                                <span class="dev-quicklink-icon"><i data-feather="mail"></i></span>
-                                <span class="dev-quicklink-label">Contact</span>
-                            </a>
+                        <div class="dev-sidebar-brand">
+                            <div class="brand-logo-wraper">
+                                <div class="dev-sidebar-logo">
+                                    <img src="asset/logo/brand2.png" alt="">
+                                </div>
+                                <div class="dev-sidebar-brand-name">
+                                    <span class="dev-brand-name">GSM PAY</span>
+                                    <span class="dev-sidebar-top-title">Developer</span>
+                                </div>
+                            </div>
+                            <div class="separator-links-wraper">
+                                <div class="separator"></div>
+                                <a href="index.html" class="dev-top-quicklink">
+                                    <div class="go-to-home">
+                                        <span class="dev-quicklink-icon"><i data-feather="home"></i></span>
+                                        <span class="dev-quicklink-label">Home</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
 
                         <div class="dev-sidebar-head">
-                            <span class="dev-sidebar-kicker">Documentation</span>
+                            <span class="dev-sidebar-kicker">DEVELOPER</span>
                             <h4 class="dev-sidebar-title">API Reference <span class="dev-sidebar-version">v1.0</span>
                             </h4>
                         </div>
@@ -307,13 +311,17 @@ GSMPAY_API_SECRET=your_api_secret_here</code></pre>
                             <div class="dev-code">
                                 <div class="dev-code-head">
                                     <div class="dev-code-tabs">
-                                        <button class="dev-code-tab active" data-lang="php">PHP</button>
+                                        <button class="dev-code-tab active" data-lang="php">Laravel</button>
+                                        <button class="dev-code-tab" data-lang="rawphp">Raw PHP</button>
+                                        <button class="dev-code-tab" data-lang="node">Node.js</button>
+                                        <button class="dev-code-tab" data-lang="python">Python</button>
                                         <button class="dev-code-tab" data-lang="curl">cURL</button>
                                     </div>
                                     <button class="dev-copy-btn" type="button"><i data-feather="clipboard"></i></button>
                                 </div>
 
                                 <div class="dev-code-body">
+
                                     <pre class="dev-pane active" data-lang="php"><code class="language-php">$response = Http::post('https://gsmpay.io/api/create-checkout', [
     'api_key'        =&gt; env('GSMPAY_API_KEY'),
     'api_secret'     =&gt; env('GSMPAY_API_SECRET'),
@@ -327,18 +335,99 @@ GSMPAY_API_SECRET=your_api_secret_here</code></pre>
     'failed_url'     =&gt; route('gsmpay_cancel_callback'),
     'invoice_id'     =&gt; $invoice-&gt;id,
 ]);
- 
+
 if ($response-&gt;successful()) {
     $data = $response-&gt;json();
- 
+
     if (($data['status'] ?? null) === 'success') {
         return redirect()-&gt;to($data['checkoutUrl']);
     }
- 
+
     return back()-&gt;withError($data['message']);
 }
- 
+
 return back()-&gt;withError('Something went wrong. Please try again.');</code></pre>
+
+                                    <pre class="dev-pane" data-lang="rawphp"><code class="language-php">$ch = curl_init('https://gsmpay.io/api/create-checkout');
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    'api_key'        =&gt; 'your_api_key_here',
+    'api_secret'     =&gt; 'your_api_secret_here',
+    'amount'         =&gt; 10,
+    'product_name'   =&gt; 'iTunes Gift Card',
+    'customer_name'  =&gt; 'Tuhin',
+    'customer_email' =&gt; 'demo@gmail.com',
+    'webhook_url'    =&gt; 'https://yourapp.com/gsmpay/callback',
+    'success_url'    =&gt; 'https://yourapp.com/gsmpay/callback',
+    'cancel_url'     =&gt; 'https://yourapp.com/gsmpay/cancel',
+    'failed_url'     =&gt; 'https://yourapp.com/gsmpay/cancel',
+    'invoice_id'     =&gt; 'INV-10293',
+]));
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+
+if (($data['status'] ?? null) === 'success') {
+    header('Location: ' . $data['checkoutUrl']);
+    exit;
+}
+
+echo $data['message'] ?? 'Something went wrong.';</code></pre>
+
+                                    <pre class="dev-pane" data-lang="node"><code class="language-javascript">const response = await fetch('https://gsmpay.io/api/create-checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    api_key: process.env.GSMPAY_API_KEY,
+    api_secret: process.env.GSMPAY_API_SECRET,
+    amount: 10,
+    product_name: 'iTunes Gift Card',
+    customer_name: 'Tuhin',
+    customer_email: 'demo@gmail.com',
+    webhook_url: 'https://yourapp.com/gsmpay/callback',
+    success_url: 'https://yourapp.com/gsmpay/callback',
+    cancel_url: 'https://yourapp.com/gsmpay/cancel',
+    failed_url: 'https://yourapp.com/gsmpay/cancel',
+    invoice_id: 'INV-10293',
+  }),
+});
+
+const data = await response.json();
+
+if (data.status === 'success') {
+  return res.redirect(data.checkoutUrl);
+}
+
+return res.status(400).json({ error: data.message });</code></pre>
+
+                                    <pre class="dev-pane" data-lang="python"><code class="language-python">import os
+import requests
+
+response = requests.post('https://gsmpay.io/api/create-checkout', json={
+    'api_key': os.environ['GSMPAY_API_KEY'],
+    'api_secret': os.environ['GSMPAY_API_SECRET'],
+    'amount': 10,
+    'product_name': 'iTunes Gift Card',
+    'customer_name': 'Tuhin',
+    'customer_email': 'demo@gmail.com',
+    'webhook_url': 'https://yourapp.com/gsmpay/callback',
+    'success_url': 'https://yourapp.com/gsmpay/callback',
+    'cancel_url': 'https://yourapp.com/gsmpay/cancel',
+    'failed_url': 'https://yourapp.com/gsmpay/cancel',
+    'invoice_id': 'INV-10293',
+})
+
+data = response.json()
+
+if data.get('status') == 'success':
+    redirect_url = data['checkoutUrl']
+else:
+    error_message = data.get('message', 'Something went wrong.')</code></pre>
 
                                     <pre class="dev-pane" data-lang="curl"><code class="language-bash">curl -X POST https://gsmpay.io/api/create-checkout \
   -H "Content-Type: application/json" \
@@ -355,6 +444,7 @@ return back()-&gt;withError('Something went wrong. Please try again.');</code></
     "failed_url": "https://yourapp.com/gsmpay/cancel",
     "invoice_id": "INV-10293"
   }'</code></pre>
+
                                 </div>
                             </div>
 
@@ -754,7 +844,6 @@ if ($response-&gt;successful()) {
 
             </div>
         </div>
-
     </section>
 
     <!-- Bootstrap JS -->
