@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSM Pay — Crypto Payment Gateway</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+    <section class="dev-section" id="docs">
+
+        <!-- mobile/tablet sticky top bar -->
+        <div class="dev-mobile-bar">
+            <button class="dev-sidebar-toggle" id="devSidebarToggle" aria-label="Toggle docs navigation">
+                <i data-feather="menu"></i>
+            </button>
+            <span class="dev-mobile-bar-title">Help Center</span>
+        </div>
+
+        <div class="dev-sidebar-backdrop" id="devSidebarBackdrop"></div>
+
+        <div class="container dev-container">
+            <div class="row g-0">
+
+                <!-- ── Sidebar ───────────────────────────────────────────── -->
+                <div class="col-lg-3 dev-sidebar-col">
+                    <div class="dev-sidebar" id="devSidebar">
+
+                        <button class="dev-sidebar-close" id="devSidebarClose" aria-label="Close navigation">
+                            <i data-feather="x"></i>
+                        </button>
+
+                        <!-- brand row — logo, name, separator, home button -->
+                        <div class="dev-sidebar-brand">
+                            <div class="brand-logo-wraper">
+                                <div class="dev-sidebar-logo">
+                                    <img src="asset/logo/brand2.png" alt="">
+                                </div>
+                                <div class="dev-sidebar-brand-name">
+                                    <span class="dev-brand-name">GSM PAY</span>
+                                    <span class="dev-sidebar-top-title">Documentation</span>
+                                </div>
+                            </div>
+                            <div class="separator-links-wraper">
+                                <div class="separator"></div>
+                                <a href="index.html" class="dev-top-quicklink">
+                                    <div class="go-to-home">
+                                        <span class="dev-quicklink-icon"><i data-feather="home"></i></span>
+                                        <span class="dev-quicklink-label">Home</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <nav class="dev-nav" id="devNav">
+                            <span class="dev-nav-group">Getting Started</span>
+                            <a href="#doc-intro" class="dev-nav-link active" data-target="doc-intro">
+                                <i data-feather="book-open"></i> Introduction
+                            </a>
+                            <a href="#doc-dashboard" class="dev-nav-link" data-target="doc-dashboard">
+                                <i data-feather="grid"></i> Dashboard Overview
+                            </a>
+
+                            <span class="dev-nav-group">Payment Methods</span>
+                            <a href="#doc-usdt" class="dev-nav-link" data-target="doc-usdt">
+                                <i data-feather="dollar-sign"></i> Accepting USDT
+                            </a>
+                            <a href="#doc-usdc" class="dev-nav-link" data-target="doc-usdc">
+                                <i data-feather="dollar-sign"></i> Accepting USDC
+                            </a>
+                            <a href="#doc-binance" class="dev-nav-link" data-target="doc-binance">
+                                <i data-feather="zap"></i> Enabling Binance Pay (C2C)
+                            </a>
+
+                            <span class="dev-nav-group">Account &amp; Settings</span>
+                            <a href="#doc-withdraw" class="dev-nav-link" data-target="doc-withdraw">
+                                <i data-feather="arrow-up-right"></i> Withdrawing Funds
+                            </a>
+                            <a href="#doc-2fa" class="dev-nav-link" data-target="doc-2fa">
+                                <i data-feather="lock"></i> Two-Factor Authentication
+                            </a>
+
+                            <span class="dev-nav-group">Troubleshooting</span>
+                            <a href="#doc-failed" class="dev-nav-link" data-target="doc-failed">
+                                <i data-feather="alert-circle"></i> Failed Transactions
+                            </a>
+                            <a href="#doc-issues" class="dev-nav-link" data-target="doc-issues">
+                                <i data-feather="help-circle"></i> Common Issues
+                            </a>
+                        </nav>
+
+                    </div>
+                </div>
+
+                <!-- ── Main content ─────────────────────────────────────── -->
+                <div class="col-lg-9 dev-content-col">
+                    <div class="dev-content">
+
+                        <!-- ════ INTRODUCTION ═══════════════════════════════ -->
+                        <div class="dev-block" id="doc-intro">
+                            <p class="dev-eyebrow">Getting Started</p>
+                            <h1 class="dev-h1">Introduction to GSM Pay</h1>
+                            <p class="dev-p">
+                                GSM Pay is the modern payment layer for digital businesses —
+                                accept USDT, USDC, and Binance Pay directly from your storefront
+                                or invoice, with funds settling in your merchant wallet within
+                                seconds. This guide walks you through every feature in the
+                                merchant dashboard, from your first login to your first payout.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-1">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard1.png" alt="GSM Pay merchant dashboard home screen">
+                                        <figcaption>Your merchant dashboard home screen after logging in.</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ DASHBOARD OVERVIEW ══════════════════════════ -->
+                        <div class="dev-block" id="doc-dashboard">
+                            <p class="dev-eyebrow">Getting Started</p>
+                            <h1 class="dev-h1">Dashboard Overview</h1>
+                            <p class="dev-p">
+                                Everything you need lives in one place. The left sidebar gives
+                                you quick access to transactions, payouts, and settings, while
+                                the main panel surfaces your live balance, recent activity, and
+                                settlement status at a glance.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-3">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/checkout.png" alt="Dashboard balance overview panel">
+                                        <figcaption>Balance overview &amp; quick stats</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard2.png" alt="Dashboard recent transactions list">
+                                        <figcaption>Recent transactions list</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard3.png" alt="Dashboard settlement status widget">
+                                        <figcaption>Live settlement status</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ ACCEPTING USDT ══════════════════════════════ -->
+                        <div class="dev-block" id="doc-usdt">
+                            <p class="dev-eyebrow">Payment Methods</p>
+                            <h1 class="dev-h1">Accepting USDT</h1>
+                            <p class="dev-p">
+                                USDT (TRC20 &amp; ERC20) is enabled by default on every GSM Pay
+                                account. Customers can pay from any compatible wallet — funds
+                                are credited to your balance once the network confirms the
+                                transaction, typically within seconds on TRC20.
+                            </p>
+
+                            <p class="dev-h4">Steps</p>
+                            <div class="dev-flow-list">
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">01</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="settings"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Open Payment Methods</h5>
+                                        <p>Go to Settings → Payment Methods in your dashboard.</p>
+                                    </div>
+                                </div>
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">02</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="toggle-right"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Toggle USDT on</h5>
+                                        <p>Select your preferred network (TRC20 or ERC20) and save.</p>
+                                    </div>
+                                </div>
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">03</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="check-circle"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Start accepting payments</h5>
+                                        <p>USDT now appears as an option on your checkout page.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-2">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/binance.png" alt="Payment methods settings page">
+                                        <figcaption>Payment Methods settings</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/usdc.png" alt="USDT network selection TRC20 ERC20">
+                                        <figcaption>Choosing a network</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/usdt.png" alt="USDT option shown at customer checkout">
+                                        <figcaption>USDT live at checkout</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/binance.png" alt="USDT transaction confirmed in dashboard">
+                                        <figcaption>Confirmed transaction</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ ACCEPTING USDC ══════════════════════════════ -->
+                        <div class="dev-block" id="doc-usdc">
+                            <p class="dev-eyebrow">Payment Methods</p>
+                            <h1 class="dev-h1">Accepting USDC</h1>
+                            <p class="dev-p">
+                                USDC works the same way as USDT — enable it once from your
+                                payment settings and it becomes available to every customer at
+                                checkout. USDC settlements are fully on-chain and verified
+                                automatically by GSM Pay before your balance updates.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-2">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/cta.png" alt="Enabling USDC in payment settings">
+                                        <figcaption>Enabling USDC</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/checkout.png" alt="USDC payment confirmation screen">
+                                        <figcaption>Customer confirmation screen</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ BINANCE PAY (C2C) ═══════════════════════════ -->
+                        <div class="dev-block" id="doc-binance">
+                            <p class="dev-eyebrow">Payment Methods</p>
+                            <h1 class="dev-h1">Enabling Binance Pay (C2C)</h1>
+                            <p class="dev-p">
+                                Binance Pay lets your customers settle directly from their
+                                Binance account using the built-in C2C transfer flow — no
+                                external wallet app required. This is one of the fastest
+                                checkout experiences available on GSM Pay.
+                            </p>
+
+                            <p class="dev-h4">Steps</p>
+                            <div class="dev-flow-list">
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">01</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="link"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Connect your Binance account</h5>
+                                        <p>Go to Settings → Binance Pay and authorize the connection.</p>
+                                    </div>
+                                </div>
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">02</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="shield"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Verify ownership</h5>
+                                        <p>Confirm the one-time code sent to your Binance app.</p>
+                                    </div>
+                                </div>
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">03</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="toggle-right"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Enable at checkout</h5>
+                                        <p>Turn on the Binance Pay (C2C) toggle and save your changes.</p>
+                                    </div>
+                                </div>
+                                <div class="dev-flow-row">
+                                    <span class="dev-flow-row-num">04</span>
+                                    <div class="dev-flow-row-icon"><i data-feather="check-circle"></i></div>
+                                    <div class="dev-flow-row-text">
+                                        <h5>Done</h5>
+                                        <p>Binance Pay now appears as a checkout option for every customer.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-3">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/shape2.png"
+                                            alt="Connecting Binance account in settings">
+                                        <figcaption>Connect your Binance account</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/mockup-3.png" alt="Binance Pay verification code screen">
+                                        <figcaption>Verification step</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard2.png" alt="Enabling Binance Pay C2C toggle">
+                                        <figcaption>Enable the C2C toggle</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/binance.png"
+                                            alt="Binance Pay shown at customer checkout">
+                                        <figcaption>Live at checkout</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard1.png"
+                                            alt="Binance Pay transaction settled in dashboard">
+                                        <figcaption>Settled transaction</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ WITHDRAWING FUNDS ═══════════════════════════ -->
+                        <div class="dev-block" id="doc-withdraw">
+                            <p class="dev-eyebrow">Account &amp; Settings</p>
+                            <h1 class="dev-h1">Withdrawing Funds</h1>
+                            <p class="dev-p">
+                                Once your balance settles, you can withdraw to any external
+                                wallet address at any time. Withdrawals are processed within
+                                minutes and a confirmation is sent to your registered email.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-3">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/checkout.png" alt="Withdraw funds page in dashboard">
+                                        <figcaption>The withdrawal screen</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/usdc.png" alt="Entering destination wallet address">
+                                        <figcaption>Entering a destination address</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/cta.png"
+                                            alt="Withdrawal confirmation success screen">
+                                        <figcaption>Withdrawal confirmed</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ TWO-FACTOR AUTHENTICATION ═══════════════════ -->
+                        <div class="dev-block" id="doc-2fa">
+                            <p class="dev-eyebrow">Account &amp; Settings</p>
+                            <h1 class="dev-h1">Two-Factor Authentication</h1>
+                            <p class="dev-p">
+                                We strongly recommend enabling 2FA on every merchant account.
+                                Once active, you'll be asked for a one-time code from your
+                                authenticator app whenever you log in or initiate a withdrawal.
+                            </p>
+
+                            <div class="dev-callout warn">
+                                <i data-feather="alert-triangle"></i>
+                                <div>
+                                    <strong>Save your recovery codes.</strong> If you lose access
+                                    to your authenticator app, recovery codes are the only way to
+                                    regain access to your account.
+                                </div>
+                            </div>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-2">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/mockup4.png"
+                                            alt="Enabling two-factor authentication settings">
+                                        <figcaption>Enabling 2FA</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/usdt.png"
+                                            alt="Scanning 2FA QR code with authenticator app">
+                                        <figcaption>Scanning the QR code</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ FAILED TRANSACTIONS ══════════════════════════ -->
+                        <div class="dev-block" id="doc-failed">
+                            <p class="dev-eyebrow">Troubleshooting</p>
+                            <h1 class="dev-h1">Failed Transactions</h1>
+                            <p class="dev-p">
+                                A transaction can fail for a few common reasons — insufficient
+                                network confirmations, the customer cancelling mid-checkout, or
+                                an expired session. Failed transactions never deduct funds from
+                                the customer and can always be safely retried.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-1">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/shapes1.png"
+                                            alt="Failed transaction details view in dashboard">
+                                        <figcaption>Viewing a failed transaction's details</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════ COMMON ISSUES ════════════════════════════════ -->
+                        <div class="dev-block" id="doc-issues">
+                            <p class="dev-eyebrow">Troubleshooting</p>
+                            <h1 class="dev-h1">Common Issues</h1>
+                            <p class="dev-p">
+                                Most checkout issues come down to network congestion, an
+                                outdated wallet app, or browser pop-up blockers interfering
+                                with the payment redirect. The screenshots below show what
+                                each of these looks like so you can diagnose quickly.
+                            </p>
+
+                            <div class="dev-shots">
+                                <div class="dev-shots-grid cols-2">
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard2.png" alt="Network congestion warning message">
+                                        <figcaption>Network congestion warning</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/dashboard3.png" alt="Pop-up blocked browser notification">
+                                        <figcaption>Pop-up blocked notice</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/checkout.png" alt="Outdated wallet app version warning">
+                                        <figcaption>Outdated wallet app</figcaption>
+                                    </figure>
+                                    <figure class="dev-shot">
+                                        <img src="/asset/cta.png" alt="Session expired message at checkout">
+                                        <figcaption>Expired checkout session</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+
+                            <div class="dev-callout info">
+                                <i data-feather="info"></i>
+                                <div>
+                                    Still stuck? Reach our support team at
+                                    <a href="mailto:dev@gsmpay.com" class="dev-link">dev@gsmpay.com</a>
+                                    or visit the <a href="contact.html" class="dev-link">contact page</a>.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- lightbox markup — single shared instance, JS fills it dynamically -->
+    <div class="dev-lightbox" id="devLightbox">
+        <button class="dev-lightbox-close" id="devLightboxClose" aria-label="Close"><i data-feather="x"></i></button>
+        <button class="dev-lightbox-nav prev" id="devLightboxPrev" aria-label="Previous image"><i
+                data-feather="chevron-left"></i></button>
+        <img src="" alt="" class="dev-lightbox-img" id="devLightboxImg">
+        <button class="dev-lightbox-nav next" id="devLightboxNext" aria-label="Next image"><i
+                data-feather="chevron-right"></i></button>
+        <div class="dev-lightbox-caption" id="devLightboxCaption"></div>
+        <div class="dev-lightbox-counter" id="devLightboxCounter"></div>
+    </div>
+
+
+    <!-- FAQ =========== -->
+    <section class="faq-section">
+        <div class="container">
+
+            <div class="faq-header">
+                <h2 class="faq-title">Frequently Asked Questions</h2>
+                <p class="faq-sub">Everything you need to know about pricing and billing.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <div class="faq-accordion" id="faqAccordion">
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-target="faqA1">
+                                <span>Is there a free trial available?</span>
+                                <i class="bi bi-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer" id="faqA1">
+                                <div class="faq-answer-inner">
+                                    Yes — every plan includes a 14-day free trial with full access
+                                    to all features. No credit card required to get started, and
+                                    you can cancel anytime before the trial ends.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-target="faqA2">
+                                <span>Can I change my plan later?</span>
+                                <i class="bi bi-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer" id="faqA2">
+                                <div class="faq-answer-inner">
+                                    Absolutely. You can upgrade or downgrade your plan at any time
+                                    from your dashboard. Changes take effect immediately, and
+                                    billing is prorated automatically for the current cycle.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-target="faqA3">
+                                <span>What payment methods do you accept?</span>
+                                <i class="bi bi-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer" id="faqA3">
+                                <div class="faq-answer-inner">
+                                    We accept all major credit and debit cards, along with USDT,
+                                    USDC, and Binance Pay for crypto-native merchants. Enterprise
+                                    plans can also be billed via bank transfer.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- FAQ End=========== -->
+
+
+    <!-- ══ UNIFIED CTA + FOOTER SECTION ═══════════════════════════ -->
+    <section class="unified-section">
+        <!-- ── FOOTER PART ─────────────────────────────────────────── -->
+        <div class="footer-part">
+            <div class="container">
+
+                <div class="ft-grid">
+
+                    <!-- brand col -->
+                    <div class="ft-brand-col">
+                        <a class="navbar-brand d-flex align-items-center gap-1 mb-3" href="#">
+                            <div class="brand-logo-wrap">
+                                <img width="100%" src="/asset/logo/brand2.png" alt="logo">
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span class="brand-name">GSM PAY</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Developers -->
+                    <div class="ft-col">
+                        <h4 class="ft-col-head">Developers</h4>
+                        <ul class="ft-links">
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">API Reference</a></li>
+                            <li><a href="#">SDKs</a></li>
+                            <li><a href="#">Changelog</a></li>
+                            <li><a href="#">Status</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="ft-col">
+                        <h4 class="ft-col-head">Company</h4>
+                        <ul class="ft-links">
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Customers</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal -->
+                    <div class="ft-col">
+                        <h4 class="ft-col-head">Legal</h4>
+                        <ul class="ft-links">
+                            <li><a href="#">Privacy</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="#">Compliance</a></li>
+                            <li><a href="#">Security</a></li>
+                            <li><a href="#">Cookies</a></li>
+                        </ul>
+                    </div>
+
+                </div><!-- /ft-grid -->
+
+                <!-- bottom bar -->
+                <div class="ft-bottom">
+                    <span class="ft-copy">© 2026 GSM Pay, Inc. All rights reserved.</span>
+                    <div class="ft-bottom-socials">
+                        <a href="#" class="ft-bottom-social">Facebook</a>
+                        <a href="#" class="ft-bottom-social">WhatsApp</a>
+                        <a href="#" class="ft-bottom-social">Telegram</a>
+                        <a href="#" class="ft-bottom-social">YouTube</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

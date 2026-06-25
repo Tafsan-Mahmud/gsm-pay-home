@@ -1155,4 +1155,82 @@
     cb();
   }
 
+
+
+  // Documentation section 
+
+  var lightbox = document.getElementById('devLightbox');
+  if (!lightbox) return; /* page has no gallery */
+
+  var imgEl = document.getElementById('devLightboxImg');
+  var captionEl = document.getElementById('devLightboxCaption');
+  var counterEl = document.getElementById('devLightboxCounter');
+  var closeBtn = document.getElementById('devLightboxClose');
+  var prevBtn = document.getElementById('devLightboxPrev');
+  var nextBtn = document.getElementById('devLightboxNext');
+
+  var currentGroup = [];
+  var currentIndex = 0;
+
+  function showAt(index) {
+    if (!currentGroup.length) return;
+    currentIndex = (index + currentGroup.length) % currentGroup.length;
+    var fig = currentGroup[currentIndex];
+    var img = fig.querySelector('img');
+    var cap = fig.querySelector('figcaption');
+
+    imgEl.src = img.src;
+    imgEl.alt = img.alt || '';
+    captionEl.textContent = cap ? cap.textContent : '';
+
+    var multi = currentGroup.length > 1;
+    prevBtn.classList.toggle('hidden', !multi);
+    nextBtn.classList.toggle('hidden', !multi);
+    counterEl.textContent = multi ? (currentIndex + 1) + ' / ' + currentGroup.length : '';
+  }
+
+  function openLightbox(group, index) {
+    currentGroup = group;
+    showAt(index);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* open on any screenshot click — group = siblings within the
+     same .dev-shots-grid, so prev/next stays scoped to that block */
+  document.querySelectorAll('.dev-shots-grid').forEach(function (grid) {
+    var figs = Array.prototype.slice.call(grid.querySelectorAll('.dev-shot'));
+    figs.forEach(function (fig, i) {
+      fig.addEventListener('click', function () {
+        openLightbox(figs, i);
+      });
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () {
+    showAt(currentIndex - 1);
+  });
+  nextBtn.addEventListener('click', function () {
+    showAt(currentIndex + 1);
+  });
+
+  /* click backdrop (outside image) to close */
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  /* keyboard support */
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showAt(currentIndex - 1);
+    if (e.key === 'ArrowRight') showAt(currentIndex + 1);
+  });
+
 }());

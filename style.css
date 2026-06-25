@@ -4764,7 +4764,8 @@ body {
   color: rgba(255, 255, 255, .35);
   background: transparent;
   border: none;
-  white-space: nowrap; /* prevents "Node.js" / "PHP (Laravel)" from wrapping */
+  white-space: nowrap;
+  /* prevents "Node.js" / "PHP (Laravel)" from wrapping */
   padding: 4px 11px;
   border-radius: 5px;
   cursor: pointer;
@@ -4870,6 +4871,217 @@ body {
   font-family: 'SF Mono', Menlo, Consolas, monospace !important;
   font-size: .8rem !important;
   line-height: 1.7 !important;
+}
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   DOCUMENTATION PAGE — additions only.
+   Sidebar, off-canvas mobile nav, dev-block, dev-eyebrow, dev-p,
+   dev-h4, dev-flow-list, dev-callout, dev-link, dev-sidebar-brand
+   etc. are ALL already defined in developer-docs.css — link that
+   file on this page too, this file only adds what's new:
+   the big H1 title, screenshot gallery, and lightbox.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Big page title (bigger than dev-h2 used on the API page) ─── */
+.dev-h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: var(--black-900);
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCREENSHOT GALLERY
+   1–5 images, grid adapts via a "cols-N" helper class.
+   ══════════════════════════════════════════════════════════════ */
+.dev-shots {
+  margin-top: 26px;
+}
+
+.dev-shots-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dev-shots-grid.cols-1 {
+  grid-template-columns: 1fr;
+  /* max-width: 680px; */
+}
+
+.dev-shots-grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dev-shots-grid.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.dev-shots-grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.dev-shots-grid.cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.dev-shot {
+  margin: 0;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-surface);
+  cursor: zoom-in;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.dev-shot:hover {
+  border-color: var(--brand-primary-border);
+  box-shadow: 0 8px 24px rgba(22, 163, 74, .10);
+  transform: translateY(-2px);
+}
+
+.dev-shot img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: var(--black-50);
+}
+
+.dev-shots-grid.cols-1 .dev-shot img {
+  height: 360px;
+}
+
+.dev-shot figcaption {
+  padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .76rem;
+  color: var(--black-500);
+  border-top: 1px solid var(--border-light);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LIGHTBOX
+   ══════════════════════════════════════════════════════════════ */
+.dev-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 17, 23, .92);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+
+.dev-lightbox.open {
+  display: flex;
+  opacity: 1;
+}
+
+.dev-lightbox-img {
+  max-width: 86vw;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .5);
+  transform: scale(.96);
+  transition: transform .22s ease;
+}
+
+.dev-lightbox.open .dev-lightbox-img {
+  transform: scale(1);
+}
+
+.dev-lightbox-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .18s ease;
+}
+
+.dev-lightbox-close:hover {
+  background: rgba(255, 255, 255, .18);
+}
+
+.dev-lightbox-close svg {
+  width: 17px;
+  height: 17px;
+}
+
+.dev-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .18s ease;
+}
+
+.dev-lightbox-nav:hover {
+  background: rgba(255, 255, 255, .18);
+}
+
+.dev-lightbox-nav svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dev-lightbox-nav.prev {
+  left: 22px;
+}
+
+.dev-lightbox-nav.next {
+  right: 22px;
+}
+
+.dev-lightbox-nav.hidden {
+  display: none;
+}
+
+.dev-lightbox-caption {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80vw;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  color: rgba(255, 255, 255, .75);
+}
+
+.dev-lightbox-counter {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: .76rem;
+  color: rgba(255, 255, 255, .5);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -5201,6 +5413,13 @@ body {
 
   .dev-content {
     padding: 36px 24px 70px;
+  }
+
+
+  .dev-shots-grid.cols-3,
+  .dev-shots-grid.cols-4,
+  .dev-shots-grid.cols-5 {
+    grid-template-columns: repeat(2, 1fr);
   }
 
 }
@@ -5538,6 +5757,39 @@ body {
   .dev-flow-row-icon svg {
     width: 15px;
     height: 15px;
+  }
+
+  .dev-shots-grid.cols-2,
+  .dev-shots-grid.cols-3,
+  .dev-shots-grid.cols-4,
+  .dev-shots-grid.cols-5 {
+    grid-template-columns: 1fr;
+  }
+
+  .dev-shot img {
+    height: 200px;
+  }
+
+  .dev-shots-grid.cols-1 .dev-shot img {
+    height: 240px;
+  }
+
+  .dev-lightbox-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dev-lightbox-nav.prev {
+    left: 10px;
+  }
+
+  .dev-lightbox-nav.next {
+    right: 10px;
+  }
+
+  .dev-lightbox-close {
+    top: 14px;
+    right: 14px;
   }
 }
 
